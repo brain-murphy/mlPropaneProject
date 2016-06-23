@@ -9,7 +9,7 @@ import java.util.*;
 
 public class PropaneDataReader {
 
-    private static final String PROPANE_DATA_FILE_PATH = "./propaneData.ser";
+    private static final String PROPANE_DATA_FILE_PATH = "datasets/propaneData.ser";
 
     private Map<Float,List<Map<Integer,Integer>>> data;
     private float[] weights;
@@ -25,7 +25,7 @@ public class PropaneDataReader {
         try {
 
             ClassLoader classLoader = getClass().getClassLoader();
-            FileInputStream inputStream = new FileInputStream(new File(PROPANE_DATA_FILE_PATH));
+            InputStream inputStream = classLoader.getResourceAsStream(PROPANE_DATA_FILE_PATH);
             ObjectInputStream in = new ObjectInputStream(inputStream);
             data = (Map<Float,List<Map<Integer,Integer>>>) in.readObject();
             in.close();
