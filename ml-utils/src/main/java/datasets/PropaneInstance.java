@@ -26,6 +26,6 @@ public class PropaneInstance implements Instance {
 
     @Override
     public double getError(double y) {
-        return y -
+        return y - fuelLevel;
     }
 }
