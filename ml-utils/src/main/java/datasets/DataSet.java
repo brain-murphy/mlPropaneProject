@@ -4,9 +4,15 @@ import java.util.*;
 
 public class DataSet<T extends Instance> implements Iterable<T> {
     private T[] instances;
+    private boolean hasDiscreteOutput;
+
+    public DataSet(T[] instances, boolean hasDiscreteOutput) {
+        this.instances = instances;
+        this.hasDiscreteOutput = hasDiscreteOutput;
+    }
 
     public DataSet(T[] instances) {
-        this.instances = instances;
+        this(instances, true);
     }
 
     public Instance[] getInstances() {
@@ -32,6 +38,10 @@ public class DataSet<T extends Instance> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new DataSetIterator();
+    }
+
+    public boolean hasDiscreteOutput() {
+        return hasDiscreteOutput;
     }
 
     private class DataSetIterator implements Iterator<T> {

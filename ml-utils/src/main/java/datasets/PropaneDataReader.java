@@ -50,7 +50,7 @@ public class PropaneDataReader {
             }
         }
 
-        return new DataSet<>(instances);
+        return new DataSet<>(instances, false);
     }
 
     private static double[] mapToDoubleArray(Map<Integer, Integer> map) {

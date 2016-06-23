@@ -11,9 +11,13 @@ public class TestPropaneInstance {
 
     private Instance propaneInstance;
 
+    public static PropaneInstance generateTestPropaneInstance() {
+        return new PropaneInstance(TEST_INPUT, TEST_OUPUT);
+    }
+
     @Before
     public void setUp() {
-        propaneInstance = new PropaneInstance(TEST_INPUT, TEST_OUPUT);
+        propaneInstance = generateTestPropaneInstance();
     }
 
     @Test

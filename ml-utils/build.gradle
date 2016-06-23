@@ -29,6 +29,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/nz.ac.waikato.cms.weka/weka-stable
     compile group: 'nz.ac.waikato.cms.weka', name: 'weka-stable', version: '3.6.6'
+    compile group: 'nz.ac.waikato.cms.weka', name: 'RBFNetwork', version: ''
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.1"
     testCompile group: 'junit', name: 'junit', version: '4.11'

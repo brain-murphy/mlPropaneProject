@@ -1,5 +1,6 @@
 package datasets;
 
+import org.jetbrains.annotations.*;
 import weka.core.*;
 
 public class WekaParser {
@@ -11,6 +12,10 @@ public class WekaParser {
     private Instances unlabeledInstances;
 
     public WekaParser(DataSet<Instance> dataSet) {
+        parseData(dataSet);
+    }
+
+    private void parseData(DataSet<Instance> dataSet) {
         Instance firstInstance = dataSet.getInstances()[0];
 
         int numAttributes = firstInstance.getInput().length + 1;
@@ -21,13 +26,12 @@ public class WekaParser {
             attributes.addElement(new Attribute(Integer.toString(i)));
         }
 
-        FastVector outputAttributeValues = new FastVector(firstInstance.getPossibleOutputs().length);
-
-        for (int i = 0; i < firstInstance.getPossibleOutputs().length; i++) {
-            outputAttributeValues.addElement(Double.toString(firstInstance.getPossibleOutputs()[i]));
+        Attribute outputAttribute = null;
+        if (dataSet.hasDiscreteOutput()) {
+            outputAttribute = parseDiscreteOutputAttribute(firstInstance.getPossibleOutputs());
+        } else {
+            outputAttribute = new Attribute(OUTPUT_ATTRIBUTE_NAME);
         }
-
-        Attribute outputAttribute = new Attribute(OUTPUT_ATTRIBUTE_NAME, outputAttributeValues);
 
         attributes.addElement(outputAttribute);
 
@@ -48,6 +52,17 @@ public class WekaParser {
 
             wekaInstances.add(wekaInstance);
         }
+    }
+
+    @NotNull
+    private Attribute parseDiscreteOutputAttribute(double[] possibleOutputs) {
+        FastVector outputAttributeValues = new FastVector(possibleOutputs.length);
+
+        for (int i = 0; i < possibleOutputs.length; i++) {
+            outputAttributeValues.addElement(Double.toString(possibleOutputs[i]));
+        }
+
+        return new Attribute(OUTPUT_ATTRIBUTE_NAME, outputAttributeValues);
     }
 
     public Instances getDataSetAsInstances() {
