@@ -72,9 +72,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-.gitignore
 ml-utils/build/dependency-cache/
 ml-utils/build/tmp/
-ml-utils/src/test/
 propane/build/
-propane/src/

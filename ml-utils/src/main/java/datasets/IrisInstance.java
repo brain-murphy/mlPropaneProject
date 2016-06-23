@@ -37,7 +37,7 @@ public class IrisInstance implements Instance {
     }
 
     @Override
-    public double getError(double y) {
+    public double getDifference(double y) {
         long classification = Math.round(y);
 
         if (classification - output < .1) { // if difference is near zero

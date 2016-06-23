@@ -4,7 +4,6 @@ import algorithms.*;
 import datasets.*;
 import datasets.Instance;
 import org.apache.commons.math3.stat.descriptive.*;
-import weka.core.*;
 
 import java.util.*;
 
@@ -38,12 +37,12 @@ public class ProjectUtils {
 
             for (Instance testInstance : testingData) {
                 double output = (double) algorithm.evaluate(testInstance.getInput());
-                sumOfValidationError += testInstance.getError(output);
+                sumOfValidationError += testInstance.getDifference(output);
             }
 
             for (Instance trainingInstance : trainingDataSet.getInstances()) {
                 double output = (double) algorithm.evaluate(trainingInstance.getInput());
-                sumOfTrainingError += trainingInstance.getError(output);
+                sumOfTrainingError += trainingInstance.getDifference(output);
             }
 
             validationErrors.addValue(sumOfValidationError / testingData.length);

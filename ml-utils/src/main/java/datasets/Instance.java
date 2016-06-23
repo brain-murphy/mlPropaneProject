@@ -10,5 +10,5 @@ public interface Instance {
      * @param computedOutput error will be determined relative to this value
      * @return 0 if correct, one if incorrect
      */
-    double getError(double computedOutput);
+    double getDifference(double computedOutput);
 }
