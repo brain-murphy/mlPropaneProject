@@ -26,9 +26,6 @@ public class PropaneInstance implements Instance {
 
     @Override
     public double getError(double y) {
-        if (Math.abs(y - getOutput()) > .1) {
-            return 1;
-        }
-        return 0;
+        return y -
     }
 }
