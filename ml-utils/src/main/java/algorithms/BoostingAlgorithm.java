@@ -13,7 +13,7 @@ public class BoostingAlgorithm implements Algorithm {
     public static final String KEY_ITERATIONS = "iterations param";
 
     private WekaParser parser;
-    private Classifier booster;
+    private AdaBoostM1 booster;
     private String[] options;
 
     @Override

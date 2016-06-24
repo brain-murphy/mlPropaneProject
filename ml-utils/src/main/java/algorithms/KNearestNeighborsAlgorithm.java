@@ -12,7 +12,7 @@ public class KNearestNeighborsAlgorithm implements Algorithm {
     public static final String KEY_K = "k param";
 
     private WekaParser parser;
-    private Classifier knn;
+    private IBk knn;
     private String[] options;
 
     @Override

@@ -15,7 +15,7 @@ public class DecisionTreeAlgorithm implements Algorithm {
     public static final String KEY_ONLY_BINARY_SPLITS = "binary splits param";
 
     private WekaParser parser;
-    private Classifier tree;
+    private J48 tree;
     private String[] options;
 
 

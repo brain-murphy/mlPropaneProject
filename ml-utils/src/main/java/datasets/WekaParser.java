@@ -3,11 +3,13 @@ package datasets;
 import org.jetbrains.annotations.*;
 import weka.core.*;
 
+import java.util.*;
+
 public class WekaParser {
 
     private static final String OUTPUT_ATTRIBUTE_NAME = "output";
 
-    private FastVector attributes;
+    private ArrayList<Attribute> attributes;
     private Instances wekaInstances;
     private Instances unlabeledInstances;
 
@@ -20,10 +22,10 @@ public class WekaParser {
 
         int numAttributes = firstInstance.getInput().length + 1;
 
-        attributes = new FastVector(numAttributes);
+        attributes = new ArrayList<>(numAttributes);
 
         for (int i = 0; i < firstInstance.getInput().length; i++) {
-            attributes.addElement(new Attribute(Integer.toString(i)));
+            attributes.add(new Attribute(Integer.toString(i)));
         }
 
         Attribute outputAttribute = null;
@@ -33,7 +35,7 @@ public class WekaParser {
             outputAttribute = new Attribute(OUTPUT_ATTRIBUTE_NAME);
         }
 
-        attributes.addElement(outputAttribute);
+        attributes.add(outputAttribute);
 
         wekaInstances = new Instances("dataset", attributes, dataSet.getInstances().length);
         unlabeledInstances = new Instances("unlabeled", attributes, dataSet.getInstances().length);
@@ -42,10 +44,10 @@ public class WekaParser {
         unlabeledInstances.setClass(outputAttribute);
 
         for (Instance instance : dataSet) {
-            weka.core.Instance wekaInstance = new weka.core.Instance(numAttributes);
+            weka.core.Instance wekaInstance = new DenseInstance(numAttributes);
 
             for (int i = 0; i < firstInstance.getInput().length; i++) {
-                wekaInstance.setValue((Attribute) attributes.elementAt(i), instance.getInput()[i]);
+                wekaInstance.setValue((Attribute) attributes.get(i), instance.getInput()[i]);
             }
 
             wekaInstance.setValue(outputAttribute, instance.getOutput());
@@ -70,10 +72,10 @@ public class WekaParser {
     }
 
     public weka.core.Instance parseInstanceForEvaluation(double[] input) {
-        weka.core.Instance instance = new weka.core.Instance(attributes.size());
+        weka.core.Instance instance = new DenseInstance(attributes.size());
 
         for (int i = 0; i < input.length; i++) {
-            instance.setValue((Attribute) attributes.elementAt(i), input[i]);
+            instance.setValue((Attribute) attributes.get(i), input[i]);
         }
 
         unlabeledInstances.add(instance);
@@ -81,7 +83,7 @@ public class WekaParser {
         return unlabeledInstances.lastInstance();
     }
 
-    public FastVector getAttributes() {
+    public ArrayList<Attribute> getAttributes() {
         return attributes;
     }
 }
