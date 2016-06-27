@@ -10,59 +10,49 @@ import java.util.*;
 
 public class DecisionTreeAlgorithm implements Algorithm {
 
-    public static final String KEY_PRUNING_CONFIDENCE = "pruning confidence param";
-    public static final String KEY_REDUCED_ERROR_PRUNING = "reduced error pruning param";
     public static final String KEY_ONLY_BINARY_SPLITS = "binary splits param";
 
+    public static Map<String, Object> createParams(boolean onlyBinarySplits) {
+        Map<String, Object> params = new HashMap<>();
+
+        params.put(KEY_ONLY_BINARY_SPLITS, onlyBinarySplits);
+
+        return params;
+    }
+
     private WekaParser parser;
-    private J48 tree;
-    private String[] options;
+    private REPTree tree;
+    private Map<String, Object> params;
 
 
     @Override
     public void setParams(Map<String, Object> params) {
-        double pruningConfidence;
-        if (params.containsKey(KEY_PRUNING_CONFIDENCE)) {
-             pruningConfidence = (double) params.get(KEY_PRUNING_CONFIDENCE);
-        } else {
-            pruningConfidence = .25;
-        }
-
-
-        boolean binarySplitsOnly;
-        if (params.containsKey(KEY_ONLY_BINARY_SPLITS)) {
-            binarySplitsOnly = (boolean) params.get(KEY_ONLY_BINARY_SPLITS);
-        } else {
-            binarySplitsOnly = false;
-        }
-
-        boolean reducedErrorPruning = (boolean) params.get(KEY_REDUCED_ERROR_PRUNING);
-        try {
-            if (reducedErrorPruning) {
-                options = Utils.splitOptions("-R" +  (binarySplitsOnly ? " -B" : ""));
-            } else {
-                options = Utils.splitOptions("-C " + pruningConfidence +  (binarySplitsOnly ? " -B" : ""));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        this.params = params;
     }
 
     @Override
     public void train(DataSet dataset) {
         parser = new WekaParser(dataset);
 
-        tree = new J48();
+        tree = new REPTree();
 
         try {
-            tree.setOptions(options.clone());
+            tree.setOptions(parseOptions());
 
             tree.buildClassifier(parser.getDataSetAsInstances());
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    private String[] parseOptions() {
+//        boolean onlyBinarySplits = false;
+//        if (params.containsKey(KEY_ONLY_BINARY_SPLITS)) {
+//            onlyBinarySplits = (boolean ) params.get(KEY_ONLY_BINARY_SPLITS);
+//        }
+
+        return new String[]{};
     }
 
     @Override

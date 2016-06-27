@@ -58,10 +58,10 @@ public class WekaParser {
 
     @NotNull
     private Attribute parseDiscreteOutputAttribute(double[] possibleOutputs) {
-        FastVector outputAttributeValues = new FastVector(possibleOutputs.length);
+        ArrayList<String> outputAttributeValues = new ArrayList<>(possibleOutputs.length);
 
         for (int i = 0; i < possibleOutputs.length; i++) {
-            outputAttributeValues.addElement(Double.toString(possibleOutputs[i]));
+            outputAttributeValues.add(Double.toString(possibleOutputs[i]));
         }
 
         return new Attribute(OUTPUT_ATTRIBUTE_NAME, outputAttributeValues);

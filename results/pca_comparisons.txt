@@ -1,0 +1,2 @@
+mean absolute validation error using RBF on original data:1.5805497595820466 after time:1631052831747
+mean absolute validation error using RBF on data with PCA:1.7970751523497053 after time:83729870391

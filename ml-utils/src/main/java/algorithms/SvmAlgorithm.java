@@ -13,10 +13,21 @@ import java.util.*;
 
 public class SvmAlgorithm implements Algorithm {
 
-    public static final String KEY_OUTPUT_NORMALIZER = "output normalizer param";
     public static final String KEY_KERNEL_TYPE = "kernel type param";
     public static final String KEY_C = "c param";
     public static final String KEY_GAMMA = "gamma param";
+
+    public static Map<String, Object> createParams(Kernel kernel, double c, double gamma) {
+        Map<String, Object> params = new HashMap<>();
+
+        params.put(KEY_KERNEL_TYPE, kernel);
+
+        params.put(KEY_GAMMA, gamma);
+
+        params.put(KEY_C, c);
+
+        return params;
+    }
 
     private double[][] input;
     private double[][] output;
@@ -31,10 +42,23 @@ public class SvmAlgorithm implements Algorithm {
 
     @Override
     public void setParams(Map<String, Object> params) {
-        outputNormalizer = (NormalizedField) params.get(KEY_OUTPUT_NORMALIZER);
-        kernelType = (KernelType) params.get(KEY_KERNEL_TYPE);
-        c = (double) params.get(KEY_C);
-        gamma = (double) params.get(KEY_GAMMA);
+        if (params.containsKey(KEY_C)) {
+            c = (double) params.get(KEY_C);
+        } else {
+            c = 0.1;
+        }
+
+        if (params.containsKey(KEY_GAMMA)) {
+            gamma = (double) params.get(KEY_GAMMA);
+        } else {
+            gamma = 0.1;
+        }
+
+        if (params.containsKey(KEY_KERNEL_TYPE)) {
+            kernelType = ((Kernel) params.get(KEY_KERNEL_TYPE)).getKernelType();
+        } else {
+            kernelType = KernelType.RadialBasisFunction;
+        }
     }
 
     @Override
@@ -56,6 +80,8 @@ public class SvmAlgorithm implements Algorithm {
     }
 
     private void parseTrainingData(DataSet dataSet) {
+        setOutputNormalizer(dataSet);
+
         Instance[] instances = dataSet.getInstances();
         input = new double[instances.length][];
         output = new double[instances.length][];
@@ -66,8 +92,39 @@ public class SvmAlgorithm implements Algorithm {
         }
     }
 
+    private void setOutputNormalizer(DataSet dataSet) {
+        double[] possibleOutputs = dataSet.getInstances()[0].getPossibleOutputs();
+
+        double normalizedLow;
+        if (kernelType == KernelType.Sigmoid) {
+            normalizedLow = 0;
+        } else {
+            normalizedLow = -1;
+        }
+
+        outputNormalizer = new NormalizedField(NormalizationAction.Normalize, "outputnormalizer", possibleOutputs[1], possibleOutputs[0], 1, normalizedLow);
+    }
+
     @Override
     public Object evaluate(Object input) {
         return outputNormalizer.deNormalize(svm.compute(new BasicMLData((double[]) input)).getData()[0]);
+    }
+
+    public enum Kernel {
+
+        Polynomial(KernelType.Poly),
+        Linear(KernelType.Linear),
+        Sigmoid(KernelType.Sigmoid),
+        RadialBasisFunction(KernelType.RadialBasisFunction);
+
+        private KernelType kernelType;
+
+        Kernel(KernelType kernel) {
+            kernelType = kernel;
+        }
+
+        public KernelType getKernelType() {
+            return kernelType;
+        }
     }
 }

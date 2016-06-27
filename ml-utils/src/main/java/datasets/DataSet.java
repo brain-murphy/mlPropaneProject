@@ -11,10 +11,6 @@ public class DataSet<T extends Instance> implements Iterable<T> {
         this.hasDiscreteOutput = hasDiscreteOutput;
     }
 
-    public DataSet(T[] instances) {
-        this(instances, true);
-    }
-
     public Instance[] getInstances() {
         return instances;
     }

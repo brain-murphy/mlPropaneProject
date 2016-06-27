@@ -7,7 +7,7 @@ import org.apache.commons.math3.stat.descriptive.*;
 
 import java.util.*;
 
-public class ProjectUtils {
+public class MLUtils {
     public static float[] toPrimitiveFloatArray(Collection<Float> floatCollection) {
         float[] primitiveArray = new float[floatCollection.size()];
         Iterator iterator = floatCollection.iterator();
@@ -19,7 +19,7 @@ public class ProjectUtils {
         return primitiveArray;
     }
 
-    public static double[] crossValidate(DataSet dataSet, int numFolds, Algorithm algorithm) {
+    public static Result crossValidate(DataSet dataSet, int numFolds, Algorithm algorithm) {
         List<Instance>[] groups = dataSet.splitDataSetRandomly(numFolds);
 
         SummaryStatistics validationErrors = new SummaryStatistics();
@@ -28,7 +28,7 @@ public class ProjectUtils {
         for (int i = 0; i < numFolds; i++) {
             Instance[] testingData = groups[i].toArray(new Instance[groups[i].size()]);
 
-            DataSet<Instance> trainingDataSet = new DataSet<Instance>(combineAllListsExceptOne(groups, i));
+            DataSet<Instance> trainingDataSet = new DataSet<Instance>(combineAllListsExceptOne(groups, i), dataSet.hasDiscreteOutput());
 
             algorithm.train(trainingDataSet);
 
@@ -48,8 +48,7 @@ public class ProjectUtils {
             validationErrors.addValue(sumOfValidationError / testingData.length);
             trainingErrors.addValue(sumOfTrainingError / trainingDataSet.getInstances().length);
         }
-
-        return new double[] {validationErrors.getMean(), validationErrors.getStandardDeviation(), numFolds, groups[0].size(), trainingErrors.getMean()};
+        return new Result(validationErrors.getMean(), trainingErrors.getMean(), validationErrors.getStandardDeviation(), numFolds, groups[0].size());
     }
 
     private static Instance[] combineAllListsExceptOne(List<Instance>[] lists, int listToLeaveOut) {
@@ -84,7 +83,7 @@ public class ProjectUtils {
         return total;
     }
 
-    public static double[] leaveOneOutCrossValidate(DataSet dataSet, Algorithm algorithm) {
+    public static Result leaveOneOutCrossValidate(DataSet dataSet, Algorithm algorithm) {
         return crossValidate(dataSet, dataSet.getInstances().length, algorithm);
     }
 
@@ -92,13 +91,13 @@ public class ProjectUtils {
 
         System.out.println("percentOfDataForTesting,trainingError,crossValidationError");
         for (int divisor = 2; divisor < 11; divisor++) {
-            double[] results = crossValidate(dataSet, divisor, algorithm);
+            Result results = crossValidate(dataSet, divisor, algorithm);
 
-            System.out.println(String.format("%.3f", 1.0f / divisor) + "," + results[4] + "," + String.format("%.3f", results[0]));
+            System.out.println(String.format("%.3f", 1.0f / divisor) + "," + results.getMeanTrainingError() + "," + String.format("%.3f", results.getMeanValidationError()));
         }
 
-        double[] results = leaveOneOutCrossValidate(dataSet, algorithm);
+        Result results = leaveOneOutCrossValidate(dataSet, algorithm);
 
-        System.out.println(String.format("%.3f", 1.0f / dataSet.getInstances().length) + "," + results[4] + "," + String.format("%.3f", results[0]));
+        System.out.println(String.format("%.3f", 1.0f / dataSet.getInstances().length) + "," + results.getMeanTrainingError() + "," + String.format("%.3f", results.getMeanValidationError()));
     }
 }

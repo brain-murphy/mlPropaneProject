@@ -21,7 +21,7 @@ public class PropaneInstance implements Instance {
 
     @Override
     public double[] getPossibleOutputs() {
-        return new double[] {0, 1};
+        return new double[] {10, 40};
     }
 
     @Override

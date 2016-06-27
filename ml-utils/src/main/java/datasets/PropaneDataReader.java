@@ -17,7 +17,7 @@ public class PropaneDataReader {
     public PropaneDataReader() {
         data = deserializePropaneData();
 
-        weights = ProjectUtils.toPrimitiveFloatArray(data.keySet());
+        weights = MLUtils.toPrimitiveFloatArray(data.keySet());
     }
 
     private Map<Float,List<Map<Integer,Integer>>> deserializePropaneData() {
@@ -73,6 +73,37 @@ public class PropaneDataReader {
         }
 
         return total;
+    }
+
+    public void printDataAsCsv() {
+        List<Integer> sortedFrequencies = new ArrayList<>(data.get(weights[0]).get(0).keySet());
+        Collections.sort(sortedFrequencies);
+
+        StringBuilder headerBuilder = new StringBuilder();
+        for (Integer frequency : sortedFrequencies) {
+            headerBuilder.append(frequency);
+            headerBuilder.append("hz,");
+        }
+
+        headerBuilder.append("weight");
+
+        System.out.println(headerBuilder.toString());
+
+
+        for (float weight : weights) {
+            for (Map<Integer,Integer> fft : data.get(weight)) {
+                StringBuilder rowBuilder = new StringBuilder();
+
+                for (Integer frequency : sortedFrequencies) {
+                    rowBuilder.append(fft.get(frequency));
+                    rowBuilder.append(',');
+                }
+
+                rowBuilder.append(weight);
+
+                System.out.println(rowBuilder.toString());
+            }
+        }
     }
 
 }

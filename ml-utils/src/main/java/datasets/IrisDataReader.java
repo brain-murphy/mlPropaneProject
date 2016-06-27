@@ -26,7 +26,7 @@ public class IrisDataReader {
     }
 
     public DataSet<IrisInstance> getIrisDataSet() {
-        return new DataSet<>(data);
+        return new DataSet<>(data, true);
     }
 
     private CSVParser getParser() {

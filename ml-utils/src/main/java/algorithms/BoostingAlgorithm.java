@@ -12,8 +12,17 @@ public class BoostingAlgorithm implements Algorithm {
     public static final String KEY_ALGORITHM_CLASS_NAME = "algorithm class param";
     public static final String KEY_ITERATIONS = "iterations param";
 
+    public static Map<String, Object> createParams(String baseLearner, int maxIterations) {
+        Map<String, Object> params = new HashMap<>();
+
+        params.put(KEY_ALGORITHM_CLASS_NAME, baseLearner);
+        params.put(KEY_ITERATIONS, maxIterations);
+
+        return params;
+    }
+
     private WekaParser parser;
-    private AdaBoostM1 booster;
+    private Classifier booster;
     private String[] options;
 
     @Override
@@ -36,13 +45,12 @@ public class BoostingAlgorithm implements Algorithm {
     public void train(DataSet dataset) {
         parser = new WekaParser(dataset);
 
-        booster = new AdaBoostM1();
-
-        try {
-            booster.setOptions(options.clone());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (dataset.hasDiscreteOutput()) {
+            createAdaBoost(options);
+        } else {
+            instantiateAdditiveRegression(options);
         }
+
 
         try {
             booster.buildClassifier(parser.getDataSetAsInstances());
@@ -50,6 +58,36 @@ public class BoostingAlgorithm implements Algorithm {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    private void instantiateAdditiveRegression(String[] options) {
+        AdditiveRegression regression = new AdditiveRegression();
+        try {
+            regression.setOptions(options.clone());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        booster = regression;
+    }
+
+    private void createLogitBoost(String[] options) {
+        LogitBoost logitBoost = new LogitBoost();
+        try {
+            logitBoost.setOptions(options.clone());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        booster = logitBoost;
+    }
+
+    private void createAdaBoost(String[] options) {
+        AdaBoostM1 adaBoost = new AdaBoostM1();
+        try {
+            adaBoost.setOptions(options.clone());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        booster = adaBoost;
     }
 
     @Override
