@@ -5,11 +5,24 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
 import util.CrossValidation
+import util.LearningCurve
 import util.Result
 import java.util.*
 
 fun main(args: Array<String>) {
-    findBestRbfCount(PcaPropaneDataReader().propaneDataSet as DataSet<Instance>, 12, 1, 20);
+    learningCurve()
+}
+
+fun learningCurve() {
+    val rbf = RbfAlgorithm()
+    rbf.setParams(createParams(15, .1, false))
+
+    val absoluteError = {error:Double -> Math.abs(error)}
+
+    val learningCurve = LearningCurve(PcaPropaneDataReader().propaneDataSet, rbf, absoluteError)
+    val csv = learningCurve.run()
+
+    println(csv)
 }
 
 fun runRbf(dataSet: DataSet<Instance>, cgd: Boolean, tolerance: Double, rbfCount: Int): Result {
