@@ -48,14 +48,12 @@ public class CrossValidation {
         return new Result(validationErrors.getMean(), trainingErrors.getMean(), validationErrors.getStandardDeviation(), numFolds, groups[0].size());
     }
 
-
-
     private static Instance[] combineAllListsExceptOne(List<Instance>[] lists, int listToLeaveOut) {
         if (lists.length == 1) {
             return lists[0].toArray(new Instance[lists[0].size()]);
         }
 
-        Instance[] combinedArray = new Instance[totalCountOfAllLists(lists) - lists[listToLeaveOut].size()];
+        Instance[] combinedArray = new Instance[totalSizeOfAllLists(lists) - lists[listToLeaveOut].size()];
 
         int combinedArrayIndex = 0;
 
@@ -73,7 +71,7 @@ public class CrossValidation {
         return combinedArray;
     }
 
-    private static int totalCountOfAllLists(List[] lists) {
+    private static int totalSizeOfAllLists(List[] lists) {
         int total = 0;
         for (List list : lists) {
             total += list.size();
