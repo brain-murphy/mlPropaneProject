@@ -1,6 +1,7 @@
 package datasets;
 
 
+import org.jetbrains.annotations.*;
 import util.*;
 
 import java.io.*;
@@ -9,7 +10,8 @@ import java.util.*;
 
 public class PropaneDataReader {
 
-    private static final String PROPANE_DATA_FILE_PATH = "datasets/propaneData.ser";
+    private static final String PROPANE_DATA_2013_FILE_PATH = "datasets/propaneData.ser";
+    private static final String PROPANE_DATA_2016_FILE_PATH = "";
 
     private Map<Float,List<Map<Integer,Integer>>> data;
     private float[] weights;
@@ -25,7 +27,7 @@ public class PropaneDataReader {
         try {
 
             ClassLoader classLoader = getClass().getClassLoader();
-            InputStream inputStream = classLoader.getResourceAsStream(PROPANE_DATA_FILE_PATH);
+            InputStream inputStream = classLoader.getResourceAsStream(PROPANE_DATA_2013_FILE_PATH);
             ObjectInputStream in = new ObjectInputStream(inputStream);
             data = (Map<Float,List<Map<Integer,Integer>>>) in.readObject();
             in.close();
@@ -38,6 +40,26 @@ public class PropaneDataReader {
     }
 
     public DataSet<PropaneInstance> getPropaneDataSet() {
+        PropaneInstance[] propaneInstances2013 = parse2013Instances();
+
+        PropaneInstance[] propaneInstances2016 = parse2016Instances();
+
+        PropaneInstance[] combinedArrays = new PropaneInstance[propaneInstances2013.length + propaneInstances2016.length];
+
+        System.arraycopy(propaneInstances2013, 0, combinedArrays, 0, propaneInstances2013.length);
+        System.arraycopy(propaneInstances2016, 0, combinedArrays, propaneInstances2013.length, propaneInstances2016.length);
+
+        return new DataSet<>(combinedArrays, false);
+    }
+
+    public DataSet<PropaneInstance> get2013PropaneDataSet() {
+        PropaneInstance[] instances = parse2013Instances();
+
+        return new DataSet<>(instances, false);
+    }
+
+    @NotNull
+    private PropaneInstance[] parse2013Instances() {
         PropaneInstance[] instances = new PropaneInstance[getFftCount()];
 
         int instanceIndex = 0;
@@ -49,8 +71,15 @@ public class PropaneDataReader {
                 instanceIndex += 1;
             }
         }
+        return instances;
+    }
 
-        return new DataSet<>(instances, false);
+    public DataSet<PropaneInstance> get2016PropaneDataSet() {
+        throw new RuntimeException("not implemented");
+    }
+
+    private PropaneInstance[] parse2016Instances() {
+        throw new RuntimeException("not implemented");
     }
 
     private static double[] mapToDoubleArray(Map<Integer, Integer> map) {
@@ -74,36 +103,4 @@ public class PropaneDataReader {
 
         return total;
     }
-
-    public void printDataAsCsv() {
-        List<Integer> sortedFrequencies = new ArrayList<>(data.get(weights[0]).get(0).keySet());
-        Collections.sort(sortedFrequencies);
-
-        StringBuilder headerBuilder = new StringBuilder();
-        for (Integer frequency : sortedFrequencies) {
-            headerBuilder.append(frequency);
-            headerBuilder.append("hz,");
-        }
-
-        headerBuilder.append("weight");
-
-        System.out.println(headerBuilder.toString());
-
-
-        for (float weight : weights) {
-            for (Map<Integer,Integer> fft : data.get(weight)) {
-                StringBuilder rowBuilder = new StringBuilder();
-
-                for (Integer frequency : sortedFrequencies) {
-                    rowBuilder.append(fft.get(frequency));
-                    rowBuilder.append(',');
-                }
-
-                rowBuilder.append(weight);
-
-                System.out.println(rowBuilder.toString());
-            }
-        }
-    }
-
 }

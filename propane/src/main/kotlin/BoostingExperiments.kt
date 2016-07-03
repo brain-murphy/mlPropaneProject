@@ -3,7 +3,14 @@
 import algorithms.BoostingAlgorithm
 import datasets.DataSet
 import datasets.Instance
+import datasets.PcaPropaneDataReader
+import datasets.PropaneDataReader
 import util.CrossValidation
+import util.LearningCurve
+
+fun main(args: Array<String>) {
+    learningCurveREPBoosting(PropaneDataReader().propaneDataSet)
+}
 
 fun testDecisionStumpBoosting(dataSet: DataSet<Instance>) {
     val boostingAlgorithm = BoostingAlgorithm()
@@ -32,4 +39,18 @@ fun testREPBoosting(dataSet: DataSet<Instance>) {
         magnitude /= 10.0
 
     }
+}
+
+fun learningCurveREPBoosting(dataSet: DataSet<out Instance>) {
+    val boostingAlgorithm = BoostingAlgorithm()
+
+    boostingAlgorithm.setParams(BoostingAlgorithm.createParams("weka.classifiers.trees.REPTree", 50))
+
+    val absoluteError =  { difference: Double -> Math.abs(difference)}
+
+    val learningCurve = LearningCurve(PcaPropaneDataReader().propaneDataSet, boostingAlgorithm, absoluteError, 20)
+
+    val result = learningCurve.run()
+
+    println(result.toString())
 }

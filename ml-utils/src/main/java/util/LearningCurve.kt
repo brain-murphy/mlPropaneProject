@@ -58,7 +58,7 @@ class LearningCurve(private val dataSet: DataSet<out Instance>,
 
         val dataSetSize = dataSet.getInstances().size
 
-        val sizesOfSplits = proportions.map { proportion -> Math.round(proportion * dataSetSize).toInt() }
+        val sizesOfSplits = proportions.map { proportion -> Math.floor(proportion * dataSetSize).toInt() }
 
         val random = Random()
 

@@ -10,10 +10,10 @@ import util.Result
 import java.util.*
 
 fun main(args: Array<String>) {
-    learningCurve()
+    rbfLearningCurve()
 }
 
-fun learningCurve() {
+fun rbfLearningCurve() {
     val rbf = RbfAlgorithm()
     rbf.setParams(createParams(15, .1, false))
 

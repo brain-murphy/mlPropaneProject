@@ -7,6 +7,25 @@ import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
 import util.CrossValidation
 import util.CsvPrinter
+import util.LearningCurve
+
+fun main(args: Array<String>) {
+    neuralNetLearningCurve()
+}
+
+fun neuralNetLearningCurve() {
+    val nNet = NeuralNetAlgorithm()
+
+    nNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(9, 8), 0.006f, 500))
+
+    val errorFunction = { error:Double -> Math.abs(error)}
+
+    val learningCurve = LearningCurve(PropaneDataReader().propaneDataSet, nNet, errorFunction, 10);
+
+    val csv = learningCurve.run()
+
+    println(csv.toString())
+}
 
 fun findHiddenLayerLength(dataSet: DataSet<Instance>) {
 
@@ -44,10 +63,6 @@ fun findTrainingErrorThreshold(dataSet: DataSet<Instance>) {
         println("$trainingErrorThreshold,${result.meanTrainingError},${result.meanValidationError}")
         divisor = divisor shl 1
     }
-}
-
-fun main(args: Array<String>) {
-    moonshot()
 }
 
 fun moonshot() {

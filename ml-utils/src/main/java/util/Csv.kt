@@ -2,7 +2,7 @@ package util;
 
 class Csv(private vararg val parameterNames: String) {
 
-    private val rows: MutableList<Array<out Any>> = mutableListOf()
+    private val rows: MutableList<Array<out Number>> = mutableListOf()
 
     fun getHeaderLine(): String {
         return concatenateRow(parameterNames)
@@ -21,12 +21,25 @@ class Csv(private vararg val parameterNames: String) {
         return stringBuilder.toString()
     }
 
-    fun addRow(vararg values: Any) {
+    private fun concatenateRow(elements: Array<out Number>): String {
+        val stringBuilder = StringBuilder()
+
+        for (i in 0..(elements.size - 2)) {
+            stringBuilder.append(elements[i].toDouble())
+            stringBuilder.append(",")
+        }
+
+        stringBuilder.append(elements[elements.size - 1].toString())
+
+        return stringBuilder.toString()
+    }
+
+    fun addRow(vararg values: Number) {
         rows.add(values)
     }
 
-    fun addRowAndPrint(vararg values: Any) {
-        addRow(values)
+    fun addRowAndPrint(vararg values: Number) {
+        addRow(*values)
 
         println(concatenateRow(values))
     }

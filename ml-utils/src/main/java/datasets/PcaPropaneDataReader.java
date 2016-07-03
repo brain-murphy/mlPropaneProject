@@ -9,7 +9,8 @@ import java.util.*;
 
 public class PcaPropaneDataReader {
 
-    private static final String IRIS_FILE_PATH = "datasets/propanedataPca95.csv";
+    private static final String PROPANE_DATA_2013_FILE_PATH = "datasets/propanedataPca95.csv";
+    private static final String PROPANE_DATA_2016_FILE_PATH = "";
 
     private PropaneInstance[] data;
 
@@ -47,8 +48,8 @@ public class PcaPropaneDataReader {
 
         ClassLoader classLoader = getClass().getClassLoader();
 
-        URL csvData = classLoader.getResource(IRIS_FILE_PATH);
-//        File csvData = new File(IRIS_FILE_PATH);
+        URL csvData = classLoader.getResource(PROPANE_DATA_2013_FILE_PATH);
+//        File csvData = new File(PROPANE_DATA_2013_FILE_PATH);
 
         try {
             return CSVParser.parse(csvData, Charset.defaultCharset(), CSVFormat.DEFAULT);

@@ -75,3 +75,7 @@ fabric.properties
 ml-utils/build/dependency-cache/
 ml-utils/build/tmp/
 propane/build/
+
+# mac
+.DS_Store
+
