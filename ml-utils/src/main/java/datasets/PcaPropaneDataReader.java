@@ -1,6 +1,7 @@
 package datasets;
 
 import org.apache.commons.csv.*;
+import util.*;
 
 import java.io.*;
 import java.net.*;
@@ -17,7 +18,7 @@ public class PcaPropaneDataReader {
     public PcaPropaneDataReader() {
         List<PropaneInstance> instanceList = new ArrayList<>();
 
-        CSVParser parser = getParser();
+        CSVParser parser = GeneralUtils.getCsvParser(PROPANE_DATA_2013_FILE_PATH);
         Iterator<CSVRecord> iterator = parser.iterator();
 
         iterator.next(); // header line
@@ -42,20 +43,5 @@ public class PcaPropaneDataReader {
 
     public DataSet<PropaneInstance> getPropaneDataSet() {
         return new DataSet<>(data, false);
-    }
-
-    private CSVParser getParser() {
-
-        ClassLoader classLoader = getClass().getClassLoader();
-
-        URL csvData = classLoader.getResource(PROPANE_DATA_2013_FILE_PATH);
-//        File csvData = new File(PROPANE_DATA_2013_FILE_PATH);
-
-        try {
-            return CSVParser.parse(csvData, Charset.defaultCharset(), CSVFormat.DEFAULT);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        throw new RuntimeException("couldn't create parser");
     }
 }

@@ -1,4 +1,4 @@
-package util;
+package util
 
 class Csv(private vararg val parameterNames: String) {
 

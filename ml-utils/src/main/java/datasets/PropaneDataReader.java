@@ -1,6 +1,8 @@
 package datasets;
 
 
+import com.sun.crypto.provider.*;
+import org.apache.commons.csv.*;
 import org.jetbrains.annotations.*;
 import util.*;
 
@@ -11,9 +13,10 @@ import java.util.*;
 public class PropaneDataReader {
 
     private static final String PROPANE_DATA_2013_FILE_PATH = "datasets/propaneData.ser";
-    private static final String PROPANE_DATA_2016_FILE_PATH = "";
+    private static final String PROPANE_DATA_2016_FILE_PATH = "datasets/propaneData2016.csv";
+    public static final int ESTIMATED_2016_INSTANCE_COUNT = 800;
 
-    private Map<Float,List<Map<Integer,Integer>>> data;
+    private Map<Float,List<Map<Integer,Integer>>> data; // Map<Weight,List<FFT<Frequency,Magnitude>>>
     private float[] weights;
 
     public PropaneDataReader() {
@@ -30,6 +33,7 @@ public class PropaneDataReader {
             InputStream inputStream = classLoader.getResourceAsStream(PROPANE_DATA_2013_FILE_PATH);
             ObjectInputStream in = new ObjectInputStream(inputStream);
             data = (Map<Float,List<Map<Integer,Integer>>>) in.readObject();
+            stripLastFrequency(data);
             in.close();
             inputStream.close();
         } catch (IOException | ClassNotFoundException e) {
@@ -37,6 +41,14 @@ public class PropaneDataReader {
         }
 
         return data;
+    }
+
+    private void stripLastFrequency(Map<Float,List<Map<Integer,Integer>>> data) {
+        for (List<Map<Integer,Integer>> fftList : data.values()) {
+            for (Map<Integer, Integer> fft : fftList) {
+                fft.remove(Collections.max(fft.keySet()));
+            }
+        }
     }
 
     public DataSet<PropaneInstance> getPropaneDataSet() {
@@ -75,11 +87,41 @@ public class PropaneDataReader {
     }
 
     public DataSet<PropaneInstance> get2016PropaneDataSet() {
-        throw new RuntimeException("not implemented");
+        PropaneInstance[] propaneInstances = parse2016Instances();
+
+        return new DataSet<>(propaneInstances, false);
     }
 
     private PropaneInstance[] parse2016Instances() {
-        throw new RuntimeException("not implemented");
+        CSVParser parser = GeneralUtils.getCsvParser(PROPANE_DATA_2016_FILE_PATH);
+
+        Iterator<CSVRecord> iterator = parser.iterator();
+
+        CSVRecord headerLine = iterator.next();
+
+        int inputCount = headerLine.size() - 1;
+
+        ArrayList<PropaneInstance> instances = new ArrayList<>(ESTIMATED_2016_INSTANCE_COUNT);
+
+        while (iterator.hasNext()) {
+            CSVRecord csvRecord = iterator.next();
+
+            double[] inputArray = new double[inputCount];
+
+            for (int i = 0; i < inputArray.length; i++) {
+                inputArray[i] = Double.parseDouble(csvRecord.get(i));
+            }
+
+            double output = Double.parseDouble(csvRecord.get(headerLine.size() - 1));
+
+            if (output > 30 || output < 15) {
+                throw new RuntimeException();
+            }
+
+            instances.add(new PropaneInstance(inputArray, output));
+        }
+
+        return instances.toArray(new PropaneInstance[instances.size()]);
     }
 
     private static double[] mapToDoubleArray(Map<Integer, Integer> map) {
@@ -102,5 +144,15 @@ public class PropaneDataReader {
         }
 
         return total;
+    }
+
+    public Integer[] getFrequencies() {
+        Map<Integer,Integer> firstFft = data.get(weights[0]).get(0);
+
+        Integer[] frequencies = firstFft.keySet().toArray(new Integer[firstFft.keySet().size()]);
+
+        Arrays.sort(frequencies);
+
+        return frequencies;
     }
 }
