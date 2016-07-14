@@ -1,6 +1,7 @@
 package algorithms;
 
 import datasets.*;
+import datasets.SupervisedWekaParser;
 import weka.classifiers.functions.*;
 import weka.core.*;
 
@@ -14,7 +15,7 @@ public class RbfAlgorithm implements Algorithm {
 
     private RBFRegressor rbf;
     private Map<String, Object> params;
-    private WekaParser parser;
+    private SupervisedWekaParser parser;
 
     @Override
     public void setParams(Map<String, Object> params) {
@@ -23,7 +24,7 @@ public class RbfAlgorithm implements Algorithm {
 
     @Override
     public void train(DataSet dataset) {
-        parser = new WekaParser(dataset);
+        parser = new SupervisedWekaParser(dataset);
 
         rbf = new RBFRegressor();
 

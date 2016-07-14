@@ -8,22 +8,22 @@ import util.CrossValidation
 import util.Csv
 
 fun main(args: Array<String>) {
-    crossValidateForK(PropaneDataReader().propaneDataSet as DataSet<Instance>)
+
 }
 
-fun crossValidateForK(dataSet: DataSet<Instance>) {
+fun twoMeansCluster(dataSet: DataSet<Instance>): Csv {
     val kMeans = KMeansAlgorithm()
 
-    val numFolds = 20
+    val k = 2
+    val distanceFunction = KMeansAlgorithm.DistanceFunction.Euclidian
 
-    val csv = Csv("K", "TrainingError", "ValidationError")
+    kMeans.setParams(KMeansAlgorithm.createParams(k, distanceFunction))
 
-    for (k in 2..20) {
-        kMeans.setParams(KMeansAlgorithm.createParams(k, KMeansAlgorithm.EUCLIDEAN_DISTANCE_FUNCTION))
+    kMeans.train(dataSet);
 
-        val results = CrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, kMeans).run()
+    val classifications = kMeans.evaluate(null) as IntArray
 
-        csv.addRow(k, results.meanTrainingError, results.meanValidationError)
-    }
-
+    kMeans.setParams(kMeans)
 }
+
+

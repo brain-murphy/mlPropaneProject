@@ -1,6 +1,7 @@
 package algorithms;
 
 import datasets.*;
+import datasets.SupervisedWekaParser;
 import weka.classifiers.*;
 import weka.classifiers.meta.*;
 import weka.core.*;
@@ -21,7 +22,7 @@ public class BoostingAlgorithm implements Algorithm {
         return params;
     }
 
-    private WekaParser parser;
+    private SupervisedWekaParser parser;
     private Classifier booster;
     private String[] options;
 
@@ -43,7 +44,7 @@ public class BoostingAlgorithm implements Algorithm {
 
     @Override
     public void train(DataSet dataset) {
-        parser = new WekaParser(dataset);
+        parser = new SupervisedWekaParser(dataset);
 
         if (dataset.hasDiscreteOutput()) {
             createAdaBoost(options);

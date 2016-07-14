@@ -1,70 +1,63 @@
 package datasets;
 
-import org.jetbrains.annotations.*;
-import weka.core.*;
+import org.jetbrains.annotations.NotNull;
+import weka.core.Attribute;
+import weka.core.DenseInstance;
+import weka.core.Instances;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class WekaParser {
-
-    private static final String OUTPUT_ATTRIBUTE_NAME = "output";
-
     private ArrayList<Attribute> attributes;
-    private Instances wekaInstances;
-    private Instances unlabeledInstances;
+    private int numInputs;
+
+    protected Instances wekaInstances;
+    protected Instances unlabeledInstances;
 
     public WekaParser(DataSet<Instance> dataSet) {
+        Instance firstInstance = dataSet.getInstances()[0];
+
+        numInputs = firstInstance.getInput().length;
+
         parseData(dataSet);
     }
 
+
     private void parseData(DataSet<Instance> dataSet) {
-        Instance firstInstance = dataSet.getInstances()[0];
+        attributes = createAttributes(dataSet);
 
-        int numAttributes = firstInstance.getInput().length + 1;
-
-        attributes = new ArrayList<>(numAttributes);
-
-        for (int i = 0; i < firstInstance.getInput().length; i++) {
-            attributes.add(new Attribute(Integer.toString(i)));
-        }
-
-        Attribute outputAttribute = null;
-        if (dataSet.hasDiscreteOutput()) {
-            outputAttribute = parseDiscreteOutputAttribute(firstInstance.getPossibleOutputs());
-        } else {
-            outputAttribute = new Attribute(OUTPUT_ATTRIBUTE_NAME);
-        }
-
-        attributes.add(outputAttribute);
-
-        wekaInstances = new Instances("dataset", attributes, dataSet.getInstances().length);
-        unlabeledInstances = new Instances("unlabeled", attributes, dataSet.getInstances().length);
-
-        wekaInstances.setClass(outputAttribute);
-        unlabeledInstances.setClass(outputAttribute);
+        createWekaInstances(dataSet);
 
         for (Instance instance : dataSet) {
-            weka.core.Instance wekaInstance = new DenseInstance(numAttributes);
-
-            for (int i = 0; i < firstInstance.getInput().length; i++) {
-                wekaInstance.setValue((Attribute) attributes.get(i), instance.getInput()[i]);
-            }
-
-            wekaInstance.setValue(outputAttribute, instance.getOutput());
+            weka.core.Instance wekaInstance = parseInstance(instance);
 
             wekaInstances.add(wekaInstance);
         }
     }
 
     @NotNull
-    private Attribute parseDiscreteOutputAttribute(double[] possibleOutputs) {
-        ArrayList<String> outputAttributeValues = new ArrayList<>(possibleOutputs.length);
+    protected weka.core.Instance parseInstance(Instance instance) {
+        weka.core.Instance wekaInstance = new DenseInstance(getAttributes().size());
 
-        for (int i = 0; i < possibleOutputs.length; i++) {
-            outputAttributeValues.add(Double.toString(possibleOutputs[i]));
+        for (int i = 0; i < numInputs; i++) {
+            wekaInstance.setValue(getAttributes().get(i), instance.getInput()[i]);
+        }
+        return wekaInstance;
+    }
+
+    protected void createWekaInstances(DataSet<Instance> dataSet) {
+        wekaInstances = new Instances("dataset", getAttributes(), dataSet.getInstances().length);
+        unlabeledInstances = new Instances("unlabeled", getAttributes(), dataSet.getInstances().length);
+    }
+
+    protected ArrayList<Attribute> createAttributes(DataSet<Instance> dataSet) {
+        ArrayList<Attribute> attributesList = new ArrayList<>();
+
+        for (int i = 0; i < numInputs; i++) {
+            attributesList.add(new Attribute(Integer.toString(i)));
         }
 
-        return new Attribute(OUTPUT_ATTRIBUTE_NAME, outputAttributeValues);
+        return attributesList;
     }
 
     public Instances getDataSetAsInstances() {
@@ -72,10 +65,10 @@ public class WekaParser {
     }
 
     public weka.core.Instance parseInstanceForEvaluation(double[] input) {
-        weka.core.Instance instance = new DenseInstance(attributes.size());
+        weka.core.Instance instance = new DenseInstance(getAttributes().size());
 
         for (int i = 0; i < input.length; i++) {
-            instance.setValue((Attribute) attributes.get(i), input[i]);
+            instance.setValue(getAttributes().get(i), input[i]);
         }
 
         unlabeledInstances.add(instance);

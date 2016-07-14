@@ -54,5 +54,10 @@ fun getCsvParser(filePath: String): CSVParser {
 }
 
 fun writeToFile(fileName: String, content: String) {
-    File(fileName).bufferedWriter().write(content)
+    val writer = File(fileName).bufferedWriter()
+    writer.write(content)
+    writer.flush()
+    writer.close()
 }
+
+

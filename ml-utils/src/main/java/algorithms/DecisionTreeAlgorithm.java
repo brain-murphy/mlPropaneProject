@@ -1,9 +1,8 @@
 package algorithms;
 
 import datasets.*;
-import weka.classifiers.*;
+import datasets.SupervisedWekaParser;
 import weka.classifiers.trees.*;
-import weka.core.*;
 import weka.core.Instance;
 
 import java.util.*;
@@ -20,7 +19,7 @@ public class DecisionTreeAlgorithm implements Algorithm {
         return params;
     }
 
-    private WekaParser parser;
+    private SupervisedWekaParser parser;
     private REPTree tree;
     private Map<String, Object> params;
 
@@ -32,7 +31,7 @@ public class DecisionTreeAlgorithm implements Algorithm {
 
     @Override
     public void train(DataSet dataset) {
-        parser = new WekaParser(dataset);
+        parser = new SupervisedWekaParser(dataset);
 
         tree = new REPTree();
 

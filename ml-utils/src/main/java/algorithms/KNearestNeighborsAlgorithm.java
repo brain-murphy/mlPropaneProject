@@ -1,7 +1,7 @@
 package algorithms;
 
 import datasets.*;
-import weka.classifiers.*;
+import datasets.SupervisedWekaParser;
 import weka.classifiers.lazy.*;
 import weka.core.*;
 
@@ -11,7 +11,7 @@ public class KNearestNeighborsAlgorithm implements Algorithm {
 
     public static final String KEY_K = "k param";
 
-    private WekaParser parser;
+    private SupervisedWekaParser parser;
     private IBk knn;
     private String[] options;
 
@@ -27,7 +27,7 @@ public class KNearestNeighborsAlgorithm implements Algorithm {
 
     @Override
     public void train(DataSet dataset) {
-        parser = new WekaParser(dataset);
+        parser = new SupervisedWekaParser(dataset);
 
         knn = new IBk();
 

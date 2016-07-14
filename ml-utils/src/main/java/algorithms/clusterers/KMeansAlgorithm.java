@@ -2,9 +2,11 @@ package algorithms.clusterers;
 
 import algorithms.Algorithm;
 import datasets.DataSet;
+import datasets.SupervisedWekaParser;
 import datasets.WekaParser;
 import weka.clusterers.SimpleKMeans;
-import weka.core.MinkowskiDistance;
+import weka.core.EuclideanDistance;
+import weka.core.ManhattanDistance;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,15 +14,13 @@ import java.util.Map;
 public class KMeansAlgorithm implements Algorithm {
 
     public static final int NUM_EXECUTION_SLOTS = 2;
-    public static double MANHATTAN_DISTANCE_FUNCTION = 1;
-    public static double EUCLIDEAN_DISTANCE_FUNCTION = 2;
 
     public static String KEY_DISTANCE_FUNCTION = "distance func param";
     public static String KEY_K = "k param";
 
     private Map<String, Object> params;
 
-    public static Map<String,Object> createParams(int k, double distanceFunction) {
+    public static Map<String,Object> createParams(int k, DistanceFunction distanceFunction) {
         Map<String,Object> params = new HashMap<>();
 
         params.put(KEY_K, k);
@@ -54,20 +54,20 @@ public class KMeansAlgorithm implements Algorithm {
     private void parseOptions() {
 
         kMeans.setNumExecutionSlots(NUM_EXECUTION_SLOTS);
-
-        MinkowskiDistance distanceFunction = new MinkowskiDistance();
-
-        if (params.containsKey(KEY_DISTANCE_FUNCTION)) {
-            distanceFunction.setOrder((Double) params.get(KEY_DISTANCE_FUNCTION));
-        } else {
-            distanceFunction.setOrder(EUCLIDEAN_DISTANCE_FUNCTION);
-        }
+        kMeans.setPreserveInstancesOrder(true);
 
         try {
-            kMeans.setDistanceFunction(distanceFunction);
+            if (params.containsKey(KEY_DISTANCE_FUNCTION)) {
+
+                kMeans.setDistanceFunction(((DistanceFunction) params.get(KEY_DISTANCE_FUNCTION)).getDistanceFunction());
+
+            } else {
+                kMeans.setDistanceFunction(new EuclideanDistance());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         if (params.containsKey(KEY_K)) {
             try {
@@ -84,6 +84,25 @@ public class KMeansAlgorithm implements Algorithm {
             return kMeans.getAssignments();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public enum DistanceFunction {
+        Euclidian(new EuclideanDistance()),
+        Manhattan(new ManhattanDistance());
+
+        private weka.core.DistanceFunction distanceFunction;
+
+        DistanceFunction(weka.core.DistanceFunction distanceFunction) {
+            this.distanceFunction = distanceFunction;
+        }
+
+        private weka.core.DistanceFunction getDistanceFunction() {
+            if (distanceFunction.getInstances() != null) {
+                distanceFunction.clean();
+            }
+
+            return distanceFunction;
         }
     }
 }

@@ -1,10 +1,8 @@
 package algorithms.clusterers;
 
-import algorithms.Algorithm;
 import datasets.DataSet;
 import datasets.Instance;
-import datasets.WekaParser;
-import weka.clusterers.ClusterEvaluation;
+import datasets.SupervisedWekaParser;
 import weka.clusterers.EM;
 
 import java.util.HashMap;
@@ -19,7 +17,7 @@ public class EmClusterer implements Clusterer {
     private Map<String, Object> params;
 
     private Instance[] instances;
-    private WekaParser wekaParser;
+    private SupervisedWekaParser wekaParser;
 
 
     public static Map<String, Object> createParams(int clusterCount) {
@@ -42,7 +40,7 @@ public class EmClusterer implements Clusterer {
         setOptions();
 
         instances = dataset.getInstances();
-        wekaParser = new WekaParser(dataset);
+        wekaParser = new SupervisedWekaParser(dataset);
 
         try {
             em.buildClusterer(wekaParser.getDataSetAsInstances());
