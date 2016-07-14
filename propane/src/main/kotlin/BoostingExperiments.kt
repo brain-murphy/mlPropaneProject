@@ -9,7 +9,9 @@ import util.CrossValidation
 import util.LearningCurve
 
 fun main(args: Array<String>) {
-    learningCurveREPBoosting(PropaneDataReader().propaneDataSet)
+    val absoluteError =  { difference: Double -> Math.abs(difference)}
+
+    learningCurveREPBoosting(PropaneDataReader().propaneDataSet, absoluteError)
 }
 
 fun testDecisionStumpBoosting(dataSet: DataSet<Instance>) {
@@ -41,14 +43,12 @@ fun testREPBoosting(dataSet: DataSet<Instance>) {
     }
 }
 
-fun learningCurveREPBoosting(dataSet: DataSet<out Instance>) {
+fun learningCurveREPBoosting(dataSet: DataSet<out Instance>, errorFunction: (Double) -> Double) {
     val boostingAlgorithm = BoostingAlgorithm()
 
     boostingAlgorithm.setParams(BoostingAlgorithm.createParams("weka.classifiers.trees.REPTree", 50))
 
-    val absoluteError =  { difference: Double -> Math.abs(difference)}
-
-    val learningCurve = LearningCurve(PcaPropaneDataReader().propaneDataSet, boostingAlgorithm, absoluteError, 20)
+    val learningCurve = LearningCurve(PcaPropaneDataReader().propaneDataSet, boostingAlgorithm, errorFunction, 20)
 
     val result = learningCurve.run()
 

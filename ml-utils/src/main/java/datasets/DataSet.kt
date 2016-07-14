@@ -1,5 +1,6 @@
 package datasets
 
+import util.Csv
 import java.util.*
 
 class DataSet<T : Instance>(private val instances: Array<T>, private val hasDiscreteOutput: Boolean) : Iterable<T> {
@@ -39,5 +40,17 @@ class DataSet<T : Instance>(private val instances: Array<T>, private val hasDisc
         override fun next(): T {
             return instances[index++]
         }
+    }
+
+    override fun toString(): String {
+        val numInputs = instances[0].input.size
+
+        val inputColumnNames = (1..numInputs).map { i -> "Input${i}" }.toTypedArray()
+
+        val csv = Csv(*inputColumnNames, "Output")
+
+        instances.forEach { csv.addRow(*it.input.toTypedArray(), it.output) }
+
+        return csv.toString()
     }
 }
