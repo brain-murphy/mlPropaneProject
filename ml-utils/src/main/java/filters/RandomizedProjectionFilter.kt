@@ -12,7 +12,7 @@ fun main(args: String) {
 
 const val KEY_NUM_FEATURES_OUT = "num features out param"
 
-class RandomizedProjectionsFilter(): Filter {
+class RandomizedProjectionFilter(): Filter {
 
     var numFeaturesOut = 2
 

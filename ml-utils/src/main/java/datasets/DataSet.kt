@@ -29,6 +29,25 @@ class DataSet<T : Instance>(private val instances: Array<T>, private val hasDisc
         return hasDiscreteOutput
     }
 
+    override fun toString(): String {
+        val numInputs = instances[0].input.size
+
+        val inputColumnNames = (1..numInputs).map { i -> "Input${i}" }.toTypedArray()
+
+        val csv = Csv(*inputColumnNames, "Output")
+
+        instances.forEach { csv.addRow(*it.input.toTypedArray(), it.output) }
+
+        return csv.toString()
+    }
+
+    fun deepCopy(): DataSet<T> {
+
+        instances.map {  }
+
+        return DataSet(instances, hasDiscreteOutput)
+    }
+
     private inner class DataSetIterator : Iterator<T> {
 
         private var index: Int = 0
@@ -40,17 +59,5 @@ class DataSet<T : Instance>(private val instances: Array<T>, private val hasDisc
         override fun next(): T {
             return instances[index++]
         }
-    }
-
-    override fun toString(): String {
-        val numInputs = instances[0].input.size
-
-        val inputColumnNames = (1..numInputs).map { i -> "Input${i}" }.toTypedArray()
-
-        val csv = Csv(*inputColumnNames, "Output")
-
-        instances.forEach { csv.addRow(*it.input.toTypedArray(), it.output) }
-
-        return csv.toString()
     }
 }
