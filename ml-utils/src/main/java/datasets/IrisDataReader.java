@@ -1,13 +1,16 @@
 package datasets;
 
+import no.uib.cipr.matrix.sparse.IR;
 import org.apache.commons.csv.*;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.*;
 import java.util.*;
 
 public class IrisDataReader {
     private static final String IRIS_FILE_PATH = "./Iris.csv";
+    private static final String IRIS_PACKAGE_PATH = "datasets/Iris.csv";
 
     private IrisInstance[] data;
 
@@ -32,9 +35,8 @@ public class IrisDataReader {
     private CSVParser getParser() {
 
         ClassLoader classLoader = getClass().getClassLoader();
-//        InputStream stream=getClass().getClassLoader().getResourceAsStream(IRIS_FILE_PATH);
-//        FileInputStream stream = new FileInputStream(IRIS_FILE_PATH);
-        File csvData = new File(IRIS_FILE_PATH);
+        URL csvData = classLoader.getResource(IRIS_PACKAGE_PATH);
+//        File csvData = new File(IRIS_FILE_PATH);
 
         try {
             return CSVParser.parse(csvData, Charset.defaultCharset(), CSVFormat.DEFAULT);
