@@ -1,5 +1,7 @@
-package datasets;
+package datasets.parsers;
 
+import datasets.DataSet;
+import datasets.Instance;
 import org.jetbrains.annotations.NotNull;
 import weka.core.Attribute;
 import weka.core.DenseInstance;

@@ -2,8 +2,7 @@ package algorithms.clusterers;
 
 import algorithms.Algorithm;
 import datasets.DataSet;
-import datasets.SupervisedWekaParser;
-import datasets.WekaParser;
+import datasets.parsers.WekaParser;
 import weka.clusterers.SimpleKMeans;
 import weka.core.EuclideanDistance;
 import weka.core.ManhattanDistance;

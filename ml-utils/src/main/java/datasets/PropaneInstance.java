@@ -15,8 +15,18 @@ public class PropaneInstance implements Instance {
     }
 
     @Override
+    public void setInput(double[] input) {
+        this.frequencySpectrum = input;
+    }
+
+    @Override
     public double getOutput() {
         return fuelLevel;
+    }
+
+    @Override
+    public void setOutput(double output) {
+        this.fuelLevel = output;
     }
 
     @Override

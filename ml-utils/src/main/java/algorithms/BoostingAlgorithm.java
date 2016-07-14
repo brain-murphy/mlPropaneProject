@@ -1,7 +1,7 @@
 package algorithms;
 
 import datasets.*;
-import datasets.SupervisedWekaParser;
+import datasets.parsers.SupervisedWekaParser;
 import weka.classifiers.*;
 import weka.classifiers.meta.*;
 import weka.core.*;

@@ -4,10 +4,7 @@ import algorithms.clusterers.KMeansAlgorithm
 import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
-import datasets.PropaneDataReader
-import util.CrossValidation
 import util.Csv
-import javax.xml.crypto.Data
 
 fun main(args: Array<String>) {
     System.out.println(threeMeansCluster(IrisDataReader().irisDataSet as DataSet<Instance>))

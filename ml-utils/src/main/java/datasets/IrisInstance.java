@@ -27,8 +27,18 @@ public class IrisInstance implements Instance {
     }
 
     @Override
+    public void setInput(double[] input) {
+        this.input = input;
+    }
+
+    @Override
     public double getOutput() {
         return output;
+    }
+
+    @Override
+    public void setOutput(double output) {
+        this.output = output;
     }
 
     @Override

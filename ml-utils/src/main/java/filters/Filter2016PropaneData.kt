@@ -1,4 +1,5 @@
-import com.sun.xml.internal.fastinfoset.util.StringArray
+package filters
+
 import datasets.PropaneDataReader
 import util.Csv
 import util.getCsvParser

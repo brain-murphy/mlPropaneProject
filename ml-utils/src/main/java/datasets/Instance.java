@@ -2,7 +2,10 @@ package datasets;
 
 public interface Instance {
     double[] getInput();
+    void setInput(double[] input);
+
     double getOutput();
+    void setOutput(double output);
 
     double[] getPossibleOutputs();
 

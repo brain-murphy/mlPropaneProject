@@ -6,6 +6,6 @@ import java.util.*;
 
 public interface Filter {
     void setParams(Map<String, Object> params);
-    DataSet filterDataSet(DataSet input);
+    DataSet filterDataSet(DataSet<Instance> input);
     Instance filterInstance(Instance instance);
 }
