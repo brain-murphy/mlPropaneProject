@@ -2,8 +2,6 @@ package datasets.parsers;
 
 import datasets.DataSet;
 import datasets.Instance;
-import datasets.PropaneInstance;
-import util.linalg.Matrix;
 import util.linalg.Vector;
 
 public class AbagailParser {

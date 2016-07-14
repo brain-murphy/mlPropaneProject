@@ -14,4 +14,6 @@ public interface Instance {
      * @return 0 if correct, one if incorrect
      */
     double getDifference(double computedOutput);
+
+    Instance newInstance();
 }

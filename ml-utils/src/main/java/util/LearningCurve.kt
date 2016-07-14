@@ -9,9 +9,9 @@ import java.util.*
 
 
 class LearningCurve(private val dataSet: DataSet<out Instance>,
-                             private val algorithm: Algorithm,
-                             private val errorFunction: (Double) -> Double,
-                             private val foldCount: Int = 10) {
+                    private val algorithm: Algorithm,
+                    private val errorFunction: (Double) -> Double,
+                    private val foldCount: Int = 10) {
 
 
     private val allButOne:Double = 0.99999999999

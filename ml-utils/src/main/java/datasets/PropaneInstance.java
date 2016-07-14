@@ -38,4 +38,9 @@ public class PropaneInstance implements Instance {
     public double getDifference(double y) {
         return y - fuelLevel;
     }
+
+    @Override
+    public Instance newInstance() {
+        return new PropaneInstance(frequencySpectrum, fuelLevel);
+    }
 }

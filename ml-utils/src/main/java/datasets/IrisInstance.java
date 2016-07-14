@@ -56,4 +56,14 @@ public class IrisInstance implements Instance {
             return 1;
         }
     }
+
+    @Override
+    public Instance newInstance() {
+        IrisInstance newInstance = new IrisInstance(0,0,0,0,"");
+
+        newInstance.setInput(getInput());
+        newInstance.setOutput(getOutput());
+
+        return newInstance;
+    }
 }
