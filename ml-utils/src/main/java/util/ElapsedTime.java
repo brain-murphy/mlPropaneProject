@@ -12,10 +12,10 @@ public class ElapsedTime {
         staticStartTime = System.nanoTime();
     }
 
-    public static long toc() {
+    public static double toc() {
         long elapsedTime = System.nanoTime() - staticStartTime;
         staticStartTime = -1;
-        return elapsedTime;
+        return elapsedTime / 1000000000.0;
     }
 
     private long startTime;

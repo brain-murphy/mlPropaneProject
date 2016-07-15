@@ -51,7 +51,7 @@ public class PropaneDataReader {
         }
     }
 
-    public DataSet<PropaneInstance> getPropaneDataSet() {
+    public DataSet<Instance> getPropaneDataSet() {
         PropaneInstance[] propaneInstances2013 = parse2013Instances();
 
         PropaneInstance[] propaneInstances2016 = parse2016Instances();

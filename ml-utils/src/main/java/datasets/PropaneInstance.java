@@ -1,5 +1,7 @@
 package datasets;
 
+import java.util.Arrays;
+
 public class PropaneInstance implements Instance {
     private double[] frequencySpectrum;
     private double fuelLevel;
@@ -40,7 +42,7 @@ public class PropaneInstance implements Instance {
     }
 
     @Override
-    public Instance newInstance() {
-        return new PropaneInstance(frequencySpectrum, fuelLevel);
+    public Instance deepCopy() {
+        return new PropaneInstance(Arrays.copyOf(getInput(), getInput().length), getOutput());
     }
 }

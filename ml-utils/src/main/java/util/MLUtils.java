@@ -100,4 +100,10 @@ public class MLUtils {
 
         System.out.println(String.format("%.3f", 1.0f / dataSet.getInstances().length) + "," + results.getMeanTrainingError() + "," + String.format("%.3f", results.getMeanValidationError()));
     }
+
+    public static int getNumInputs(DataSet<Instance> dataSet) {
+        Instance firstInstance = dataSet.getInstances()[0];
+
+        return firstInstance.getInput().length;
+    }
 }

@@ -1,5 +1,7 @@
 package datasets;
 
+import java.util.Arrays;
+
 public class IrisInstance implements Instance {
 
     private double[] input;
@@ -19,6 +21,9 @@ public class IrisInstance implements Instance {
                 output = 2;
                 break;
         }
+    }
+
+    private IrisInstance() {
     }
 
     @Override
@@ -58,10 +63,10 @@ public class IrisInstance implements Instance {
     }
 
     @Override
-    public Instance newInstance() {
-        IrisInstance newInstance = new IrisInstance(0,0,0,0,"");
+    public Instance deepCopy() {
+        IrisInstance newInstance = new IrisInstance();
 
-        newInstance.setInput(getInput());
+        newInstance.setInput(Arrays.copyOf(getInput(), getInput().length));
         newInstance.setOutput(getOutput());
 
         return newInstance;

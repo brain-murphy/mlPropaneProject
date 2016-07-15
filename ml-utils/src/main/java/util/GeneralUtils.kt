@@ -60,4 +60,8 @@ fun writeToFile(fileName: String, content: String) {
     writer.close()
 }
 
+fun absoluteError(difference: Double): Double {
+    return Math.abs(difference)
+}
+
 

@@ -2,11 +2,13 @@ package algorithms;
 
 import datasets.*;
 import datasets.parsers.SupervisedWekaParser;
+import weka.Run;
 import weka.classifiers.*;
 import weka.classifiers.meta.*;
 import weka.core.*;
 
 import java.util.*;
+import java.util.zip.ZipException;
 
 public class BoostingAlgorithm implements Algorithm {
 
@@ -65,8 +67,13 @@ public class BoostingAlgorithm implements Algorithm {
         AdditiveRegression regression = new AdditiveRegression();
         try {
             regression.setOptions(options.clone());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ze) {
+
+            System.out.println(ze.getClass().toString());
+
+            if (!(ze instanceof ZipException)) {
+                throw new RuntimeException(ze);
+            }
         }
         booster = regression;
     }

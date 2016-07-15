@@ -15,5 +15,5 @@ public interface Instance {
      */
     double getDifference(double computedOutput);
 
-    Instance newInstance();
+    Instance deepCopy();
 }

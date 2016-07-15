@@ -43,9 +43,9 @@ class DataSet<T : Instance>(private val instances: Array<T>, private val hasDisc
 
     fun deepCopy(): DataSet<T> {
 
-        instances.map {  }
+        val copyOfInstanceArray = instances.map { it.deepCopy() }.toTypedArray()
 
-        return DataSet(instances, hasDiscreteOutput)
+        return DataSet(copyOfInstanceArray as Array<T>, hasDiscreteOutput)
     }
 
     private inner class DataSetIterator : Iterator<T> {

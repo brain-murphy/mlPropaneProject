@@ -1,6 +1,7 @@
 package filters
 
 import datasets.DataSet
+import datasets.Instance
 import datasets.parsers.AbagailParser
 import shared.filt.RandomizedProjectionFilter
 
@@ -19,7 +20,7 @@ class RandomizedProjectionFilter(): Filter {
 
     }
 
-    override fun filterDataSet(input: DataSet<Instance>?): DataSet<*> {
+    override fun filterDataSet(input: DataSet<Instance>?): DataSet<Instance> {
         val numFeaturesIn = getNumFeaturesIn(input)
 
         val randomizedProjections = RandomizedProjectionFilter(numFeaturesOut, numFeaturesIn)

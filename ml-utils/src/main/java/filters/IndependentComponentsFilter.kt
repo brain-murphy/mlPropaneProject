@@ -11,7 +11,7 @@ class IndependentComponentsFilter() : Filter {
 
     }
 
-    override fun filterDataSet(input: DataSet<Instance>?): DataSet<*> {
+    override fun filterDataSet(input: DataSet<Instance>?): DataSet<Instance> {
         val parser = AbagailParser()
 
         val abagailDataSet = parser.toAbagailDataSet(input)
