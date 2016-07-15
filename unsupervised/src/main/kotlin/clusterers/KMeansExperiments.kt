@@ -3,23 +3,26 @@ package clusterers
 import algorithms.clusterers.KMeansAlgorithm
 import datasets.DataSet
 import datasets.Instance
-import datasets.IrisDataReader
+import datasets.PropaneDataReader
 import util.Csv
+import util.MLUtils
 
 fun main(args: Array<String>) {
-    System.out.println(threeMeansCluster(IrisDataReader().irisDataSet as DataSet<Instance>))
+    val distanceFunction = KMeansAlgorithm.DistanceFunction.MostProminentAttributeDistanceFunction
+
+    val k = 2
+
+    System.out.println(runKMeans(PropaneDataReader().propaneDataSet, distanceFunction, k))
 }
 
-fun twoMeansCluster(dataSet: DataSet<Instance>): Csv {
+fun sixMeansCluster(dataSet: DataSet<Instance>, distanceFunction: KMeansAlgorithm.DistanceFunction): Csv {
     val k = 2
-    val distanceFunction = KMeansAlgorithm.DistanceFunction.Euclidian
 
     return runKMeans(dataSet, distanceFunction, k)
 }
 
-fun threeMeansCluster(dataSet: DataSet<Instance>): Csv {
+fun threeMeansCluster(dataSet: DataSet<Instance>, distanceFunction: KMeansAlgorithm.DistanceFunction): Csv {
     val k = 3
-    val distanceFunction = KMeansAlgorithm.DistanceFunction.Euclidian
 
     return runKMeans(dataSet, distanceFunction, k)
 }
@@ -29,21 +32,10 @@ private fun runKMeans(dataSet: DataSet<Instance>, distanceFunction: KMeansAlgori
 
     kMeans.setParams(KMeansAlgorithm.createParams(k, distanceFunction))
 
-    kMeans.train(dataSet);
+    kMeans.train(dataSet)
 
-    val classifications = kMeans.evaluate(null) as IntArray
-    val instances = dataSet.getInstances()
+    val clusterings = kMeans.clusters
 
-    return createCsvForClusterResults(instances, classifications)
-}
-
-private fun createCsvForClusterResults(instances: Array<Instance>, classifications: IntArray): Csv {
-    val csv = Csv("InstanceIndex", "Output", "Classification")
-
-    for (i in 0..classifications.size - 1) {
-        csv.addRow(i, instances[i].output, classifications[i])
-    }
-
-    return csv
+    return MLUtils.createCsvForClusterResults(clusterings)
 }
 

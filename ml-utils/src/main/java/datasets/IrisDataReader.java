@@ -28,7 +28,7 @@ public class IrisDataReader {
         data = instanceList.toArray(new IrisInstance[instanceList.size()]);
     }
 
-    public DataSet<IrisInstance> getIrisDataSet() {
+    public DataSet<Instance> getIrisDataSet() {
         return new DataSet<>(data, true);
     }
 

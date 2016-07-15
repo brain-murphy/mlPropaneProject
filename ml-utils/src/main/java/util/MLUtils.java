@@ -106,4 +106,16 @@ public class MLUtils {
 
         return firstInstance.getInput().length;
     }
+
+    public static Csv createCsvForClusterResults(Map<Instance, Integer> clusterings) {
+        Csv csv = new Csv("InstanceIndex", "Output", "Classification");
+
+        int index= 0;
+        for (Instance instance: clusterings.keySet()) {
+            csv.addRow((Integer) index, instance.getOutput(), clusterings.get(instance));
+            index += 1;
+        }
+
+        return csv;
+    }
 }

@@ -25,7 +25,7 @@ class Csv(private vararg val parameterNames: String) {
         val stringBuilder = StringBuilder()
 
         for (i in 0..(elements.size - 2)) {
-            stringBuilder.append(elements[i].toDouble())
+            stringBuilder.append(elements[i].toString())
             stringBuilder.append(",")
         }
 

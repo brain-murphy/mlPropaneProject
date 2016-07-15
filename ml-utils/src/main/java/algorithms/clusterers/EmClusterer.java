@@ -3,6 +3,7 @@ package algorithms.clusterers;
 import datasets.DataSet;
 import datasets.Instance;
 import datasets.parsers.SupervisedWekaParser;
+import datasets.parsers.WekaParser;
 import weka.clusterers.EM;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class EmClusterer implements Clusterer {
     private Map<String, Object> params;
 
     private Instance[] instances;
-    private SupervisedWekaParser wekaParser;
+    private WekaParser wekaParser;
 
 
     public static Map<String, Object> createParams(int clusterCount) {
@@ -40,7 +41,7 @@ public class EmClusterer implements Clusterer {
         setOptions();
 
         instances = dataset.getInstances();
-        wekaParser = new SupervisedWekaParser(dataset);
+        wekaParser = new WekaParser(dataset);
 
         try {
             em.buildClusterer(wekaParser.getDataSetAsInstances());
@@ -74,6 +75,16 @@ public class EmClusterer implements Clusterer {
     public Map<Instance, Integer> getClusters() {
         Map<Instance, Integer> clusterings = new HashMap<>(instances.length);
 
-        return null;
+        for (Instance instance : instances) {
+            weka.core.Instance wekaInstance = wekaParser.parseInstanceForEvaluation(instance.getInput());
+
+            try {
+                clusterings.put(instance, em.clusterInstance(wekaInstance));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return clusterings;
     }
 }

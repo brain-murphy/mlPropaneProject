@@ -64,4 +64,10 @@ fun absoluteError(difference: Double): Double {
     return Math.abs(difference)
 }
 
+fun timeThis(function: () -> Unit): Double  {
+    ElapsedTime.tic()
+    function()
+    return ElapsedTime.toc()
+}
+
 

@@ -5,22 +5,18 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
-import util.CrossValidation
-import util.CsvPrinter
-import util.LearningCurve
+import util.*
 
 fun main(args: Array<String>) {
-    neuralNetLearningCurve()
+    neuralNetLearningCurve(PropaneDataReader().propaneDataSet, ::absoluteError)
 }
 
-fun neuralNetLearningCurve() {
+fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double) {
     val nNet = NeuralNetAlgorithm()
 
     nNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(9, 8), 0.006f, 500))
 
-    val errorFunction = { error:Double -> Math.abs(error)}
-
-    val learningCurve = LearningCurve(PropaneDataReader().propaneDataSet, nNet, errorFunction, 10);
+    val learningCurve = LearningCurve(dataSet, nNet, errorFunction, 10);
 
     val csv = learningCurve.run()
 
@@ -96,7 +92,7 @@ fun moonshot2() {
 
 fun gridSearchTwoLayerStructure(dataSet: DataSet<Instance>, maxFirstLayer: Int, maxSecondLayer: Int) {
 
-    println("FirstHiddenLayerLength,SecondHiddenLayerLength,TrainingError,ValidationError")
+    val csv = Csv("FirstHiddenLayerLength", "SecondHiddenLayerLength", "TrainingError", "ValidationError")
 
     for (firstLayerLength in 2..maxFirstLayer - 1) {
 
@@ -110,9 +106,11 @@ fun gridSearchTwoLayerStructure(dataSet: DataSet<Instance>, maxFirstLayer: Int, 
 
             val result = crossValidation.run()
 
-            println("$firstLayerLength,$secondLayerLength,${result.meanTrainingError},${result.meanValidationError}")
+            csv.addRowAndPrint(firstLayerLength, secondLayerLength, result.meanTrainingError, result.meanValidationError)
             secondLayerLength++
 
         }
     }
+
+    println(csv)
 }

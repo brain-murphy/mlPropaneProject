@@ -2,6 +2,7 @@ package algorithms.clusterers;
 
 import algorithms.Algorithm;
 import datasets.DataSet;
+import datasets.Instance;
 import datasets.parsers.WekaParser;
 import weka.clusterers.SimpleKMeans;
 import weka.core.EuclideanDistance;
@@ -10,7 +11,7 @@ import weka.core.ManhattanDistance;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KMeansAlgorithm implements Algorithm {
+public class KMeansAlgorithm implements Clusterer {
 
     public static final int NUM_EXECUTION_SLOTS = 2;
 
@@ -18,6 +19,7 @@ public class KMeansAlgorithm implements Algorithm {
     public static String KEY_K = "k param";
 
     private Map<String, Object> params;
+    private Instance[] instances;
 
     public static Map<String,Object> createParams(int k, DistanceFunction distanceFunction) {
         Map<String,Object> params = new HashMap<>();
@@ -36,12 +38,14 @@ public class KMeansAlgorithm implements Algorithm {
     }
 
     @Override
-    public void train(DataSet dataset) {
+    public void train(DataSet dataSet) {
         kMeans = new SimpleKMeans();
+
+        instances = dataSet.getInstances();
 
         parseOptions();
 
-        WekaParser wekaParser = new WekaParser(dataset);
+        WekaParser wekaParser = new WekaParser(dataSet);
 
         try {
             kMeans.buildClusterer(wekaParser.getDataSetAsInstances());
@@ -79,6 +83,23 @@ public class KMeansAlgorithm implements Algorithm {
 
     @Override
     public Object evaluate(Object input) {
+        return getAssignments();
+    }
+
+    @Override
+    public Map<Instance, Integer> getClusters() {
+        Map<Instance, Integer> clusterings = new HashMap<>(instances.length);
+
+        int[] assignments = getAssignments();
+
+        for (int i = 0; i < assignments.length; i++) {
+            clusterings.put(instances[i], assignments[i]);
+        }
+
+        return clusterings;
+    }
+
+    private int[] getAssignments() {
         try {
             return kMeans.getAssignments();
         } catch (Exception e) {
@@ -87,8 +108,9 @@ public class KMeansAlgorithm implements Algorithm {
     }
 
     public enum DistanceFunction {
-        Euclidian(new EuclideanDistance()),
-        Manhattan(new ManhattanDistance());
+        Euclidean(new EuclideanDistance()),
+        Manhattan(new ManhattanDistance()),
+        MostProminentAttributeDistanceFunction(new MostProminentAttributeDistanceFunction());
 
         private weka.core.DistanceFunction distanceFunction;
 
