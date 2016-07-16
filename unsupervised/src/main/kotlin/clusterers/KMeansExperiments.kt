@@ -3,16 +3,16 @@ package clusterers
 import algorithms.clusterers.KMeansAlgorithm
 import datasets.DataSet
 import datasets.Instance
-import datasets.PropaneDataReader
+import datasets.IrisDataReader
 import util.Csv
 import util.MLUtils
 
 fun main(args: Array<String>) {
-    val distanceFunction = KMeansAlgorithm.DistanceFunction.MostProminentAttributeDistanceFunction
+    val distanceFunction = KMeansAlgorithm.DistanceFunction.Euclidean
 
-    val k = 2
+    val k = 3
 
-    System.out.println(runKMeans(PropaneDataReader().propaneDataSet, distanceFunction, k))
+    System.out.println(runKMeans(IrisDataReader().csfDataSet, distanceFunction, k))
 }
 
 fun sixMeansCluster(dataSet: DataSet<Instance>, distanceFunction: KMeansAlgorithm.DistanceFunction): Csv {

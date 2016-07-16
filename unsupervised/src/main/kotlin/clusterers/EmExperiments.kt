@@ -9,9 +9,11 @@ import util.Csv
 import util.MLUtils
 
 fun main(args: Array<String>) {
-    val clusterCount = 2
+    val clusterCount = 3
 
-    System.out.println(clusterWithEm(PropaneDataReader().propaneDataSet, clusterCount))
+    val clusterCsv = clusterWithEm(IrisDataReader().csfDataSet, clusterCount)
+
+    System.out.println(clusterCsv)
 }
 
 fun clusterWithEm(dataSet: DataSet<Instance>, clusterCount: Int): Csv {

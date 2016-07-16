@@ -56,12 +56,14 @@ fun randomProjectionsWithNNet(dataSet: DataSet<Instance>, errorFunction: (Double
 
     val bestProjectedDataSet = randomProjections.findBestRandomProjection(numFeaturesOut, iterations)
 
+    val nNetParams = NeuralNetAlgorithm.createParams(intArrayOf(13), 0.0078f, 500)
+
     System.out.println("original dataset")
-    val originalDataSetTime = timeThis { neuralNetLearningCurve(dataSet, errorFunction) }
+    val originalDataSetTime = timeThis { neuralNetLearningCurve(dataSet, errorFunction, nNetParams) }
     System.out.println("elapsed time: $originalDataSetTime")
 
     System.out.println("random projection dataset")
-    val randomProjectionSetTime = timeThis { neuralNetLearningCurve(bestProjectedDataSet, errorFunction) }
+    val randomProjectionSetTime = timeThis { neuralNetLearningCurve(bestProjectedDataSet, errorFunction, nNetParams) }
     System.out.println("elapsed time: $randomProjectionSetTime")
 
     System.out.println(bestProjectedDataSet)

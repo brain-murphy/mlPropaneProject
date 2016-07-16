@@ -8,7 +8,7 @@ fun main(args: Array<String>) {
     findHiddenLayerLength(IrisDataReader().irisDataSet)
 }
 
-fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double) {
+fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, params: Map<String, Any>) {
     val nNet = NeuralNetAlgorithm()
 
     nNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(13), 0.0078f, 500))

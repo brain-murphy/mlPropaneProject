@@ -7,12 +7,12 @@ import util.GeneralUtils;
 import java.util.*;
 
 public class IrisDataReader {
-    public static final String RP_DATA_PACKAGE_PATH = "datasets/Iris_rp.csv";
+    private static final String RP_DATA_PACKAGE_PATH = "datasets/Iris_rp.csv";
     private static final String IRIS_FILE_PATH = "./Iris.csv";
     private static final String IRIS_PACKAGE_PATH = "datasets/Iris.csv";
-    public static final String PCA_DATA_PACKAGE_PATH = "datasets/irisPca.csv";
-    public static final String ICA_DATA_PACKAGE_PATH = "datasets/Ica_irisData.csv";
-    public static final String CSF_DATA_PACKAGE_PATH = "datasets/iris_csfSubset.csv";
+    private static final String PCA_DATA_PACKAGE_PATH = "datasets/irisPca.csv";
+    private static final String ICA_DATA_PACKAGE_PATH = "datasets/Ica_irisData.csv";
+    private static final String CSF_DATA_PACKAGE_PATH = "datasets/iris_csfSubset.csv";
 
     public IrisDataReader() {
     }
