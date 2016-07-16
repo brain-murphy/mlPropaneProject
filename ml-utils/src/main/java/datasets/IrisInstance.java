@@ -8,8 +8,15 @@ public class IrisInstance implements Instance {
     private double output;
 
     public IrisInstance(double sepalLength, double sepalWidth, double petalLength, double petalWidth, String species) {
-        input = new double[]{sepalLength, sepalWidth, petalLength, petalWidth};
+        this(new double[]{sepalLength, sepalWidth, petalLength, petalWidth}, species);
+    }
 
+    public IrisInstance(double[] input, String output) {
+        this.input = input;
+        parseOutput(output);
+    }
+
+    protected void parseOutput(String species) {
         switch (species) {
             case "Iris-setosa":
                 output = 0;

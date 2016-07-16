@@ -4,6 +4,7 @@ package datasets;
 import com.sun.crypto.provider.*;
 import org.apache.commons.csv.*;
 import org.jetbrains.annotations.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.*;
 
 import java.io.*;
@@ -15,6 +16,9 @@ public class PropaneDataReader {
     private static final String PROPANE_DATA_2013_FILE_PATH = "datasets/propaneData.ser";
     private static final String PROPANE_DATA_2016_FILE_PATH = "datasets/propaneData2016.csv";
     public static final int ESTIMATED_2016_INSTANCE_COUNT = 800;
+    public static final String PCA_DATA_FILE_PATH = "datasets/allPropaneDataPca.csv";
+    public static final String RP_DATA_FILE_PATH = "datasets/RP_propaneData.csv";
+    public static final String CSF_DATA_FILE_PATH = "datasets/propane_csfSubset.csv";
 
     private Map<Float,List<Map<Integer,Integer>>> data; // Map<Weight,List<FFT<Frequency,Magnitude>>>
     private float[] weights;
@@ -93,7 +97,12 @@ public class PropaneDataReader {
     }
 
     private PropaneInstance[] parse2016Instances() {
-        CSVParser parser = GeneralUtils.getCsvParser(PROPANE_DATA_2016_FILE_PATH);
+        return parseCsv(PROPANE_DATA_2016_FILE_PATH);
+    }
+
+    @NotNull
+    private PropaneInstance[] parseCsv(String filePath) {
+        CSVParser parser = GeneralUtils.getCsvParser(filePath);
 
         Iterator<CSVRecord> iterator = parser.iterator();
 
@@ -101,7 +110,7 @@ public class PropaneDataReader {
 
         int inputCount = headerLine.size() - 1;
 
-        ArrayList<PropaneInstance> instances = new ArrayList<>(ESTIMATED_2016_INSTANCE_COUNT);
+        ArrayList<PropaneInstance> instances = new ArrayList<>();
 
         while (iterator.hasNext()) {
             CSVRecord csvRecord = iterator.next();
@@ -113,10 +122,6 @@ public class PropaneDataReader {
             }
 
             double output = Double.parseDouble(csvRecord.get(headerLine.size() - 1));
-
-            if (output > 30 || output < 15) {
-                throw new RuntimeException();
-            }
 
             instances.add(new PropaneInstance(inputArray, output));
         }
@@ -154,5 +159,21 @@ public class PropaneDataReader {
         Arrays.sort(frequencies);
 
         return frequencies;
+    }
+
+    public DataSet<Instance> getPcaDataSet() {
+        return new DataSet<>(parseCsv(PCA_DATA_FILE_PATH), false);
+    }
+
+    public DataSet<Instance> getIcaDataSet() {
+        throw new NotImplementedException();
+    }
+
+    public DataSet<Instance> getRpDataSet() {
+        return new DataSet<>(parseCsv(RP_DATA_FILE_PATH), false);
+    }
+
+    public DataSet<Instance> getCsfDataSet() {
+        return new DataSet<>(parseCsv(CSF_DATA_FILE_PATH), false);
     }
 }

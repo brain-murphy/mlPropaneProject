@@ -16,7 +16,9 @@ import util.writeToFile
 
 
 fun main(args: Array<String>) {
-    randomProjectionsWithNNet(PropaneDataReader().propaneDataSet, ::absoluteError, 40)
+    val nnetParams: Map<String, Any> = NeuralNetAlgorithm.createParams(intArrayOf(13), 0.0078f, 500)
+
+    randomProjectionsWithNNet(IrisDataReader().irisDataSet, ::absoluteError, nnetParams, 2)
 }
 
 fun randomProjectionsWithBoosting(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, numFeaturesOut: Int) {
@@ -43,14 +45,14 @@ fun randomProjectionsWithBoosting(dataSet: DataSet<Instance>, errorFunction: (Do
     System.out.println("elapsed time: $randomProjectionDataSetTime")
 }
 
-fun randomProjectionsWithNNet(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, numFeaturesOut: Int) {
+fun randomProjectionsWithNNet(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, nnetParams: Map<String, Any>, numFeaturesOut: Int) {
     val nNet = NeuralNetAlgorithm()
 
-    nNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(9, 8), 0.006f, 500))
+    nNet.setParams(nnetParams)
 
     val randomProjections = RandomizedProjectionsWrapper(dataSet, nNet, errorFunction)
 
-    val iterations = 10
+    val iterations = 100
 
     val bestProjectedDataSet = randomProjections.findBestRandomProjection(numFeaturesOut, iterations)
 
@@ -62,5 +64,5 @@ fun randomProjectionsWithNNet(dataSet: DataSet<Instance>, errorFunction: (Double
     val randomProjectionSetTime = timeThis { neuralNetLearningCurve(bestProjectedDataSet, errorFunction) }
     System.out.println("elapsed time: $randomProjectionSetTime")
 
-    writeToFile("RP_propaneData.csv", bestProjectedDataSet.toString())
+    System.out.println(bestProjectedDataSet)
 }
