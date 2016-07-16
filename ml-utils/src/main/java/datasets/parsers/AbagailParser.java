@@ -2,6 +2,8 @@ package datasets.parsers;
 
 import datasets.DataSet;
 import datasets.Instance;
+import org.jetbrains.annotations.NotNull;
+import shared.test.LinearDiscriminantAnalysisTest;
 import util.linalg.Vector;
 
 public class AbagailParser {
@@ -17,12 +19,19 @@ public class AbagailParser {
 
 
         for (int i = 0; i < myInstances.length; i++) {
-            double[] input = myInstances[i].getInput();
+            shared.Instance abagailInstance = parseAbagailInstance(myInstances[i]);
 
-            abagailInstances[i] = new shared.Instance(input);
+            abagailInstances[i] = abagailInstance;
         }
 
         return new shared.DataSet(abagailInstances);
+    }
+
+    @NotNull
+    protected shared.Instance parseAbagailInstance(Instance myInstance) {
+        double[] input = myInstance.getInput();
+
+        return new shared.Instance(input);
     }
 
     public DataSet<Instance> backToMyDataSetFormat(shared.DataSet dataSet) {

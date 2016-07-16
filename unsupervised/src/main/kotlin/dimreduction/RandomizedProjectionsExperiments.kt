@@ -12,6 +12,7 @@ import neuralNetLearningCurve
 import util.MLUtils
 import util.absoluteError
 import util.timeThis
+import util.writeToFile
 
 
 fun main(args: Array<String>) {
@@ -61,5 +62,5 @@ fun randomProjectionsWithNNet(dataSet: DataSet<Instance>, errorFunction: (Double
     val randomProjectionSetTime = timeThis { neuralNetLearningCurve(bestProjectedDataSet, errorFunction) }
     System.out.println("elapsed time: $randomProjectionSetTime")
 
-    bestProjectedDataSet.toString()
+    writeToFile("RP_propaneData.csv", bestProjectedDataSet.toString())
 }
