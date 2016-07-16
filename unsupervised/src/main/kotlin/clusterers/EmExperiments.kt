@@ -9,7 +9,7 @@ import util.Csv
 import util.MLUtils
 
 fun main(args: Array<String>) {
-    val clusterCount = 6
+    val clusterCount = 2
 
     System.out.println(clusterWithEm(PropaneDataReader().propaneDataSet, clusterCount))
 }

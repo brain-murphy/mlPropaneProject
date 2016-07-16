@@ -55,7 +55,7 @@ public class IrisInstance implements Instance {
     public double getDifference(double y) {
         long classification = Math.round(y);
 
-        if (classification - output < .1) { // if difference is near zero
+        if (Math.abs(classification - output) < .1) { // if difference is near zero
             return 0;
         } else {
             return 1;

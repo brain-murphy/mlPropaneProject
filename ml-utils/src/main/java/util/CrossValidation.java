@@ -34,7 +34,8 @@ public class CrossValidation {
 
             for (Instance testInstance : testingData) {
                 double output = (double) algorithm.evaluate(testInstance.getInput());
-                sumOfValidationError += errorFunction.apply(testInstance.getDifference(output));
+                double validationErr = errorFunction.apply(testInstance.getDifference(output));
+                sumOfValidationError += validationErr;
             }
 
             for (Instance trainingInstance : trainingDataSet.getInstances()) {

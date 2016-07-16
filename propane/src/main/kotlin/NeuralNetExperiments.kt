@@ -1,22 +1,21 @@
 @file:JvmName("NeuralNetExperiments")
 
 import algorithms.NeuralNetAlgorithm
-import datasets.DataSet
-import datasets.Instance
-import datasets.PcaPropaneDataReader
-import datasets.PropaneDataReader
+import datasets.*
 import util.*
 
 fun main(args: Array<String>) {
-    neuralNetLearningCurve(PropaneDataReader().propaneDataSet, ::absoluteError)
+    findHiddenLayerLength(IrisDataReader().irisDataSet)
 }
 
 fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double) {
     val nNet = NeuralNetAlgorithm()
 
-    nNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(9, 8), 0.006f, 500))
+    nNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(13), 0.0078f, 500))
 
     val learningCurve = LearningCurve(dataSet, nNet, errorFunction, 10);
+
+//    learningCurve.enableLeaveOneOutCV()
 
     val csv = learningCurve.run()
 
@@ -30,13 +29,13 @@ fun findHiddenLayerLength(dataSet: DataSet<Instance>) {
     for (hiddenLayerLength in 2..149) {
         val neuralNet = NeuralNetAlgorithm()
 
-        neuralNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(hiddenLayerLength), .001f, 1000))
+        neuralNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(hiddenLayerLength), .01f, 1000))
 
         val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
 
         val result = crossValidation.run()
 
-        csv.addRow(hiddenLayerLength.toDouble(), result.meanTrainingError, result.meanValidationError)
+        csv.addRowAndPrint(hiddenLayerLength.toDouble(), result.meanTrainingError, result.meanValidationError)
     }
 }
 

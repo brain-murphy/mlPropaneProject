@@ -2,12 +2,13 @@ package dimreduction
 
 import datasets.DataSet
 import datasets.Instance
+import datasets.IrisDataReader
 import datasets.PropaneDataReader
 import filters.IndependentComponentsFilter
 import learningCurveREPBoosting
 
 fun main(args: Array<String>) {
-    printIcaForDataSet(PropaneDataReader().propaneDataSet as DataSet<Instance>)
+    printIcaForDataSet(IrisDataReader().irisDataSet)
 }
 
 fun testIcaBoosting(dataSet: DataSet<Instance>) {

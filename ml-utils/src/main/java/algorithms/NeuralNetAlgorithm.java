@@ -12,6 +12,8 @@ import java.util.*;
 
 public class NeuralNetAlgorithm implements Algorithm {
 
+    private NormalizeArray inputNormalizer;
+
     public static Map<String, Object> createParams(int[] structure, float trainingErrorThreshold, int maxIterations) {
         Map<String, Object> params = new HashMap<>();
 
@@ -112,7 +114,7 @@ public class NeuralNetAlgorithm implements Algorithm {
         input = new double[instances.length][];
         output = new double[instances.length][];
 
-        NormalizeArray inputNormalizer = new NormalizeArray();
+        inputNormalizer = new NormalizeArray();
         inputNormalizer.setNormalizedLow(0);
 
         for (int i = 0; i < instances.length; i++) {
@@ -124,11 +126,12 @@ public class NeuralNetAlgorithm implements Algorithm {
     private void setOutputNormalizer(DataSet dataSet) {
         double[] possibleOutputs = dataSet.getInstances()[0].getPossibleOutputs();
 
-        outputNormalizer = new NormalizedField(NormalizationAction.Normalize, "outputnormalizer", possibleOutputs[1], possibleOutputs[0], 1, 0);
+        outputNormalizer = new NormalizedField(NormalizationAction.Normalize, "outputnormalizer", possibleOutputs[possibleOutputs.length - 1], possibleOutputs[0], 1, 0);
     }
 
     @Override
     public Object evaluate(Object input) {
-        return outputNormalizer.deNormalize(currentNetwork.compute(new BasicMLData((double[]) input)).getData()[0]);
+        double[] normalizedInput = inputNormalizer.process((double[]) input);
+        return outputNormalizer.deNormalize(currentNetwork.compute(new BasicMLData(normalizedInput)).getData()[0]);
     }
 }

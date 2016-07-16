@@ -31,12 +31,12 @@ class LearningCurve(private val dataSet: DataSet<out Instance>,
             if (leaveOneOutCrossValidation) {
                 val results = CrossValidation(errorFunction, dataToUse.getInstances().size, dataToUse, algorithm).run()
 
-                csvResults.addRowAndPrint(proportion, results.meanTrainingError, results.meanValidationError)
+                csvResults.addRow(proportion, results.meanTrainingError, results.meanValidationError)
 
             } else if (dataToUse.getInstances().size >= foldCount) {
                 val results = CrossValidation(errorFunction, foldCount, dataToUse, algorithm).run()
 
-                csvResults.addRowAndPrint(proportion, results.meanTrainingError, results.meanValidationError)
+                csvResults.addRow(proportion, results.meanTrainingError, results.meanValidationError)
             }
         }
 
