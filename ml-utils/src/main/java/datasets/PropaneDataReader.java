@@ -1,7 +1,6 @@
 package datasets;
 
 
-import com.sun.crypto.provider.*;
 import org.apache.commons.csv.*;
 import org.jetbrains.annotations.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -20,13 +19,23 @@ public class PropaneDataReader {
     public static final String RP_DATA_FILE_PATH = "datasets/RP_propaneData.csv";
     public static final String CSF_DATA_FILE_PATH = "datasets/propane_csfSubset.csv";
 
-    private Map<Float,List<Map<Integer,Integer>>> data; // Map<Weight,List<FFT<Frequency,Magnitude>>>
+    private static final double[] CONTINUOUS_POSSIBLE_OUTPUT_RANGE = new double[] {10, 40};
+    private static final double[] DISCRETE_POSSIBLE_OUTPUT_RANGE = new double[] {0, 1};
+
+    private boolean discreteMode = false;
+
+    private Map<Float,List<Map<Integer,Integer>>> data2013; // Map<Weight,List<FFT<Frequency,Magnitude>>>
     private float[] weights;
 
     public PropaneDataReader() {
-        data = deserializePropaneData();
+        data2013 = deserializePropaneData();
 
-        weights = MLUtils.toPrimitiveFloatArray(data.keySet());
+        weights = MLUtils.toPrimitiveFloatArray(data2013.keySet());
+    }
+
+    public PropaneDataReader(boolean discreteMode) {
+        this();
+        this.discreteMode = discreteMode;
     }
 
     private Map<Float,List<Map<Integer,Integer>>> deserializePropaneData() {
@@ -56,16 +65,7 @@ public class PropaneDataReader {
     }
 
     public DataSet<Instance> getPropaneDataSet() {
-        PropaneInstance[] propaneInstances2013 = parse2013Instances();
-
-        PropaneInstance[] propaneInstances2016 = parse2016Instances();
-
-        PropaneInstance[] combinedArrays = new PropaneInstance[propaneInstances2013.length + propaneInstances2016.length];
-
-        System.arraycopy(propaneInstances2013, 0, combinedArrays, 0, propaneInstances2013.length);
-        System.arraycopy(propaneInstances2016, 0, combinedArrays, propaneInstances2013.length, propaneInstances2016.length);
-
-        return new DataSet<>(combinedArrays, false);
+        return new DataSet<>(parseCsv("datasets/allPropaneData.csv"), discreteMode);
     }
 
     public DataSet<PropaneInstance> get2013PropaneDataSet() {
@@ -81,9 +81,9 @@ public class PropaneDataReader {
         int instanceIndex = 0;
 
         for (float weight : weights) {
-            for (Map<Integer,Integer> fft : data.get(weight)) {
+            for (Map<Integer,Integer> fft : data2013.get(weight)) {
                 double propaneLevel = weight;
-                instances[instanceIndex] = new PropaneInstance(mapToDoubleArray(fft), propaneLevel);
+                instances[instanceIndex] = new PropaneInstance(mapToDoubleArray(fft), propaneLevel, CONTINUOUS_POSSIBLE_OUTPUT_RANGE);
                 instanceIndex += 1;
             }
         }
@@ -121,12 +121,22 @@ public class PropaneDataReader {
                 inputArray[i] = Double.parseDouble(csvRecord.get(i));
             }
 
-            double output = Double.parseDouble(csvRecord.get(headerLine.size() - 1));
+            double output = parseOutput(Double.parseDouble(csvRecord.get(headerLine.size() - 1)));
 
-            instances.add(new PropaneInstance(inputArray, output));
+            double[] outputRange = getOutputRange();
+
+            instances.add(new PropaneInstance(inputArray, output, outputRange));
         }
 
         return instances.toArray(new PropaneInstance[instances.size()]);
+    }
+
+    private double parseOutput(double tankWeight) {
+        if (discreteMode) {
+            return tankWeight < 21 ? 0 : 1;
+        } else {
+            return tankWeight;
+        }
     }
 
     private static double[] mapToDoubleArray(Map<Integer, Integer> map) {
@@ -145,14 +155,14 @@ public class PropaneDataReader {
     private int getFftCount() {
         int total = 0;
         for (float weight : weights) {
-            total += data.get(weight).size();
+            total += data2013.get(weight).size();
         }
 
         return total;
     }
 
     public Integer[] getFrequencies() {
-        Map<Integer,Integer> firstFft = data.get(weights[0]).get(0);
+        Map<Integer,Integer> firstFft = data2013.get(weights[0]).get(0);
 
         Integer[] frequencies = firstFft.keySet().toArray(new Integer[firstFft.keySet().size()]);
 
@@ -162,7 +172,7 @@ public class PropaneDataReader {
     }
 
     public DataSet<Instance> getPcaDataSet() {
-        return new DataSet<>(parseCsv(PCA_DATA_FILE_PATH), false);
+        return new DataSet<>(parseCsv(PCA_DATA_FILE_PATH), discreteMode);
     }
 
     public DataSet<Instance> getIcaDataSet() {
@@ -170,10 +180,22 @@ public class PropaneDataReader {
     }
 
     public DataSet<Instance> getRpDataSet() {
-        return new DataSet<>(parseCsv(RP_DATA_FILE_PATH), false);
+        return new DataSet<>(parseCsv(RP_DATA_FILE_PATH), discreteMode);
     }
 
     public DataSet<Instance> getCsfDataSet() {
-        return new DataSet<>(parseCsv(CSF_DATA_FILE_PATH), false);
+        return new DataSet<>(parseCsv(CSF_DATA_FILE_PATH), discreteMode);
+    }
+
+    public void setDiscreteMode(boolean discreteMode) {
+        this.discreteMode = discreteMode;
+    }
+
+    private double[] getOutputRange() {
+        if (discreteMode) {
+            return DISCRETE_POSSIBLE_OUTPUT_RANGE;
+        } else {
+            return CONTINUOUS_POSSIBLE_OUTPUT_RANGE;
+        }
     }
 }

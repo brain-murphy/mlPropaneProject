@@ -6,9 +6,10 @@ import datasets.IrisDataReader
 import datasets.PropaneDataReader
 import filters.IndependentComponentsFilter
 import learningCurveREPBoosting
+import util.writeToFile
 
 fun main(args: Array<String>) {
-    printIcaForDataSet(IrisDataReader().irisDataSet)
+    printIcaForDataSet(PropaneDataReader().propaneDataSet)
 }
 
 fun testIcaBoosting(dataSet: DataSet<Instance>) {
@@ -30,6 +31,8 @@ fun printIcaForDataSet(dataSet: DataSet<Instance>) {
     val icaDataSet = IndependentComponentsFilter().filterDataSet(dataSet)
 
     System.out.println(icaDataSet)
+
+    writeToFile("propane_ica.csv", icaDataSet.toString());
 }
 
 

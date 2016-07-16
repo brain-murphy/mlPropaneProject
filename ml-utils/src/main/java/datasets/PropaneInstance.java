@@ -5,10 +5,12 @@ import java.util.Arrays;
 public class PropaneInstance implements Instance {
     private double[] frequencySpectrum;
     private double fuelLevel;
+    private double[] possibleOutputs;
 
-    public PropaneInstance(double[] frequencySpectrum, double fuelLevel) {
+    public PropaneInstance(double[] frequencySpectrum, double fuelLevel, double[] possibleOutputs) {
         this.frequencySpectrum = frequencySpectrum;
         this.fuelLevel = fuelLevel;
+        this.possibleOutputs = possibleOutputs;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class PropaneInstance implements Instance {
 
     @Override
     public double[] getPossibleOutputs() {
-        return new double[] {10, 40};
+        return possibleOutputs;
     }
 
     @Override
@@ -43,6 +45,6 @@ public class PropaneInstance implements Instance {
 
     @Override
     public Instance deepCopy() {
-        return new PropaneInstance(Arrays.copyOf(getInput(), getInput().length), getOutput());
+        return new PropaneInstance(Arrays.copyOf(getInput(), getInput().length), getOutput(), possibleOutputs);
     }
 }

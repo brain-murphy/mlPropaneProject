@@ -5,13 +5,18 @@ import datasets.*
 import util.*
 
 fun main(args: Array<String>) {
-    findHiddenLayerLength(IrisDataReader().irisDataSet)
+    val nNetParams = NeuralNetAlgorithm.createParams(intArrayOf(9, 8), 0.006f, 500)
+
+    val propaneDataReader = PropaneDataReader(true)
+
+    println("csf")
+    neuralNetLearningCurve(propaneDataReader.csfDataSet, ::absoluteError, nNetParams)
 }
 
 fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, params: Map<String, Any>) {
     val nNet = NeuralNetAlgorithm()
 
-    nNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(13), 0.0078f, 500))
+    nNet.setParams(params)
 
     val learningCurve = LearningCurve(dataSet, nNet, errorFunction, 10);
 

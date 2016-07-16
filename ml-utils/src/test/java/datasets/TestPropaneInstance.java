@@ -12,7 +12,7 @@ public class TestPropaneInstance {
     private Instance propaneInstance;
 
     public static PropaneInstance generateTestPropaneInstance() {
-        return new PropaneInstance(TEST_INPUT, TEST_OUPUT);
+        return new PropaneInstance(TEST_INPUT, TEST_OUPUT, new double[]{0,1});
     }
 
     @Before
