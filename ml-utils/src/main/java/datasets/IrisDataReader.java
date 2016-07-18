@@ -7,6 +7,7 @@ import util.GeneralUtils;
 import java.util.*;
 
 public class IrisDataReader {
+    public static final String CLUSTER_DATA_PACKAGE_PATH = "datasets/iris_clusterData.csv";
     private static final String RP_DATA_PACKAGE_PATH = "datasets/Iris_rp.csv";
     private static final String IRIS_FILE_PATH = "./Iris.csv";
     private static final String IRIS_PACKAGE_PATH = "datasets/Iris.csv";
@@ -64,5 +65,13 @@ public class IrisDataReader {
 
     public DataSet<Instance> getCsfDataSet() {
         return new DataSet<>(parseCsv(CSF_DATA_PACKAGE_PATH), true);
+    }
+
+    public DataSet<Instance>[] getReducedDataSets() {
+        return new DataSet[]{getPcaDataSet(), getIcaDataSet(), getRpDataSet(), getCsfDataSet()};
+    }
+
+    public DataSet<Instance> getClusteredDataSet() {
+        return new DataSet<>(parseCsv(CLUSTER_DATA_PACKAGE_PATH), true);
     }
 }

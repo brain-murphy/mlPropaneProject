@@ -4,6 +4,7 @@ import algorithms.*;
 import datasets.*;
 import datasets.Instance;
 import org.apache.commons.math3.stat.descriptive.*;
+import org.apache.commons.math3.stat.descriptive.moment.Kurtosis;
 
 import java.util.*;
 
@@ -107,15 +108,36 @@ public class MLUtils {
         return firstInstance.getInput().length;
     }
 
-    public static Csv createCsvForClusterResults(Map<Instance, Integer> clusterings) {
+    public static Csv createCsvForClusterResults(Instance[] instances, int[] clusters) {
         Csv csv = new Csv("InstanceIndex", "Output", "Classification");
 
-        int index= 0;
-        for (Instance instance: clusterings.keySet()) {
-            csv.addRow((Integer) index, instance.getOutput(), clusterings.get(instance));
-            index += 1;
+        for (int i = 0; i < instances.length; i++) {
+            csv.addRow((Integer) i, instances[i].getOutput(), clusters[i]);
         }
 
         return csv;
+    }
+
+    public static double calculateAverageKurtosisForAttributes(DataSet<Instance> dataSet) {
+        Kurtosis kurtosis = new Kurtosis();
+
+        Instance[] instances = dataSet.getInstances();
+
+        int numDims = instances[0].getInput().length;
+
+        double[][] columns = new double[numDims][instances.length];
+
+        for (int dimensionIndex = 0; dimensionIndex < numDims; dimensionIndex++) {
+            for (int instanceIndex = 0; instanceIndex < instances.length; instanceIndex++) {
+                columns[dimensionIndex][instanceIndex] = instances[instanceIndex].getInput()[dimensionIndex];
+            }
+        }
+
+        SummaryStatistics stats = new SummaryStatistics();
+        for (double[] col: columns) {
+            stats.addValue(kurtosis.evaluate(col));
+        }
+
+        return stats.getMean();
     }
 }

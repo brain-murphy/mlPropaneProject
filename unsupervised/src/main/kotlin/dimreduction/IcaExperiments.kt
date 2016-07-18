@@ -6,10 +6,11 @@ import datasets.IrisDataReader
 import datasets.PropaneDataReader
 import filters.IndependentComponentsFilter
 import learningCurveREPBoosting
+import util.MLUtils
 import util.writeToFile
 
 fun main(args: Array<String>) {
-    printIcaForDataSet(PropaneDataReader().propaneDataSet)
+    System.out.println("Kurtosis: ${MLUtils.calculateAverageKurtosisForAttributes(IrisDataReader().irisDataSet)}")
 }
 
 fun testIcaBoosting(dataSet: DataSet<Instance>) {
@@ -32,7 +33,7 @@ fun printIcaForDataSet(dataSet: DataSet<Instance>) {
 
     System.out.println(icaDataSet)
 
-    writeToFile("propane_ica.csv", icaDataSet.toString());
+//    writeToFile("propane_ica.csv", icaDataSet.toString());
 }
 
 

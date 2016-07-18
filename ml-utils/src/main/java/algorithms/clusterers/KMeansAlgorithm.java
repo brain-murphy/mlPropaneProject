@@ -4,6 +4,7 @@ import algorithms.Algorithm;
 import datasets.DataSet;
 import datasets.Instance;
 import datasets.parsers.WekaParser;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import weka.clusterers.SimpleKMeans;
 import weka.core.EuclideanDistance;
 import weka.core.ManhattanDistance;
@@ -83,23 +84,11 @@ public class KMeansAlgorithm implements Clusterer {
 
     @Override
     public Object evaluate(Object input) {
-        return getAssignments();
+        throw new NotImplementedException();
     }
 
     @Override
-    public Map<Instance, Integer> getClusters() {
-        Map<Instance, Integer> clusterings = new HashMap<>(instances.length);
-
-        int[] assignments = getAssignments();
-
-        for (int i = 0; i < assignments.length; i++) {
-            clusterings.put(instances[i], assignments[i]);
-        }
-
-        return clusterings;
-    }
-
-    private int[] getAssignments() {
+    public int[] getClusters() {
         try {
             return kMeans.getAssignments();
         } catch (Exception e) {

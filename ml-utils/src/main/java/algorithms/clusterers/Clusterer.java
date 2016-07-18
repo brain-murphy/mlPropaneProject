@@ -7,5 +7,5 @@ import java.util.Map;
 
 public interface Clusterer extends Algorithm {
 
-    Map<Instance, Integer> getClusters();
+    int[] getClusters();
 }

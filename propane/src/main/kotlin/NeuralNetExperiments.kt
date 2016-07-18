@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
     val propaneDataReader = PropaneDataReader(true)
 
     println("csf")
-    neuralNetLearningCurve(propaneDataReader.csfDataSet, ::absoluteError, nNetParams)
+    neuralNetLearningCurve(propaneDataReader.propaneDataSet, ::absoluteError, nNetParams)
 }
 
 fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, params: Map<String, Any>) {

@@ -27,6 +27,9 @@ public class IrisInstance implements Instance {
             case "Iris-virginica":
                 output = 2;
                 break;
+            default:
+                output = Double.parseDouble(species);
+                break;
         }
     }
 

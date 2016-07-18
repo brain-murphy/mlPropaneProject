@@ -198,4 +198,12 @@ public class PropaneDataReader {
             return CONTINUOUS_POSSIBLE_OUTPUT_RANGE;
         }
     }
+
+    public DataSet<Instance>[] getReducedDataSets() {
+        return new DataSet[]{getPcaDataSet(), getIcaDataSet(), getRpDataSet(), getCsfDataSet()};
+    }
+
+    public DataSet<Instance> getClusteredDataSet() {
+        throw new NotImplementedException();
+    }
 }

@@ -72,19 +72,19 @@ public class EmClusterer implements Clusterer {
     }
 
     @Override
-    public Map<Instance, Integer> getClusters() {
-        Map<Instance, Integer> clusterings = new HashMap<>(instances.length);
+    public int[] getClusters() {
+        int[] clusters = new int[instances.length];
 
-        for (Instance instance : instances) {
-            weka.core.Instance wekaInstance = wekaParser.parseInstanceForEvaluation(instance.getInput());
+        for (int i = 0; i < instances.length; i++) {
+            weka.core.Instance wekaInstance = wekaParser.parseInstanceForEvaluation(instances[i].getInput());
 
             try {
-                clusterings.put(instance, em.clusterInstance(wekaInstance));
+                clusters[i] = em.clusterInstance(wekaInstance);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 
-        return clusterings;
+        return clusters;
     }
 }
