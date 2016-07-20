@@ -1,53 +1,9 @@
+@file:JvmName("Steps")
+
 package main
 
-import algorithms.clusterers.KMeansClassifier
-import clusterers.*
-import datasets.IrisDataReader
-import datasets.PropaneDataReader
-import dimreduction.rpPropaneStepTwo
-import dimreduction.printIcaForDataSet
-import dimreduction.rpIrisStepTwo
-
 fun main(args: Array<String>) {
-    val step = parseArgs(args)
-
-    when (step) {
-        (1) -> {
-            kMeansIrisDataStepOne()
-            kMeansPropaneDataStepOne()
-            emIrisDataStepOne()
-            emPropaneDataStepOne()
-        }
-
-        (2) -> {
-            printIcaForDataSet(IrisDataReader().irisDataSet)
-            printIcaForDataSet(PropaneDataReader().propaneDataSet)
-            rpPropaneStepTwo()
-            rpIrisStepTwo()
-            printWekaMessage("CFS")
-            printWekaMessage("PCA")
-        }
-
-        (3) -> {
-            System.out.println("This clustering done in Weka, using as input the corresponding files in the datasets folder. The outputs can be found in results/dimensionalityReducedClusters")
-        }
-
-        (4) -> {
-            System.out.println("See results in results/dimensionalityReducedNNet")
-        }
-
-        (5) -> {
-            val numClusters = 3
-            System.out.println(dimReductionUsingClusters(IrisDataReader().reducedDataSets, numClusters, KMeansClassifier.DistanceFunction.Euclidean))
-        }
-
-        (6) -> {
-            testClusterDataDouble(IrisDataReader().clusteredDataSet)
-        }
-
-        else ->
-                printHelp()
-    }
+    println("steps entry point works!")
 }
 
 private fun printWekaMessage(algorithmName: String) {

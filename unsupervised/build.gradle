@@ -30,15 +30,3 @@ dependencies {
 sourceSets {
     main.java.srcDirs += 'src/main.main/kotlin'
 }
-
-jar {
-
-    archiveName = "mlprojecttwo.jar"
-
-    manifest {
-        attributes 'Main-Class': 'main.Steps'
-    }
-
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-//    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
-}
