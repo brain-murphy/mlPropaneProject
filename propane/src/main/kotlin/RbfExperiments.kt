@@ -4,9 +4,9 @@ import algorithms.classifiers.RbfClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
-import util.CrossValidation
-import util.LearningCurve
-import util.Result
+import analysis.CrossValidation
+import analysis.LearningCurve
+import analysis.Result
 import java.util.*
 
 fun main(args: Array<String>) {

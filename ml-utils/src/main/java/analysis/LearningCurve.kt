@@ -1,9 +1,10 @@
-package util
+package analysis
 
 import algorithms.classifiers.Classifier
 import datasets.DataSet
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
+import util.Csv
 import java.util.*
 
 

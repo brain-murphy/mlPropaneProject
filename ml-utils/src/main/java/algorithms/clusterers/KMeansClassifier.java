@@ -2,7 +2,7 @@ package algorithms.clusterers;
 
 import datasets.DataSet;
 import datasets.Instance;
-import datasets.parsers.WekaParser;
+import algorithms.parsers.WekaParser;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import weka.clusterers.SimpleKMeans;
 import weka.core.EuclideanDistance;

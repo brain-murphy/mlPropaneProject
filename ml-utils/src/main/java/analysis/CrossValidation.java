@@ -1,4 +1,4 @@
-package util;
+package analysis;
 
 import algorithms.classifiers.Classifier;
 import datasets.*;

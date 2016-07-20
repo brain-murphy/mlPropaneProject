@@ -1,7 +1,7 @@
 package algorithms.classifiers;
 
 import datasets.*;
-import datasets.parsers.SupervisedWekaParser;
+import algorithms.parsers.SupervisedWekaParser;
 import weka.classifiers.trees.*;
 import weka.core.Instance;
 

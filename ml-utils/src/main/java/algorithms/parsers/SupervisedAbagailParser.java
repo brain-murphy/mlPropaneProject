@@ -1,4 +1,4 @@
-package datasets.parsers;
+package algorithms.parsers;
 
 import org.jetbrains.annotations.NotNull;
 import shared.Instance;

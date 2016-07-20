@@ -1,4 +1,4 @@
-package util;
+package analysis;
 
 public class ElapsedTime {
     private static long staticStartTime = -1;

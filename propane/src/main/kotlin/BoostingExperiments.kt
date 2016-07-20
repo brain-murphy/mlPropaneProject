@@ -5,8 +5,8 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
-import util.CrossValidation
-import util.LearningCurve
+import analysis.CrossValidation
+import analysis.LearningCurve
 
 fun main(args: Array<String>) {
     val absoluteError =  { difference: Double -> Math.abs(difference)}

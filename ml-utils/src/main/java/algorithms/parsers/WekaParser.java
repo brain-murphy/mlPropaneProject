@@ -1,4 +1,4 @@
-package datasets.parsers;
+package algorithms.parsers;
 
 import datasets.DataSet;
 import datasets.Instance;

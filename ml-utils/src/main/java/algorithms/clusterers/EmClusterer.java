@@ -2,8 +2,7 @@ package algorithms.clusterers;
 
 import datasets.DataSet;
 import datasets.Instance;
-import datasets.parsers.SupervisedWekaParser;
-import datasets.parsers.WekaParser;
+import algorithms.parsers.WekaParser;
 import weka.clusterers.EM;
 
 import java.util.HashMap;

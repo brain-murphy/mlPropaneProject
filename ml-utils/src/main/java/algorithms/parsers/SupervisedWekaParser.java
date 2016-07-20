@@ -1,9 +1,8 @@
-package datasets.parsers;
+package algorithms.parsers;
 
 import datasets.*;
 import org.jetbrains.annotations.*;
 import weka.core.*;
-import weka.core.Instance;
 
 import java.util.*;
 

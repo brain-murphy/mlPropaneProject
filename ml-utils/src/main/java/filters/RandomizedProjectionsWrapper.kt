@@ -4,7 +4,7 @@ import algorithms.classifiers.Classifier
 import datasets.DataSet
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
-import util.CrossValidation
+import analysis.CrossValidation
 import java.util.concurrent.CountDownLatch
 import kotlin.concurrent.thread
 

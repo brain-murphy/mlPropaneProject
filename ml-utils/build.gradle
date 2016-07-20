@@ -2,10 +2,13 @@ group 'com.brainmurphy'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.0.3'
+
     repositories {
         mavenCentral()
     }
+
+    ext.kotlin_version = '1.0.3'
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -31,6 +34,8 @@ dependencies {
     // https://mvnrepository.com/artifact/nz.ac.waikato.cms.weka/weka-stable
     compile group: 'nz.ac.waikato.cms.weka', name: 'weka-stable', version: '3.8.0'
     compile group: 'nz.ac.waikato.cms.weka', name: 'RBFNetwork', version: '1.0.8'
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile group: 'junit', name: 'junit', version: '4.11'

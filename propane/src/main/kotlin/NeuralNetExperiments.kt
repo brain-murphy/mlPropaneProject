@@ -1,6 +1,8 @@
 @file:JvmName("NeuralNetExperiments")
 
 import algorithms.classifiers.NeuralNetClassifier
+import analysis.CrossValidation
+import analysis.LearningCurve
 import datasets.*
 import util.*
 

@@ -2,7 +2,7 @@ package filters
 
 import datasets.DataSet
 import datasets.Instance
-import datasets.parsers.AbagailParser
+import algorithms.parsers.AbagailParser
 import shared.filt.RandomizedProjectionFilter
 
 

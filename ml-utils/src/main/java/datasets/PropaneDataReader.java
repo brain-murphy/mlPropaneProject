@@ -30,7 +30,7 @@ public class PropaneDataReader {
     public PropaneDataReader() {
         data2013 = deserializePropaneData();
 
-        weights = MLUtils.toPrimitiveFloatArray(data2013.keySet());
+        weights = MLUtils.INSTANCE.toPrimitiveFloatArray(data2013.keySet());
     }
 
     public PropaneDataReader(boolean discreteMode) {

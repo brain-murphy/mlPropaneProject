@@ -2,8 +2,8 @@ package filters
 
 import datasets.DataSet
 import datasets.Instance
-import datasets.parsers.AbagailParser
-import datasets.parsers.SupervisedAbagailParser
+import algorithms.parsers.AbagailParser
+import algorithms.parsers.SupervisedAbagailParser
 import shared.filt.LinearDiscriminantAnalysis
 
 class LinearDiscriminantFilter : Filter {

@@ -1,4 +1,4 @@
-package util;
+package analysis;
 
 public class Result {
     private double meanValidationError;
