@@ -1,6 +1,6 @@
 @file:JvmName("RbfExperiments")
 
-import algorithms.RbfAlgorithm
+import algorithms.classifiers.RbfClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
 }
 
 fun rbfLearningCurve() {
-    val rbf = RbfAlgorithm()
+    val rbf = RbfClassifier()
     rbf.setParams(createParams(15, .1, false))
 
     val absoluteError = {error:Double -> Math.abs(error)}
@@ -28,7 +28,7 @@ fun rbfLearningCurve() {
 fun runRbf(dataSet: DataSet<Instance>, cgd: Boolean, tolerance: Double, rbfCount: Int): Result {
     val params = createParams(rbfCount, tolerance, cgd)
 
-    val rbf = RbfAlgorithm()
+    val rbf = RbfClassifier()
 
     rbf.setParams(params)
 
@@ -42,12 +42,12 @@ fun runRbf(dataSet: DataSet<Instance>, cgd: Boolean, tolerance: Double, rbfCount
 fun testConjugateGradientDescent(dataSet: DataSet<Instance>) {
 
     val paramsWithCgd = newDefaultParams()
-    paramsWithCgd.put(RbfAlgorithm.KEY_CONJUGATE_GRADIENT_DESCENT, true)
+    paramsWithCgd.put(RbfClassifier.KEY_CONJUGATE_GRADIENT_DESCENT, true)
 
     val paramsWithoutCgd = newDefaultParams()
-    paramsWithoutCgd.put(RbfAlgorithm.KEY_CONJUGATE_GRADIENT_DESCENT, false)
+    paramsWithoutCgd.put(RbfClassifier.KEY_CONJUGATE_GRADIENT_DESCENT, false)
 
-    val rbf = RbfAlgorithm()
+    val rbf = RbfClassifier()
     rbf.setParams(paramsWithCgd)
 
     val numFolds = 10
@@ -65,7 +65,7 @@ fun testConjugateGradientDescent(dataSet: DataSet<Instance>) {
 }
 
 fun findBestTolerance(dataSet: DataSet<Instance>) {
-    val rbf = RbfAlgorithm()
+    val rbf = RbfClassifier()
 
     val numFolds = 10
 
@@ -77,7 +77,7 @@ fun findBestTolerance(dataSet: DataSet<Instance>) {
     var divisor = 10
     while (divisor < 100000) {
         val tolerance = 1.0 / divisor
-        params.put(RbfAlgorithm.KEY_TOLERANCE, tolerance)
+        params.put(RbfClassifier.KEY_TOLERANCE, tolerance)
 
         rbf.setParams(params)
 
@@ -89,7 +89,7 @@ fun findBestTolerance(dataSet: DataSet<Instance>) {
 }
 
 fun findBestRbfCount(dataSet: DataSet<Instance>, minValueToTest: Int, interval: Int, maxValueToTest: Int) {
-    val rbf = RbfAlgorithm()
+    val rbf = RbfClassifier()
 
     val numFolds = 10
 
@@ -100,7 +100,7 @@ fun findBestRbfCount(dataSet: DataSet<Instance>, minValueToTest: Int, interval: 
     println("RbfCount,TrainingError,ValidationError")
     var rbfCount = minValueToTest
     while (rbfCount <= maxValueToTest) {
-        params.put(RbfAlgorithm.KEY_NUM_RBFS, rbfCount)
+        params.put(RbfClassifier.KEY_NUM_RBFS, rbfCount)
 
         rbf.setParams(params)
 
@@ -114,11 +114,11 @@ fun findBestRbfCount(dataSet: DataSet<Instance>, minValueToTest: Int, interval: 
 private fun newDefaultParams(): MutableMap<String, Any> {
     val params = HashMap<String, Any>()
 
-    params.put(RbfAlgorithm.KEY_TOLERANCE, 0.00001)
+    params.put(RbfClassifier.KEY_TOLERANCE, 0.00001)
 
-    params.put(RbfAlgorithm.KEY_NUM_RBFS, 5)
+    params.put(RbfClassifier.KEY_NUM_RBFS, 5)
 
-    params.put(RbfAlgorithm.KEY_CONJUGATE_GRADIENT_DESCENT, false)
+    params.put(RbfClassifier.KEY_CONJUGATE_GRADIENT_DESCENT, false)
 
     return params
 }
@@ -126,11 +126,11 @@ private fun newDefaultParams(): MutableMap<String, Any> {
 private fun createParams(rbfCount: Int, tolerance: Double, cgd: Boolean): Map<String, Any> {
     val params = HashMap<String, Any>()
 
-    params.put(RbfAlgorithm.KEY_TOLERANCE, tolerance)
+    params.put(RbfClassifier.KEY_TOLERANCE, tolerance)
 
-    params.put(RbfAlgorithm.KEY_NUM_RBFS, rbfCount)
+    params.put(RbfClassifier.KEY_NUM_RBFS, rbfCount)
 
-    params.put(RbfAlgorithm.KEY_CONJUGATE_GRADIENT_DESCENT, cgd)
+    params.put(RbfClassifier.KEY_CONJUGATE_GRADIENT_DESCENT, cgd)
 
     return params
 }

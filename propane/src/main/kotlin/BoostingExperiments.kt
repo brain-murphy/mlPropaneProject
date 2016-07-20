@@ -1,6 +1,6 @@
 @file:JvmName("BoostingExperiments")
 
-import algorithms.BoostingAlgorithm
+import algorithms.classifiers.BoostingClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
@@ -15,11 +15,11 @@ fun main(args: Array<String>) {
 }
 
 fun testDecisionStumpBoosting(dataSet: DataSet<Instance>) {
-    val boostingAlgorithm = BoostingAlgorithm()
+    val boostingAlgorithm = BoostingClassifier()
 
     val numFolds = 20
 
-    boostingAlgorithm.setParams(BoostingAlgorithm.createParams("weka.classifiers.trees.DecisionStump", 50))
+    boostingAlgorithm.setParams(BoostingClassifier.createParams("weka.classifiers.trees.DecisionStump", 50))
 
     val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, boostingAlgorithm)
 
@@ -27,11 +27,11 @@ fun testDecisionStumpBoosting(dataSet: DataSet<Instance>) {
 }
 
 fun testREPBoosting(dataSet: DataSet<Instance>) {
-    val boostingAlgorithm = BoostingAlgorithm()
+    val boostingAlgorithm = BoostingClassifier()
 
     val numFolds = 20
 
-    boostingAlgorithm.setParams(BoostingAlgorithm.createParams("weka.classifiers.trees.REPTree", 50))
+    boostingAlgorithm.setParams(BoostingClassifier.createParams("weka.classifiers.trees.REPTree", 50))
 
     val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, boostingAlgorithm)
 
@@ -44,9 +44,9 @@ fun testREPBoosting(dataSet: DataSet<Instance>) {
 }
 
 fun learningCurveREPBoosting(dataSet: DataSet<out Instance>, errorFunction: (Double) -> Double) {
-    val boostingAlgorithm = BoostingAlgorithm()
+    val boostingAlgorithm = BoostingClassifier()
 
-    boostingAlgorithm.setParams(BoostingAlgorithm.createParams("weka.classifiers.trees.REPTree", 50))
+    boostingAlgorithm.setParams(BoostingClassifier.createParams("weka.classifiers.trees.REPTree", 50))
 
     val learningCurve = LearningCurve(PcaPropaneDataReader().propaneDataSet, boostingAlgorithm, errorFunction, 20)
 

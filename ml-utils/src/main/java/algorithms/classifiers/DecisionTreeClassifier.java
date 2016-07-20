@@ -1,4 +1,4 @@
-package algorithms;
+package algorithms.classifiers;
 
 import datasets.*;
 import datasets.parsers.SupervisedWekaParser;
@@ -7,7 +7,7 @@ import weka.core.Instance;
 
 import java.util.*;
 
-public class DecisionTreeAlgorithm implements Algorithm {
+public class DecisionTreeClassifier implements Classifier {
 
     public static final String KEY_ONLY_BINARY_SPLITS = "binary splits param";
 

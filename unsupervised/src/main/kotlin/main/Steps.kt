@@ -1,6 +1,6 @@
 package main
 
-import algorithms.clusterers.KMeansAlgorithm
+import algorithms.clusterers.KMeansClassifier
 import clusterers.*
 import datasets.IrisDataReader
 import datasets.PropaneDataReader
@@ -38,7 +38,7 @@ fun main(args: Array<String>) {
 
         (5) -> {
             val numClusters = 3
-            System.out.println(dimReductionUsingClusters(IrisDataReader().reducedDataSets, numClusters, KMeansAlgorithm.DistanceFunction.Euclidean))
+            System.out.println(dimReductionUsingClusters(IrisDataReader().reducedDataSets, numClusters, KMeansClassifier.DistanceFunction.Euclidean))
         }
 
         (6) -> {

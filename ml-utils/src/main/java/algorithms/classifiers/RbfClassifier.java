@@ -1,4 +1,4 @@
-package algorithms;
+package algorithms.classifiers;
 
 import datasets.*;
 import datasets.parsers.SupervisedWekaParser;
@@ -7,7 +7,7 @@ import weka.core.*;
 
 import java.util.*;
 
-public class RbfAlgorithm implements Algorithm {
+public class RbfClassifier implements Classifier {
 
     public static final String KEY_NUM_RBFS = "num rbfs param";
     public static final String KEY_CONJUGATE_GRADIENT_DESCENT = "conjugate gradient descent param";

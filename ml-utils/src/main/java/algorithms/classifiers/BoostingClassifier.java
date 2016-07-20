@@ -1,16 +1,14 @@
-package algorithms;
+package algorithms.classifiers;
 
 import datasets.*;
 import datasets.parsers.SupervisedWekaParser;
-import weka.Run;
-import weka.classifiers.*;
 import weka.classifiers.meta.*;
 import weka.core.*;
 
 import java.util.*;
 import java.util.zip.ZipException;
 
-public class BoostingAlgorithm implements Algorithm {
+public class BoostingClassifier implements Classifier {
 
     public static final String KEY_ALGORITHM_CLASS_NAME = "algorithm class param";
     public static final String KEY_ITERATIONS = "iterations param";
@@ -25,7 +23,7 @@ public class BoostingAlgorithm implements Algorithm {
     }
 
     private SupervisedWekaParser parser;
-    private Classifier booster;
+    private weka.classifiers.Classifier booster;
     private String[] options;
 
     @Override

@@ -1,6 +1,6 @@
 @file:JvmName("DecisionTreeExperiments")
 
-import algorithms.DecisionTreeAlgorithm
+import algorithms.classifiers.DecisionTreeClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
@@ -13,9 +13,9 @@ fun main(args: Array<String>) {
 }
 
 fun repTreeLearningCurve(dataSet: DataSet<out Instance>) {
-    val decisionTree = DecisionTreeAlgorithm()
+    val decisionTree = DecisionTreeClassifier()
 
-    decisionTree.setParams(DecisionTreeAlgorithm.createParams(false))
+    decisionTree.setParams(DecisionTreeClassifier.createParams(false))
 
     val absoluteError = { error:Double -> Math.abs(error) }
 
@@ -28,9 +28,9 @@ fun repTreeLearningCurve(dataSet: DataSet<out Instance>) {
 
 fun runDefaultREPTree(dataSet: DataSet<Instance>) {
 
-    val decisionTree = DecisionTreeAlgorithm()
+    val decisionTree = DecisionTreeClassifier()
 
-    decisionTree.setParams(DecisionTreeAlgorithm.createParams(false));
+    decisionTree.setParams(DecisionTreeClassifier.createParams(false));
 
     val foldCount = 20
 

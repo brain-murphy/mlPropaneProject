@@ -1,7 +1,7 @@
 package dimreduction
 
-import algorithms.BoostingAlgorithm
-import algorithms.NeuralNetAlgorithm
+import algorithms.classifiers.BoostingClassifier
+import algorithms.classifiers.NeuralNetClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
@@ -12,7 +12,6 @@ import neuralNetLearningCurve
 import util.MLUtils
 import util.absoluteError
 import util.timeThis
-import util.writeToFile
 
 
 fun main(args: Array<String>) {
@@ -20,7 +19,7 @@ fun main(args: Array<String>) {
 }
 
 fun rpPropaneStepTwo() {
-    val nnetParams: Map<String, Any> = NeuralNetAlgorithm.createParams(intArrayOf(9,8), 0.0078f, 500)
+    val nnetParams: Map<String, Any> = NeuralNetClassifier.createParams(intArrayOf(9,8), 0.0078f, 500)
 
 
     val propaneDataReader = PropaneDataReader()
@@ -30,7 +29,7 @@ fun rpPropaneStepTwo() {
 }
 
 fun rpIrisStepTwo() {
-    val nnetParams: Map<String, Any> = NeuralNetAlgorithm.createParams(intArrayOf(13), 0.0078f, 500)
+    val nnetParams: Map<String, Any> = NeuralNetClassifier.createParams(intArrayOf(13), 0.0078f, 500)
 
 
     val irisDataReader = IrisDataReader()
@@ -39,9 +38,9 @@ fun rpIrisStepTwo() {
 }
 
 fun randomProjectionsWithBoosting(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, numFeaturesOut: Int) {
-    val booster = BoostingAlgorithm()
+    val booster = BoostingClassifier()
 
-    booster.setParams(BoostingAlgorithm.createParams("weka.classifiers.trees.REPTree", 50))
+    booster.setParams(BoostingClassifier.createParams("weka.classifiers.trees.REPTree", 50))
 
     val randomProjections = RandomizedProjectionsWrapper(dataSet, booster, errorFunction)
 
@@ -63,7 +62,7 @@ fun randomProjectionsWithBoosting(dataSet: DataSet<Instance>, errorFunction: (Do
 }
 
 fun randomProjectionsWithNNet(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, nnetParams: Map<String, Any>, numFeaturesOut: Int, iterations: Int) {
-    val nNet = NeuralNetAlgorithm()
+    val nNet = NeuralNetClassifier()
 
     nNet.setParams(nnetParams)
 

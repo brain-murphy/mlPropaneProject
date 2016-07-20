@@ -1,8 +1,6 @@
-package algorithms;
+package algorithms.classifiers;
 
 import datasets.*;
-import org.encog.*;
-import org.encog.mathutil.libsvm.*;
 import org.encog.ml.data.*;
 import org.encog.ml.data.basic.*;
 import org.encog.ml.svm.*;
@@ -11,7 +9,7 @@ import org.encog.util.arrayutil.*;
 
 import java.util.*;
 
-public class SvmAlgorithm implements Algorithm {
+public class SvmClassifier implements Classifier {
 
     public static final String KEY_KERNEL_TYPE = "kernel type param";
     public static final String KEY_C = "c param";

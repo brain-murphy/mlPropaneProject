@@ -1,4 +1,4 @@
-package algorithms;
+package algorithms.classifiers;
 
 import datasets.*;
 import org.encog.engine.network.activation.*;
@@ -10,7 +10,7 @@ import org.encog.util.arrayutil.*;
 
 import java.util.*;
 
-public class NeuralNetAlgorithm implements Algorithm {
+public class NeuralNetClassifier implements Classifier {
 
     private NormalizeArray inputNormalizer;
 

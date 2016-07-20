@@ -1,6 +1,6 @@
 package filters
 
-import algorithms.Algorithm
+import algorithms.classifiers.Classifier
 import datasets.DataSet
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
@@ -10,7 +10,7 @@ import kotlin.concurrent.thread
 
 
 class RandomizedProjectionsWrapper(private val dataSet: DataSet<Instance>,
-                                   private val algorithm: Algorithm,
+                                   private val classifier: Classifier,
                                    private val errorFunction: (Double) -> Double) {
 
     var crossValidationFolds = 10
@@ -45,7 +45,7 @@ class RandomizedProjectionsWrapper(private val dataSet: DataSet<Instance>,
     }
 
     private fun getValidationError(testSet: DataSet<Instance>): Double {
-        val results = CrossValidation(errorFunction, crossValidationFolds, testSet, algorithm).run()
+        val results = CrossValidation(errorFunction, crossValidationFolds, testSet, classifier).run()
 
         return results.meanValidationError
     }

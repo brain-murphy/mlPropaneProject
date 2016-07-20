@@ -1,6 +1,6 @@
 package util
 
-import algorithms.Algorithm
+import algorithms.classifiers.Classifier
 import datasets.DataSet
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
@@ -9,7 +9,7 @@ import java.util.*
 
 
 class LearningCurve(private val dataSet: DataSet<out Instance>,
-                    private val algorithm: Algorithm,
+                    private val classifier: Classifier,
                     private val errorFunction: (Double) -> Double,
                     private val foldCount: Int = 10) {
 
@@ -29,12 +29,12 @@ class LearningCurve(private val dataSet: DataSet<out Instance>,
             val dataToUse = splitDataSetProportionately(proportion, 1.0 - proportion)[0]
 
             if (leaveOneOutCrossValidation) {
-                val results = CrossValidation(errorFunction, dataToUse.getInstances().size, dataToUse, algorithm).run()
+                val results = CrossValidation(errorFunction, dataToUse.getInstances().size, dataToUse, classifier).run()
 
                 csvResults.addRow(proportion, results.meanTrainingError, results.meanValidationError)
 
             } else if (dataToUse.getInstances().size >= foldCount) {
-                val results = CrossValidation(errorFunction, foldCount, dataToUse, algorithm).run()
+                val results = CrossValidation(errorFunction, foldCount, dataToUse, classifier).run()
 
                 csvResults.addRow(proportion, results.meanTrainingError, results.meanValidationError)
             }

@@ -1,6 +1,6 @@
 package util;
 
-import algorithms.*;
+import algorithms.classifiers.Classifier;
 import datasets.*;
 import org.apache.commons.math3.stat.descriptive.*;
 
@@ -14,9 +14,9 @@ public class CrossValidation {
     private Function<Double, Double> errorFunction;
     private int numFolds;
     private DataSet<Instance> dataSet;
-    private Algorithm algorithm;
+    private Classifier classifier;
 
-    public static Result crossValidate(DataSet dataSet, int numFolds, Algorithm algorithm, Function<Double, Double> errorFunction) {
+    public static Result crossValidate(DataSet dataSet, int numFolds, Classifier classifier, Function<Double, Double> errorFunction) {
         List<Instance>[] groups = dataSet.splitDataSetRandomly(numFolds);
 
         SummaryStatistics validationErrors = new SummaryStatistics();
@@ -27,19 +27,19 @@ public class CrossValidation {
 
             DataSet<Instance> trainingDataSet = new DataSet<Instance>(combineAllListsExceptOne(groups, i), dataSet.hasDiscreteOutput());
 
-            algorithm.train(trainingDataSet);
+            classifier.train(trainingDataSet);
 
             double sumOfValidationError = 0;
             double sumOfTrainingError = 0;
 
             for (Instance testInstance : testingData) {
-                double output = (double) algorithm.evaluate(testInstance.getInput());
+                double output = (double) classifier.evaluate(testInstance.getInput());
                 double validationErr = errorFunction.apply(testInstance.getDifference(output));
                 sumOfValidationError += validationErr;
             }
 
             for (Instance trainingInstance : trainingDataSet.getInstances()) {
-                double output = (double) algorithm.evaluate(trainingInstance.getInput());
+                double output = (double) classifier.evaluate(trainingInstance.getInput());
                 sumOfTrainingError += errorFunction.apply(trainingInstance.getDifference(output));
             }
 
@@ -81,19 +81,19 @@ public class CrossValidation {
         return total;
     }
 
-    public CrossValidation(Function<Double, Double> errorFunction, int numFolds, DataSet<Instance> dataSet, Algorithm algorithm) {
+    public CrossValidation(Function<Double, Double> errorFunction, int numFolds, DataSet<Instance> dataSet, Classifier classifier) {
         this.errorFunction = errorFunction;
         this.numFolds = numFolds;
         this.dataSet = dataSet;
-        this.algorithm = algorithm;
+        this.classifier = classifier;
     }
 
-    public CrossValidation(DataSet<Instance> dataSet, Algorithm algorithm) {
-        this(new AbsoluteError(), DEFAULT_NUM_FOLDS, dataSet, algorithm);
+    public CrossValidation(DataSet<Instance> dataSet, Classifier classifier) {
+        this(new AbsoluteError(), DEFAULT_NUM_FOLDS, dataSet, classifier);
     }
 
     public Result run() {
-        return crossValidate(dataSet, numFolds, algorithm, errorFunction);
+        return crossValidate(dataSet, numFolds, classifier, errorFunction);
     }
 
     public void setErrorFunction(Function<Double, Double> errorFunction) {

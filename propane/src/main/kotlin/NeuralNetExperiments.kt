@@ -1,11 +1,11 @@
 @file:JvmName("NeuralNetExperiments")
 
-import algorithms.NeuralNetAlgorithm
+import algorithms.classifiers.NeuralNetClassifier
 import datasets.*
 import util.*
 
 fun main(args: Array<String>) {
-    val nNetParams = NeuralNetAlgorithm.createParams(intArrayOf(9, 8), 0.006f, 500)
+    val nNetParams = NeuralNetClassifier.createParams(intArrayOf(9, 8), 0.006f, 500)
 
     val propaneDataReader = PropaneDataReader(true)
 
@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
 }
 
 fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, params: Map<String, Any>) {
-    val nNet = NeuralNetAlgorithm()
+    val nNet = NeuralNetClassifier()
 
     nNet.setParams(params)
 
@@ -32,9 +32,9 @@ fun findHiddenLayerLength(dataSet: DataSet<Instance>) {
     val csv = CsvPrinter(arrayOf("HiddenLayerSize", "TrainingError", "ValidationError"))
 
     for (hiddenLayerLength in 2..149) {
-        val neuralNet = NeuralNetAlgorithm()
+        val neuralNet = NeuralNetClassifier()
 
-        neuralNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(hiddenLayerLength), .01f, 1000))
+        neuralNet.setParams(NeuralNetClassifier.createParams(intArrayOf(hiddenLayerLength), .01f, 1000))
 
         val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
 
@@ -50,11 +50,11 @@ fun findTrainingErrorThreshold(dataSet: DataSet<Instance>) {
 
     var divisor = 2
     while (divisor < 1025) {
-        val neuralNet = NeuralNetAlgorithm()
+        val neuralNet = NeuralNetClassifier()
 
         val trainingErrorThreshold = 1.0f / divisor
 
-        neuralNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(9, 8), trainingErrorThreshold, 1000))
+        neuralNet.setParams(NeuralNetClassifier.createParams(intArrayOf(9, 8), trainingErrorThreshold, 1000))
 
         val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
 
@@ -66,9 +66,9 @@ fun findTrainingErrorThreshold(dataSet: DataSet<Instance>) {
 }
 
 fun moonshot() {
-    val neuralNet = NeuralNetAlgorithm()
+    val neuralNet = NeuralNetClassifier()
 
-    neuralNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(9, 8), 0.006f, 500))
+    neuralNet.setParams(NeuralNetClassifier.createParams(intArrayOf(9, 8), 0.006f, 500))
 
     val dataSet = PcaPropaneDataReader().propaneDataSet as DataSet<Instance>
 
@@ -81,9 +81,9 @@ fun moonshot() {
 
 fun moonshot2() {
 
-    val neuralNet = NeuralNetAlgorithm()
+    val neuralNet = NeuralNetClassifier()
 
-    neuralNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(100), .005f, 10000))
+    neuralNet.setParams(NeuralNetClassifier.createParams(intArrayOf(100), .005f, 10000))
 
     val dataSet = PropaneDataReader().propaneDataSet as DataSet<Instance>
 
@@ -102,9 +102,9 @@ fun gridSearchTwoLayerStructure(dataSet: DataSet<Instance>, maxFirstLayer: Int, 
 
         var secondLayerLength = 2
         while (secondLayerLength < firstLayerLength && secondLayerLength < maxSecondLayer) {
-            val neuralNet = NeuralNetAlgorithm()
+            val neuralNet = NeuralNetClassifier()
 
-            neuralNet.setParams(NeuralNetAlgorithm.createParams(intArrayOf(firstLayerLength, secondLayerLength), .006f, 10000))
+            neuralNet.setParams(NeuralNetClassifier.createParams(intArrayOf(firstLayerLength, secondLayerLength), .006f, 10000))
 
             val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
 

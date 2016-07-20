@@ -1,6 +1,6 @@
 package util;
 
-import algorithms.*;
+import algorithms.classifiers.Classifier;
 import datasets.*;
 import datasets.Instance;
 import org.apache.commons.math3.stat.descriptive.*;
@@ -20,7 +20,7 @@ public class MLUtils {
         return primitiveArray;
     }
 
-    public static Result crossValidate(DataSet dataSet, int numFolds, Algorithm algorithm) {
+    public static Result crossValidate(DataSet dataSet, int numFolds, Classifier classifier) {
         List<Instance>[] groups = dataSet.splitDataSetRandomly(numFolds);
 
         SummaryStatistics validationErrors = new SummaryStatistics();
@@ -31,18 +31,18 @@ public class MLUtils {
 
             DataSet<Instance> trainingDataSet = new DataSet<Instance>(combineAllListsExceptOne(groups, i), dataSet.hasDiscreteOutput());
 
-            algorithm.train(trainingDataSet);
+            classifier.train(trainingDataSet);
 
             double sumOfValidationError = 0;
             double sumOfTrainingError = 0;
 
             for (Instance testInstance : testingData) {
-                double output = (double) algorithm.evaluate(testInstance.getInput());
+                double output = (double) classifier.evaluate(testInstance.getInput());
                 sumOfValidationError += testInstance.getDifference(output);
             }
 
             for (Instance trainingInstance : trainingDataSet.getInstances()) {
-                double output = (double) algorithm.evaluate(trainingInstance.getInput());
+                double output = (double) classifier.evaluate(trainingInstance.getInput());
                 sumOfTrainingError += trainingInstance.getDifference(output);
             }
 
@@ -84,20 +84,20 @@ public class MLUtils {
         return total;
     }
 
-    public static Result leaveOneOutCrossValidate(DataSet dataSet, Algorithm algorithm) {
-        return crossValidate(dataSet, dataSet.getInstances().length, algorithm);
+    public static Result leaveOneOutCrossValidate(DataSet dataSet, Classifier classifier) {
+        return crossValidate(dataSet, dataSet.getInstances().length, classifier);
     }
 
-    public static void printLearningCurve(DataSet dataSet, Algorithm algorithm) {
+    public static void printLearningCurve(DataSet dataSet, Classifier classifier) {
 
         System.out.println("percentOfDataForTesting,trainingError,crossValidationError");
         for (int divisor = 2; divisor < 11; divisor++) {
-            Result results = crossValidate(dataSet, divisor, algorithm);
+            Result results = crossValidate(dataSet, divisor, classifier);
 
             System.out.println(String.format("%.3f", 1.0f / divisor) + "," + results.getMeanTrainingError() + "," + String.format("%.3f", results.getMeanValidationError()));
         }
 
-        Result results = leaveOneOutCrossValidate(dataSet, algorithm);
+        Result results = leaveOneOutCrossValidate(dataSet, classifier);
 
         System.out.println(String.format("%.3f", 1.0f / dataSet.getInstances().length) + "," + results.getMeanTrainingError() + "," + String.format("%.3f", results.getMeanValidationError()));
     }

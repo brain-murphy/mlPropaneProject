@@ -1,7 +1,7 @@
 package clusterers
 
-import algorithms.NeuralNetAlgorithm
-import algorithms.clusterers.KMeansAlgorithm
+import algorithms.classifiers.NeuralNetClassifier
+import algorithms.clusterers.KMeansClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
@@ -14,10 +14,10 @@ import javax.xml.crypto.Data
 fun main(args: Array<String>) {
     testClusterDataDouble(IrisDataReader().clusteredDataSet)
 //    val numClusters = 3
-//    System.out.println(dimReductionUsingClusters(IrisDataReader().reducedDataSets, numClusters,KMeansAlgorithm.DistanceFunction.Euclidean))
+//    System.out.println(dimReductionUsingClusters(IrisDataReader().reducedDataSets, numClusters,KMeansClassifier.DistanceFunction.Euclidean))
 }
 
-fun dimReductionUsingClusters(dataSets: Array<DataSet<Instance>>, numClusters: Int, kMeansDistance: KMeansAlgorithm.DistanceFunction): Csv {
+fun dimReductionUsingClusters(dataSets: Array<DataSet<Instance>>, numClusters: Int, kMeansDistance: KMeansClassifier.DistanceFunction): Csv {
 
     val clustererOutputs = LinkedList<IntArray>()
 
@@ -48,7 +48,7 @@ fun makeClusterRow(clustererOutputs: List<IntArray>, instanceIndex: Int): Array<
 }
 
 fun testClusterData(dataSet: DataSet<Instance>) {
-    val nNetParams = NeuralNetAlgorithm.createParams(intArrayOf(13), 0.006f, 500)
+    val nNetParams = NeuralNetClassifier.createParams(intArrayOf(13), 0.006f, 500)
 
     neuralNetLearningCurve(dataSet, ::absoluteError, nNetParams)
 }

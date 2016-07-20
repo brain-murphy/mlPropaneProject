@@ -1,11 +1,8 @@
 package algorithms.clusterers;
 
-import algorithms.Algorithm;
-import datasets.Instance;
+import algorithms.classifiers.Classifier;
 
-import java.util.Map;
-
-public interface Clusterer extends Algorithm {
+public interface Clusterer extends Classifier {
 
     int[] getClusters();
 }

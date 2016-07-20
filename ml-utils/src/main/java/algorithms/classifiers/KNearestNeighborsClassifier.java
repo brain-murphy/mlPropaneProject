@@ -1,4 +1,4 @@
-package algorithms;
+package algorithms.classifiers;
 
 import datasets.*;
 import datasets.parsers.SupervisedWekaParser;
@@ -7,7 +7,7 @@ import weka.core.*;
 
 import java.util.*;
 
-public class KNearestNeighborsAlgorithm implements Algorithm {
+public class KNearestNeighborsClassifier implements Classifier {
 
     public static final String KEY_K = "k param";
 

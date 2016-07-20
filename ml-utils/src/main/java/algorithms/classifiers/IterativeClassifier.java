@@ -1,10 +1,10 @@
-package algorithms;
+package algorithms.classifiers;
 
 import datasets.*;
 
 import java.util.*;
 
-public interface IterativeAlgorithm extends Algorithm {
+public interface IterativeClassifier extends Classifier {
     public void setParams(Map<String, Object> params);
 
     public void train(DataSet dataset);

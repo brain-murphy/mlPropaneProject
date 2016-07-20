@@ -1,6 +1,6 @@
 @file:JvmName("SvmExperiments")
 
-import algorithms.SvmAlgorithm
+import algorithms.classifiers.SvmClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
@@ -9,21 +9,21 @@ import util.CrossValidation
 import util.Result
 
 fun main(args: Array<String>) {
-    comparePropaneDataSets(SvmAlgorithm.Kernel.RadialBasisFunction,1.0,1.0);
+    comparePropaneDataSets(SvmClassifier.Kernel.RadialBasisFunction,1.0,1.0);
 //    findBestC(PcaPropaneDataReader().propaneDataSet as DataSet<Instance>)
 }
 
-fun runSvm(dataSet: DataSet<Instance>, kernel: SvmAlgorithm.Kernel, c: Double, gamma: Double) : Result {
-    val svm = SvmAlgorithm()
+fun runSvm(dataSet: DataSet<Instance>, kernel: SvmClassifier.Kernel, c: Double, gamma: Double) : Result {
+    val svm = SvmClassifier()
 
-    svm.setParams(SvmAlgorithm.createParams(kernel, c, gamma));
+    svm.setParams(SvmClassifier.createParams(kernel, c, gamma));
 
     val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 20, dataSet, svm);
 
     return crossValidation.run()
 }
 
-fun comparePropaneDataSets(kernel: SvmAlgorithm.Kernel, c: Double, gamma: Double) {
+fun comparePropaneDataSets(kernel: SvmClassifier.Kernel, c: Double, gamma: Double) {
     val pcaDataResults = runSvm(PcaPropaneDataReader().propaneDataSet as DataSet<Instance>, kernel, c, gamma)
     val originalDataResults = runSvm(PropaneDataReader().propaneDataSet as DataSet<Instance>, kernel, c, gamma)
 
@@ -38,7 +38,7 @@ fun findBestC(dataSet: DataSet<Instance>) {
     while (c >= .0000001) {
         c /= 10.0
 
-        val result = runSvm(dataSet, SvmAlgorithm.Kernel.RadialBasisFunction, c, 0.1);
+        val result = runSvm(dataSet, SvmClassifier.Kernel.RadialBasisFunction, c, 0.1);
 
         println("$c,${result.meanTrainingError},${result.meanValidationError}");
     }

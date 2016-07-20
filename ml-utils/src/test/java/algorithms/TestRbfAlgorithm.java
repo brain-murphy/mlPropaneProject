@@ -1,5 +1,6 @@
 package algorithms;
 
+import algorithms.classifiers.RbfClassifier;
 import datasets.*;
 import org.junit.*;
 
@@ -7,12 +8,12 @@ import java.util.*;
 
 public class TestRbfAlgorithm {
 
-    private RbfAlgorithm rbfAlgorithm;
+    private RbfClassifier rbfAlgorithm;
     private double delta;
 
     @Before
     public void setUp() {
-        rbfAlgorithm = new RbfAlgorithm();
+        rbfAlgorithm = new RbfClassifier();
     }
 
     @Test
@@ -65,7 +66,7 @@ public class TestRbfAlgorithm {
 
         Map<String, Object> params = new HashMap<>();
 
-        params.put(RbfAlgorithm.KEY_NUM_RBFS, 3);
+        params.put(RbfClassifier.KEY_NUM_RBFS, 3);
 
         rbfAlgorithm.setParams(params);
 
