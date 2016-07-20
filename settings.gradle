@@ -1,4 +1,5 @@
 rootProject.name = 'propaneregression'
 include 'ml-utils'
 include 'propane'
+include 'unsupervised'
 

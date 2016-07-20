@@ -24,3 +24,8 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
+def mainProjects = [':unsupervised',':propane',':ml-utils']
+task oneJar( type: Jar , dependsOn: mainProjects.collect{ it+":compileJava"}) {
+    baseName = 'name of jar'
+    from files(mainProjects.collect{ project(it).sourceSets.main.output })
+}

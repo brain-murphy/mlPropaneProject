@@ -140,4 +140,8 @@ public class MLUtils {
 
         return stats.getMean();
     }
+
+    public static void main(String[] args) {
+        System.out.println(new PropaneDataReader().get2013PropaneDataSet().toString());
+    }
 }
