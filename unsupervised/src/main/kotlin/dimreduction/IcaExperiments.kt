@@ -3,7 +3,6 @@ package dimreduction
 import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
-import datasets.PropaneDataReader
 import filters.IndependentComponentsFilter
 import learningCurveREPBoosting
 import util.MLUtils
@@ -21,7 +20,7 @@ fun testIcaBoosting(dataSet: DataSet<Instance>) {
 
     val icaDataSet = IndependentComponentsFilter().filterDataSet(dataSet)
 
-    val numFeatures = icaDataSet.getInstances()[0].input.size;
+    val numFeatures = icaDataSet.getInstances()[0].input.size
 
     System.out.println("ICA data REP Boosting with $numFeatures features")
     learningCurveREPBoosting(icaDataSet, absoluteError)

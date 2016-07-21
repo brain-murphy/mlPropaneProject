@@ -5,7 +5,6 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
 import datasets.PropaneDataReader
-import util.Csv
 import util.MLUtils
 
 fun main(args: Array<String>) {

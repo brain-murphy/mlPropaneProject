@@ -3,10 +3,9 @@ package algorithms.parsers;
 import datasets.DataSet;
 import datasets.Instance;
 import org.jetbrains.annotations.NotNull;
-import shared.test.LinearDiscriminantAnalysisTest;
 import util.linalg.Vector;
 
-public class AbagailParser {
+class AbagailParser {
 
     private DataSet<Instance> originalDataSet;
 

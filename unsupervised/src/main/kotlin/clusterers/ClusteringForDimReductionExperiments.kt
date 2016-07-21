@@ -9,7 +9,6 @@ import neuralNetLearningCurve
 import util.Csv
 import util.absoluteError
 import java.util.*
-import javax.xml.crypto.Data
 
 fun main(args: Array<String>) {
     testClusterDataDouble(IrisDataReader().clusteredDataSet)
@@ -18,7 +17,6 @@ fun main(args: Array<String>) {
 }
 
 fun dimReductionUsingClusters(dataSets: Array<DataSet<Instance>>, numClusters: Int, kMeansDistance: KMeansClassifier.DistanceFunction): Csv {
-
     val clustererOutputs = LinkedList<IntArray>()
 
     for (dataSet in dataSets) {
@@ -58,5 +56,5 @@ fun testClusterDataDouble(dataSet: DataSet<Instance>) {
     val numUniqueInstances = instances.size
     val doubleData = Array<Instance>(numUniqueInstances * 2, { i -> instances[i % numUniqueInstances].deepCopy()})
 
-    testClusterData(DataSet<Instance>(doubleData, dataSet.hasDiscreteOutput()))
+    testClusterData(DataSet(doubleData, dataSet.hasDiscreteOutput()))
 }

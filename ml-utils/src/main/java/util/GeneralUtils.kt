@@ -6,7 +6,6 @@ import analysis.ElapsedTime
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import java.io.*
-import java.nio.charset.Charset
 
 object GeneralUtils {
 
@@ -42,7 +41,9 @@ object GeneralUtils {
         return javaClass.classLoader
     }
 
-    fun getCsvParser(csvContent: String): CSVParser {
+    fun getCsvParser(filePath: String): CSVParser {
+
+        val csvContent = readFromPackage(filePath)
 
         try {
             return CSVParser.parse(csvContent, CSVFormat.DEFAULT)

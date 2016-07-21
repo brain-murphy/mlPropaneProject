@@ -52,7 +52,7 @@ class LearningCurve(private val dataSet: DataSet<out Instance>,
         return iteration.toDouble() / 50.0
     }
 
-    protected fun splitDataSetProportionately(vararg proportions: Double) : Array<DataSet<Instance>> {
+    private fun splitDataSetProportionately(vararg proportions: Double) : Array<DataSet<Instance>> {
         if (proportions.reduce { total, current -> total + current } < allButOne) {
             throw IllegalArgumentException("proportions must sum to one")
         }
@@ -73,7 +73,7 @@ class LearningCurve(private val dataSet: DataSet<out Instance>,
                 split.add(allInstances.removeAt(random.nextInt(allInstances.size)))
             }
 
-            resultingDataSets.add(DataSet<Instance>(split.toTypedArray(), dataSet.hasDiscreteOutput()))
+            resultingDataSets.add(DataSet(split.toTypedArray(), dataSet.hasDiscreteOutput()))
         }
 
         return resultingDataSets.toTypedArray()

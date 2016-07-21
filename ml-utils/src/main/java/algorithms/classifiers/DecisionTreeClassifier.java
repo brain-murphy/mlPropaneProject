@@ -2,10 +2,7 @@ package algorithms.classifiers;
 
 import datasets.*;
 import algorithms.parsers.SupervisedWekaParser;
-import org.apache.commons.math3.analysis.function.Abs;
-import weka.Run;
 import weka.classifiers.AbstractClassifier;
-import weka.classifiers.trees.*;
 import weka.core.Instance;
 
 import java.util.*;
@@ -33,7 +30,7 @@ public class DecisionTreeClassifier implements Classifier {
     }
 
     @Override
-    public void train(DataSet dataset) {
+    public void train(DataSet<datasets.Instance> dataset) {
         parser = new SupervisedWekaParser(dataset);
 
         tree = configureTree();

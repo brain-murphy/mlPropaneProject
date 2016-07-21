@@ -56,7 +56,7 @@ fun randomProjectionsWithBoosting(dataSet: DataSet<Instance>, errorFunction: (Do
     System.out.println("elapsed time: $originalDataSetTime")
 
 
-    System.out.println("random projection dataset");
+    System.out.println("random projection dataset")
     val randomProjectionDataSetTime = timeThis { learningCurveREPBoosting(bestProjectedDataSet, ::absoluteError) }
     System.out.println("elapsed time: $randomProjectionDataSetTime")
 }

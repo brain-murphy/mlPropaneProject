@@ -2,6 +2,7 @@ package algorithms.classifiers;
 
 import datasets.*;
 import algorithms.parsers.SupervisedWekaParser;
+import datasets.Instance;
 import weka.classifiers.functions.*;
 import weka.core.*;
 
@@ -13,6 +14,10 @@ public class RbfClassifier implements Classifier {
     public static final String KEY_CONJUGATE_GRADIENT_DESCENT = "conjugate gradient descent param";
     public static final String KEY_TOLERANCE = "tolerance param";
 
+    public static final int DEFAULT_NUM_RBFS = 2;
+    public static final double DEFAULT_TOLERANCE = 1.0e-6;
+    public static final int DEFAULT_NUM_THREADS = 3;
+
     private RBFRegressor rbf;
     private Map<String, Object> params;
     private SupervisedWekaParser parser;
@@ -23,13 +28,14 @@ public class RbfClassifier implements Classifier {
     }
 
     @Override
-    public void train(DataSet dataset) {
+    public void train(DataSet<Instance> dataset) {
         parser = new SupervisedWekaParser(dataset);
 
         rbf = new RBFRegressor();
 
+        setOptions();
+
         try {
-            rbf.setOptions(paramsToOptionsString());
             rbf.buildClassifier(parser.getDataSetAsInstances());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -45,16 +51,25 @@ public class RbfClassifier implements Classifier {
         }
     }
 
-    private String[] paramsToOptionsString() {
-        int threads = 3;
-        int numRbfs = params.containsKey(KEY_NUM_RBFS) ? (int) params.get(KEY_NUM_RBFS) : 2;
-        boolean conjugateGradientDescent = params.containsKey(KEY_CONJUGATE_GRADIENT_DESCENT) ? (boolean) params.get(KEY_CONJUGATE_GRADIENT_DESCENT) : false;
-        double tolerance = params.containsKey(KEY_TOLERANCE) ? (double) params.get(KEY_TOLERANCE) : 1.0e-6;
+    private void setOptions() {
+        rbf.setNumThreads(DEFAULT_NUM_THREADS);
 
-        try {
-            return Utils.splitOptions("-P " + threads + " -E " + threads + (conjugateGradientDescent ? " -G " : "") + " -L " + tolerance + " -N " + numRbfs);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if (params.containsKey(KEY_NUM_RBFS)) {
+            rbf.setNumFunctions((Integer) params.get(KEY_NUM_RBFS));
+        } else {
+            rbf.setNumFunctions(DEFAULT_NUM_RBFS);
+        }
+
+        if (params.containsKey(KEY_CONJUGATE_GRADIENT_DESCENT)) {
+            rbf.setUseCGD((Boolean) params.get(KEY_CONJUGATE_GRADIENT_DESCENT));
+        } else {
+            rbf.setUseCGD(false);
+        }
+
+        if (params.containsKey(KEY_TOLERANCE)) {
+            rbf.setTolerance((Double) params.get(KEY_TOLERANCE));
+        } else {
+            rbf.setTolerance(DEFAULT_TOLERANCE);
         }
     }
 }

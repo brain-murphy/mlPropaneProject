@@ -5,7 +5,7 @@ import datasets.*;
 import java.util.*;
 
 public interface Classifier {
-    public void setParams(Map<String, Object> params);
-    public void train(DataSet dataset);
-    public Object evaluate(Object input);
+    void setParams(Map<String, Object> params);
+    void train(DataSet<Instance> dataset);
+    Object evaluate(Object input);
 }

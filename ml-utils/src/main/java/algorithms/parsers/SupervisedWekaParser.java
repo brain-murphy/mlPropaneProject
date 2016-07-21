@@ -44,7 +44,6 @@ public class SupervisedWekaParser extends WekaParser {
         return attributesList;
     }
 
-    @NotNull
     private void setOutputAttribute(DataSet<datasets.Instance> dataSet) {
         datasets.Instance firstInstance = dataSet.getInstances()[0];
 
@@ -57,6 +56,7 @@ public class SupervisedWekaParser extends WekaParser {
         }
     }
 
+    @NotNull
     protected weka.core.Instance parseInstance(datasets.Instance instance) {
         weka.core.Instance wekaInstance = super.parseInstance(instance);
 

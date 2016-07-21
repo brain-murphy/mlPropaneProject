@@ -1,13 +1,5 @@
 package datasets;
 
-import org.apache.commons.csv.*;
-import util.*;
-
-import java.io.*;
-import java.net.*;
-import java.nio.charset.*;
-import java.util.*;
-
 public class PcaPropaneDataReader {
 
     private static final String PROPANE_DATA_2013_FILE_PATH = "datasets/propanedataPca95.csv";

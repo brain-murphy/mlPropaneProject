@@ -3,7 +3,6 @@ package algorithms.clusterers;
 import datasets.DataSet;
 import datasets.Instance;
 import algorithms.parsers.WekaParser;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import weka.clusterers.SimpleKMeans;
 import weka.core.EuclideanDistance;
 import weka.core.ManhattanDistance;
@@ -13,13 +12,13 @@ import java.util.Map;
 
 public class KMeansClassifier implements Clusterer {
 
-    public static final int NUM_EXECUTION_SLOTS = 2;
+    private static final int NUM_EXECUTION_SLOTS = 2;
 
     public static String KEY_DISTANCE_FUNCTION = "distance func param";
     public static String KEY_K = "k param";
 
     private Map<String, Object> params;
-    private Instance[] instances;
+    private WekaParser wekaParser;
 
     public static Map<String,Object> createParams(int k, DistanceFunction distanceFunction) {
         Map<String,Object> params = new HashMap<>();
@@ -38,14 +37,12 @@ public class KMeansClassifier implements Clusterer {
     }
 
     @Override
-    public void train(DataSet dataSet) {
+    public void train(DataSet<Instance> dataSet) {
         kMeans = new SimpleKMeans();
-
-        instances = dataSet.getInstances();
 
         parseOptions();
 
-        WekaParser wekaParser = new WekaParser(dataSet);
+        wekaParser = new WekaParser(dataSet);
 
         try {
             kMeans.buildClusterer(wekaParser.getDataSetAsInstances());
@@ -83,7 +80,11 @@ public class KMeansClassifier implements Clusterer {
 
     @Override
     public Object evaluate(Object input) {
-        throw new NotImplementedException();
+        try {
+            return kMeans.clusterInstance(wekaParser.parseInstanceForEvaluation((double[]) input));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -16,7 +16,7 @@ public class CrossValidation {
     private DataSet<Instance> dataSet;
     private Classifier classifier;
 
-    public static Result crossValidate(DataSet dataSet, int numFolds, Classifier classifier, Function<Double, Double> errorFunction) {
+    public static Result crossValidate(DataSet<Instance> dataSet, int numFolds, Classifier classifier, Function<Double, Double> errorFunction) {
         List<Instance>[] groups = dataSet.splitDataSetRandomly(numFolds);
 
         SummaryStatistics validationErrors = new SummaryStatistics();
@@ -25,7 +25,7 @@ public class CrossValidation {
         for (int i = 0; i < numFolds; i++) {
             Instance[] testingData = groups[i].toArray(new Instance[groups[i].size()]);
 
-            DataSet<Instance> trainingDataSet = new DataSet<Instance>(combineAllListsExceptOne(groups, i), dataSet.hasDiscreteOutput());
+            DataSet<Instance> trainingDataSet = new DataSet<>(combineAllListsExceptOne(groups, i), dataSet.hasDiscreteOutput());
 
             classifier.train(trainingDataSet);
 

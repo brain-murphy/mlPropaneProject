@@ -3,7 +3,6 @@
 import algorithms.classifiers.DecisionTreeClassifier
 import datasets.DataSet
 import datasets.Instance
-import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
 import analysis.CrossValidation
 import analysis.LearningCurve
@@ -30,7 +29,7 @@ fun runDefaultREPTree(dataSet: DataSet<Instance>) {
 
     val decisionTree = DecisionTreeClassifier()
 
-    decisionTree.setParams(DecisionTreeClassifier.createParams(DecisionTreeClassifier.Type.RepTree));
+    decisionTree.setParams(DecisionTreeClassifier.createParams(DecisionTreeClassifier.Type.RepTree))
 
     val foldCount = 20
 

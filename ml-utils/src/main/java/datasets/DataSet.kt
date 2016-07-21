@@ -32,7 +32,7 @@ class DataSet<T : Instance>(private val instances: Array<T>, private val hasDisc
     override fun toString(): String {
         val numInputs = instances[0].input.size
 
-        val inputColumnNames = (1..numInputs).map { i -> "Input${i}" }.toTypedArray()
+        val inputColumnNames = (1..numInputs).map { i -> "Input$i" }.toTypedArray()
 
         val csv = Csv(*inputColumnNames, "Output")
 

@@ -34,7 +34,7 @@ public class EmClusterer implements Clusterer {
     }
 
     @Override
-    public void train(DataSet dataset) {
+    public void train(DataSet<Instance> dataset) {
         em = new EM();
 
         setOptions();

@@ -22,9 +22,7 @@ fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -
 
     nNet.setParams(params)
 
-    val learningCurve = LearningCurve(dataSet, nNet, errorFunction, 10);
-
-//    learningCurve.enableLeaveOneOutCV()
+    val learningCurve = LearningCurve(dataSet, nNet, errorFunction, 10)
 
     val csv = learningCurve.run()
 
@@ -80,7 +78,7 @@ fun moonshot() {
 
     val result = crossValidation.run()
 
-    println("validation Error:" + result.getMeanValidationError())
+    println("validation Error:" + result.meanValidationError)
 }
 
 fun moonshot2() {
@@ -89,13 +87,13 @@ fun moonshot2() {
 
     neuralNet.setParams(NeuralNetClassifier.createParams(intArrayOf(100), .005f, 10000))
 
-    val dataSet = PropaneDataReader().propaneDataSet as DataSet<Instance>
+    val dataSet = PropaneDataReader().propaneDataSet
 
     val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
 
     val result = crossValidation.run()
 
-    println("validation Error:" + result.getMeanValidationError())
+    println("validation Error:" + result.meanValidationError)
 }
 
 fun gridSearchTwoLayerStructure(dataSet: DataSet<Instance>, maxFirstLayer: Int, maxSecondLayer: Int) {

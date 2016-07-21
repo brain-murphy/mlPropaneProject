@@ -16,7 +16,7 @@ public class IrisInstance implements Instance {
         parseOutput(output);
     }
 
-    protected void parseOutput(String species) {
+    private void parseOutput(String species) {
         switch (species) {
             case "Iris-setosa":
                 output = 0;

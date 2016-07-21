@@ -2,6 +2,7 @@ package algorithms.classifiers;
 
 import datasets.*;
 import algorithms.parsers.SupervisedWekaParser;
+import datasets.Instance;
 import weka.classifiers.lazy.*;
 import weka.core.*;
 
@@ -26,7 +27,7 @@ public class KNearestNeighborsClassifier implements Classifier {
     }
 
     @Override
-    public void train(DataSet dataset) {
+    public void train(DataSet<Instance> dataset) {
         parser = new SupervisedWekaParser(dataset);
 
         knn = new IBk();

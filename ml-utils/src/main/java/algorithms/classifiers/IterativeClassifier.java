@@ -5,11 +5,11 @@ import datasets.*;
 import java.util.*;
 
 public interface IterativeClassifier extends Classifier {
-    public void setParams(Map<String, Object> params);
+    void setParams(Map<String, Object> params);
 
-    public void train(DataSet dataset);
+    void train(DataSet dataset);
 
-    public double step();
+    double step();
 
-    public Object evaluate(Object input);
+    Object evaluate(Object input);
 }

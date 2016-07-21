@@ -5,7 +5,7 @@ package analysis
 
 class GridSearch<T: Comparable<Number>>(vararg val dimensions: Dimension<T>, val scoreFunction: (Array<Comparable<Number>>) -> Double) {
 
-    public fun findMaxScore(): Array<T> {
+    fun findMaxScore(): Array<T> {
 
         val currentParams = Array<Comparable<Number>>(dimensions.size, {i -> dimensions[i].start})
 
@@ -31,7 +31,7 @@ class GridSearch<T: Comparable<Number>>(vararg val dimensions: Dimension<T>, val
         }
     }
 
-    public fun findMinScore(): Array<T> {
+    fun findMinScore(): Array<T> {
 
         val currentParams = Array<Comparable<Number>>(dimensions.size, {i -> dimensions[i].start})
 
@@ -82,6 +82,6 @@ class GridSearch<T: Comparable<Number>>(vararg val dimensions: Dimension<T>, val
         return true;
     }
 
-    public data class Dimension<N : Comparable<Number>>(val start: N, val changeFunction: (Comparable<Number>) -> Comparable<Number>, val end: N)
+    data class Dimension<out N : Comparable<Number>>(val start: N, val changeFunction: (Comparable<Number>) -> Comparable<Number>, val end: N)
 }
 
