@@ -1,4 +1,4 @@
-package filters
+package algorithms.filters
 
 import com.sun.xml.internal.fastinfoset.util.StringArray
 import datasets.PropaneDataReader

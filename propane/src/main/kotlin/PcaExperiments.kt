@@ -4,7 +4,7 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
-import analysis.ElapsedTime
+import analysis.statistical.ElapsedTime
 
 fun compareRbfResults() {
     val pcaPropaneData = PcaPropaneDataReader().propaneDataSet

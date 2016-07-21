@@ -5,8 +5,8 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
-import analysis.CrossValidation
-import analysis.Result
+import analysis.statistical.CrossValidation
+import analysis.statistical.Result
 
 fun main(args: Array<String>) {
     comparePropaneDataSets(SvmClassifier.Kernel.RadialBasisFunction,1.0,1.0)

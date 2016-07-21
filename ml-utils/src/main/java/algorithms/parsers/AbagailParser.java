@@ -5,7 +5,7 @@ import datasets.Instance;
 import org.jetbrains.annotations.NotNull;
 import util.linalg.Vector;
 
-class AbagailParser {
+public class AbagailParser {
 
     private DataSet<Instance> originalDataSet;
 

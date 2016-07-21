@@ -3,7 +3,7 @@ package dimreduction
 import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
-import filters.IndependentComponentsFilter
+import algorithms.filters.IndependentComponentsFilter
 import learningCurveREPBoosting
 import util.MLUtils
 

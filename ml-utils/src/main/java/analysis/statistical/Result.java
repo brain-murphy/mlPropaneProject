@@ -1,4 +1,4 @@
-package analysis;
+package analysis.statistical;
 
 public class Result {
     private double meanValidationError;

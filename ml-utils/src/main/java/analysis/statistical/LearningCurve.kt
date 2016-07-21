@@ -1,4 +1,4 @@
-package analysis
+package analysis.statistical
 
 import algorithms.classifiers.Classifier
 import datasets.DataSet

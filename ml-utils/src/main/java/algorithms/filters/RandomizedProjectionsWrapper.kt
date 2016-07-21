@@ -1,10 +1,10 @@
-package filters
+package algorithms.filters
 
 import algorithms.classifiers.Classifier
 import datasets.DataSet
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
-import analysis.CrossValidation
+import analysis.statistical.CrossValidation
 import java.util.concurrent.CountDownLatch
 import kotlin.concurrent.thread
 

@@ -1,6 +1,6 @@
 package clusterers
 
-import algorithms.clusterers.KMeansClassifier
+import algorithms.clusterers.KMeansClusterer
 import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
 fun kMeansIrisDataStepOne() {
     val dataSet = IrisDataReader().irisDataSet
 
-    val distanceFunction = KMeansClassifier.DistanceFunction.Euclidean
+    val distanceFunction = KMeansClusterer.DistanceFunction.Euclidean
 
     val k = 3
 
@@ -27,7 +27,7 @@ fun kMeansIrisDataStepOne() {
 fun kMeansPropaneDataStepOne() {
     val dataSet = PropaneDataReader().propaneDataSet
 
-    val distanceFunction = KMeansClassifier.DistanceFunction.MostProminentAttributeDistanceFunction
+    val distanceFunction = KMeansClusterer.DistanceFunction.MostProminentAttributeDistanceFunction
 
     val k = 2
 
@@ -38,10 +38,10 @@ fun kMeansPropaneDataStepOne() {
     System.out.println(clusterCsv)
 }
 
-fun clusterWithKMeans(dataSet: DataSet<Instance>, distanceFunction: KMeansClassifier.DistanceFunction, k: Int): IntArray {
-    val kMeans = KMeansClassifier()
+fun clusterWithKMeans(dataSet: DataSet<Instance>, distanceFunction: KMeansClusterer.DistanceFunction, k: Int): IntArray {
+    val kMeans = KMeansClusterer()
 
-    kMeans.setParams(KMeansClassifier.createParams(k, distanceFunction))
+    kMeans.setParams(KMeansClusterer.createParams(k, distanceFunction))
 
     kMeans.train(dataSet)
 

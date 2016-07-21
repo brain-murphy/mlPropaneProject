@@ -4,8 +4,8 @@ import algorithms.classifiers.DecisionTreeClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PropaneDataReader
-import analysis.CrossValidation
-import analysis.LearningCurve
+import analysis.statistical.CrossValidation
+import analysis.statistical.LearningCurve
 
 fun main(args: Array<String>) {
     repTreeLearningCurve(PropaneDataReader().propaneDataSet as DataSet<Instance>)

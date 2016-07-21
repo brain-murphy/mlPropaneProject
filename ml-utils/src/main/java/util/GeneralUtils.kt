@@ -2,7 +2,7 @@
 
 package util
 
-import analysis.ElapsedTime
+import analysis.statistical.ElapsedTime
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import java.io.*

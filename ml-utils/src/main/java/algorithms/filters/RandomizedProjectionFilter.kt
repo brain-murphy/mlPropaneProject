@@ -1,4 +1,4 @@
-package filters
+package algorithms.filters
 
 import datasets.DataSet
 import datasets.Instance

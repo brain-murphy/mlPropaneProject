@@ -1,5 +1,6 @@
 package algorithms.clusterers;
 
+import algorithms.classifiers.Classifier;
 import datasets.DataSet;
 import datasets.Instance;
 import algorithms.parsers.WekaParser;
@@ -8,7 +9,7 @@ import weka.clusterers.EM;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EmClusterer implements Clusterer {
+public class EmClusterer implements Clusterer, Classifier {
 
     public static String KEY_CLUSTER_COUNT = "cluster count param";
     public static int EXECUTION_SLOT_COUNT = 2;

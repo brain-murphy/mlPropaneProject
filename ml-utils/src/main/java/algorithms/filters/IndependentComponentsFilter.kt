@@ -1,8 +1,9 @@
-package filters
+package algorithms.filters
 
+import algorithms.parsers.AbagailParser
 import datasets.DataSet
 import datasets.Instance
-import algorithms.parsers.AbagailParser
+
 import shared.filt.IndependentComponentAnalysis
 
 class IndependentComponentsFilter() : Filter {

@@ -1,5 +1,6 @@
 package algorithms.clusterers;
 
+import algorithms.classifiers.Classifier;
 import datasets.DataSet;
 import datasets.Instance;
 import algorithms.parsers.WekaParser;
@@ -10,7 +11,7 @@ import weka.core.ManhattanDistance;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KMeansClassifier implements Clusterer {
+public class KMeansClusterer implements Clusterer, Classifier {
 
     private static final int NUM_EXECUTION_SLOTS = 2;
 

@@ -1,6 +1,6 @@
 @file:JvmName("GridSearch")
 
-package analysis
+package analysis.statistical
 
 
 class GridSearch<T: Comparable<Number>>(vararg val dimensions: Dimension<T>, val scoreFunction: (Array<Comparable<Number>>) -> Double) {

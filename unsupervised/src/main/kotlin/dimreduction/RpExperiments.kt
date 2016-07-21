@@ -6,7 +6,7 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
 import datasets.PropaneDataReader
-import filters.RandomizedProjectionsWrapper
+import algorithms.filters.RandomizedProjectionsWrapper
 import learningCurveREPBoosting
 import neuralNetLearningCurve
 import util.MLUtils

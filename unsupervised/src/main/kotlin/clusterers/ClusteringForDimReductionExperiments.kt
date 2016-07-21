@@ -1,7 +1,7 @@
 package clusterers
 
 import algorithms.classifiers.NeuralNetClassifier
-import algorithms.clusterers.KMeansClassifier
+import algorithms.clusterers.KMeansClusterer
 import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
@@ -13,10 +13,10 @@ import java.util.*
 fun main(args: Array<String>) {
     testClusterDataDouble(IrisDataReader().clusteredDataSet)
 //    val numClusters = 3
-//    System.out.println(dimReductionUsingClusters(IrisDataReader().reducedDataSets, numClusters,KMeansClassifier.DistanceFunction.Euclidean))
+//    System.out.println(dimReductionUsingClusters(IrisDataReader().reducedDataSets, numClusters,KMeansClusterer.DistanceFunction.Euclidean))
 }
 
-fun dimReductionUsingClusters(dataSets: Array<DataSet<Instance>>, numClusters: Int, kMeansDistance: KMeansClassifier.DistanceFunction): Csv {
+fun dimReductionUsingClusters(dataSets: Array<DataSet<Instance>>, numClusters: Int, kMeansDistance: KMeansClusterer.DistanceFunction): Csv {
     val clustererOutputs = LinkedList<IntArray>()
 
     for (dataSet in dataSets) {

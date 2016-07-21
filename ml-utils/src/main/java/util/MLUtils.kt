@@ -1,7 +1,7 @@
 package util
 
 import algorithms.classifiers.Classifier
-import analysis.Result
+import analysis.statistical.Result
 import datasets.*
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.*

@@ -1,11 +1,11 @@
 package algorithms.classifiers;
 
+import algorithms.Algorithm;
 import datasets.*;
 
 import java.util.*;
 
-public interface Classifier {
-    void setParams(Map<String, Object> params);
-    void train(DataSet<Instance> dataset);
+public interface Classifier extends Algorithm {
+    void train(DataSet<Instance> dataSet);
     Object evaluate(Object input);
 }

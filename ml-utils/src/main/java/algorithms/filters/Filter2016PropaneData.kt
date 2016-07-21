@@ -1,4 +1,4 @@
-package filters
+package algorithms.filters
 
 import datasets.PropaneDataReader
 import util.Csv
