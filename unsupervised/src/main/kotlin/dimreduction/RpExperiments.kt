@@ -11,7 +11,7 @@ import learningCurveREPBoosting
 import neuralNetLearningCurve
 import util.MLUtils
 import util.absoluteError
-import util.timeThis
+import util.GeneralUtils.timeThis
 
 
 fun main(args: Array<String>) {

@@ -146,3 +146,8 @@ object MLUtils {
         println(PropaneDataReader().get2013PropaneDataSet().toString())
     }
 }
+
+
+fun absoluteError(difference: Double): Double {
+    return Math.abs(difference)
+}

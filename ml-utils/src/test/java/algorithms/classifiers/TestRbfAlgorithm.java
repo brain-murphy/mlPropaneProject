@@ -1,4 +1,4 @@
-package algorithms;
+package algorithms.classifiers;
 
 import algorithms.classifiers.RbfClassifier;
 import datasets.*;

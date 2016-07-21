@@ -2,16 +2,16 @@ package filters
 
 import datasets.PropaneDataReader
 import util.Csv
-import util.getCsvParser
-import util.getResourceNamesInPackage
-import util.writeToFile
+import util.GeneralUtils.getCsvParser
+import util.GeneralUtils.getResourceNamesInPackage
+import util.GeneralUtils.writeToFile
 
 private const val NEW_SAMPLE_DIRECTORY_NAME = "newsamples"
 
 private val FILTERS: Array<(DoubleArray) -> Boolean> = arrayOf(::fitsOriginalWindow, ::hasSameFeatureCountAsOriginal)
 
 fun main(args: Array<String>) {
-    writeToFile("propaneData2016.csv", consolidateCsvFiles().toString())
+    writeToFile("datasets/propaneData2016.csv", consolidateCsvFiles().toString())
 }
 
 fun getOriginalFrequencyMagnitudeWindow(): Pair<Double, Double> {

@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
 fun repTreeLearningCurve(dataSet: DataSet<out Instance>) {
     val decisionTree = DecisionTreeClassifier()
 
-    decisionTree.setParams(DecisionTreeClassifier.createParams(false))
+    decisionTree.setParams(DecisionTreeClassifier.createParams(DecisionTreeClassifier.Type.RepTree))
 
     val absoluteError = { error:Double -> Math.abs(error) }
 
@@ -30,7 +30,7 @@ fun runDefaultREPTree(dataSet: DataSet<Instance>) {
 
     val decisionTree = DecisionTreeClassifier()
 
-    decisionTree.setParams(DecisionTreeClassifier.createParams(false));
+    decisionTree.setParams(DecisionTreeClassifier.createParams(DecisionTreeClassifier.Type.RepTree));
 
     val foldCount = 20
 

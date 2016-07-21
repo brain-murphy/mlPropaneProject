@@ -7,7 +7,6 @@ import datasets.PropaneDataReader
 import filters.IndependentComponentsFilter
 import learningCurveREPBoosting
 import util.MLUtils
-import util.writeToFile
 
 fun main(args: Array<String>) {
     System.out.println("Kurtosis: ${MLUtils.calculateAverageKurtosisForAttributes(IrisDataReader().irisDataSet)}")

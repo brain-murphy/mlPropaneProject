@@ -4,23 +4,29 @@ import org.apache.commons.csv.*;
 import org.jetbrains.annotations.NotNull;
 import util.GeneralUtils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class IrisDataReader {
-    public static final String CLUSTER_DATA_PACKAGE_PATH = "datasets/iris_clusterData.csv";
-    private static final String RP_DATA_PACKAGE_PATH = "datasets/Iris_rp.csv";
-    private static final String IRIS_FILE_PATH = "./Iris.csv";
-    private static final String IRIS_PACKAGE_PATH = "datasets/Iris.csv";
-    private static final String PCA_DATA_PACKAGE_PATH = "datasets/irisPca.csv";
-    private static final String ICA_DATA_PACKAGE_PATH = "datasets/Ica_irisData.csv";
-    private static final String CSF_DATA_PACKAGE_PATH = "datasets/iris_csfSubset.csv";
+    public static final String CLUSTER_DATA_PACKAGE_PATH = "/datasets/iris_clusterData.csv";
+    private static final String RP_DATA_PACKAGE_PATH = "/datasets/Iris_rp.csv";
+    private static final String IRIS_FILE_PATH = "datasets/Iris.csv";
+    private static final String IRIS_PACKAGE_PATH = "/datasets/Iris.csv";
+    private static final String PCA_DATA_PACKAGE_PATH = "/datasets/irisPca.csv";
+    private static final String ICA_DATA_PACKAGE_PATH = "/datasets/Ica_irisData.csv";
+    private static final String CSF_DATA_PACKAGE_PATH = "/datasets/iris_csfSubset.csv";
 
     public IrisDataReader() {
     }
 
     @NotNull
     private IrisInstance[] parseCsv(String filePath) {
-        CSVParser parser = GeneralUtils.getCsvParser(filePath);
+        String csvContent = readFromPackage(filePath);
+
+        CSVParser parser = GeneralUtils.INSTANCE.getCsvParser(csvContent);
 
         Iterator<CSVRecord> iterator = parser.iterator();
 
@@ -46,6 +52,31 @@ public class IrisDataReader {
 
         return instances.toArray(new IrisInstance[instances.size()]);
     }
+
+    private String readFromPackage(String filePath) {
+        InputStream inputStream = IrisDataReader.class.getResourceAsStream(filePath);
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+        StringBuilder content = new StringBuilder();
+
+
+        try {
+            String line = reader.readLine();
+
+            while (line != null) {
+                content.append(line)
+                        .append("\n");
+                line = reader.readLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return content.toString().trim();
+    }
+
 
     public DataSet<Instance> getIrisDataSet() {
         return new DataSet<>(parseCsv(IRIS_PACKAGE_PATH), true);

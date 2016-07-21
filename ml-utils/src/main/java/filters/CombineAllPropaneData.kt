@@ -3,7 +3,7 @@ package filters
 import com.sun.xml.internal.fastinfoset.util.StringArray
 import datasets.PropaneDataReader
 import util.Csv
-import util.writeToFile
+import util.GeneralUtils.writeToFile
 
 fun main(args: Array<String>) {
 combineAllPropaneData()
@@ -19,7 +19,7 @@ fun combineAllPropaneData() {
         csv.addRow(*instance.input.toTypedArray(), instance.output)
     }
 
-    writeToFile("allPropaneData.csv", csv.toString())
+    writeToFile("datasets/allPropaneData.csv", csv.toString())
 }
 
 private fun getHeaderLine(): Array<String> {

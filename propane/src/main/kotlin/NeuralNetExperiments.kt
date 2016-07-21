@@ -4,7 +4,9 @@ import algorithms.classifiers.NeuralNetClassifier
 import analysis.CrossValidation
 import analysis.LearningCurve
 import datasets.*
-import util.*
+import util.Csv
+import util.CsvPrinter
+import util.absoluteError
 
 fun main(args: Array<String>) {
     val nNetParams = NeuralNetClassifier.createParams(intArrayOf(9, 8), 0.006f, 500)

@@ -8,67 +8,75 @@ import org.apache.commons.csv.CSVParser
 import java.io.*
 import java.nio.charset.Charset
 
-fun getResourceNamesInPackage(path: String): List<String> {
-    val fileNames = mutableListOf<String>()
+object GeneralUtils {
 
-    try {
-        val inputStream = getResourceAsStream(path)
-        val  br = BufferedReader(InputStreamReader(inputStream))
+    fun getResourceNamesInPackage(path: String): List<String> {
+        val fileNames = mutableListOf<String>()
 
-        var resource: String? = br.readLine()
+        try {
+            val inputStream = getResourceAsStream(path)
+            val br = BufferedReader(InputStreamReader(inputStream))
 
-        while(resource != null) {
-            fileNames.add(resource)
-            resource = br.readLine()
+            var resource: String? = br.readLine()
+
+            while (resource != null) {
+                fileNames.add(resource)
+                resource = br.readLine()
+            }
+
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            throw RuntimeException()
         }
 
-    } catch (exception: Exception) {
-        exception.printStackTrace()
-        throw RuntimeException()
+        return fileNames.toList()
     }
 
-    return fileNames.toList()
-}
+    private fun getResourceAsStream(resource: String): InputStream {
+        val inputStream = getContextClassLoader().getResourceAsStream(resource);
 
-private fun getResourceAsStream(resource: String): InputStream {
-    val inputStream = getContextClassLoader().getResourceAsStream( resource );
-
-    return inputStream ?: inputStream.javaClass.getResourceAsStream( resource )
-}
-
-private fun getContextClassLoader(): ClassLoader  {
-    return Thread.currentThread().contextClassLoader;
-}
-
-fun getCsvParser(filePath: String): CSVParser {
-
-    val csvData = getContextClassLoader().getResource(filePath)
-    //        File csvData = new File(PROPANE_DATA_2013_FILE_PATH);
-
-    try {
-        return CSVParser.parse(csvData!!, Charset.defaultCharset(), CSVFormat.DEFAULT)
-    } catch (e: IOException) {
-        e.printStackTrace()
+        return inputStream ?: inputStream.javaClass.getResourceAsStream(resource)
     }
 
-    throw RuntimeException("couldn't create parser")
-}
+    private fun getContextClassLoader(): ClassLoader {
+        return javaClass.classLoader
+    }
 
-fun writeToFile(fileName: String, content: String) {
-    val writer = File(fileName).bufferedWriter()
-    writer.write(content)
-    writer.flush()
-    writer.close()
-}
+    fun getCsvParser(csvContent: String): CSVParser {
 
-fun absoluteError(difference: Double): Double {
-    return Math.abs(difference)
-}
+        try {
+            return CSVParser.parse(csvContent, CSVFormat.DEFAULT)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
 
-fun timeThis(function: () -> Unit): Double  {
-    ElapsedTime.tic()
-    function()
-    return ElapsedTime.toc()
+        throw RuntimeException("couldn't create parser")
+    }
+
+    fun writeToFile(fileName: String, content: String) {
+        val writer = File(fileName).bufferedWriter()
+        writer.write(content)
+        writer.flush()
+        writer.close()
+    }
+
+    fun readFromPackage(filePath: String) : String {
+        val inputStream = javaClass.getResourceAsStream(filePath)
+        val reader = BufferedReader(InputStreamReader(inputStream))
+
+        val content = reader.readText()
+
+        reader.close()
+        inputStream.close()
+
+        return content
+    }
+
+    fun timeThis(function: () -> Unit): Double {
+        ElapsedTime.tic()
+        function()
+        return ElapsedTime.toc()
+    }
 }
 
 

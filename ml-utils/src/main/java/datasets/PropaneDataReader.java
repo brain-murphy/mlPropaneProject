@@ -102,7 +102,7 @@ public class PropaneDataReader {
 
     @NotNull
     private PropaneInstance[] parseCsv(String filePath) {
-        CSVParser parser = GeneralUtils.getCsvParser(filePath);
+        CSVParser parser = GeneralUtils.INSTANCE.getCsvParser(filePath);
 
         Iterator<CSVRecord> iterator = parser.iterator();
 
