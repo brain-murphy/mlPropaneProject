@@ -13,15 +13,16 @@ import java.util.*;
 
 public class PropaneDataReader {
 
-    private static final String PROPANE_DATA_2013_FILE_PATH = "datasets/propaneData2013.csv";
-    private static final String PROPANE_DATA_2016_FILE_PATH = "datasets/propaneData2016.csv";
+    private static final String PROPANE_DATA_2013_FILE_PATH = "/datasets/propaneData2013.csv";
+    private static final String PROPANE_DATA_2016_FILE_PATH = "/datasets/propaneData2016.csv";
     private static final int ESTIMATED_2016_INSTANCE_COUNT = 800;
-    private static final String PCA_DATA_FILE_PATH = "datasets/allPropaneDataPca.csv";
-    private static final String RP_DATA_FILE_PATH = "datasets/RP_propaneData.csv";
-    private static final String CSF_DATA_FILE_PATH = "datasets/propane_csfSubset.csv";
+    private static final String PCA_DATA_FILE_PATH = "/datasets/allPropaneDataPca.csv";
+    private static final String RP_DATA_FILE_PATH = "/datasets/RP_propaneData.csv";
+    private static final String CSF_DATA_FILE_PATH = "/datasets/propane_csfSubset.csv";
 
     private static final double[] CONTINUOUS_POSSIBLE_OUTPUT_RANGE = new double[] {10, 40};
     private static final double[] DISCRETE_POSSIBLE_OUTPUT_RANGE = new double[] {0, 1};
+    public static final String ALL_PROPANE_DATASETS_PACKAGE_PATH = "/datasets/allPropaneData.csv";
 
     private boolean discreteMode = false;
 
@@ -43,7 +44,7 @@ public class PropaneDataReader {
     }
 
     public DataSet<Instance> getPropaneDataSet() {
-        return new DataSet<>(parseCsv("datasets/allPropaneData.csv"), discreteMode);
+        return new DataSet<>(parseCsv(ALL_PROPANE_DATASETS_PACKAGE_PATH), discreteMode);
     }
 
     public DataSet<PropaneInstance> get2013PropaneDataSet() {

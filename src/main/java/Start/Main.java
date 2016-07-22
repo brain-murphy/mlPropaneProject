@@ -1,10 +1,10 @@
 package start;
 
-import main.Steps;
+import main.IcaPropaneScript;
 
 public class Main {
 
     public static void main(String[] args) {
-        Steps.main(args);
+        IcaPropaneScript.main(args);
     }
 }
