@@ -1,6 +1,7 @@
 package analysis.statistical
 
 import algorithms.classifiers.Classifier
+import analysis.statistical.crossvalidation.SyncCrossValidation
 import datasets.DataSet
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics

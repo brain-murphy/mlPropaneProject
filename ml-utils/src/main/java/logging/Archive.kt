@@ -7,16 +7,20 @@ import util.GeneralUtils
 import java.io.Serializable
 import java.util.*
 
-object Archive : Serializable {
-    var timeout = 10000L
+object Archive : AsyncLogStream()
 
+open class AsyncLogStream(val shouldForwardToArchive: Boolean = false) : Serializable {
     val dataSet: DataSet<Instance>? = null
 
     val logs = LinkedList<Log>()
 
-    fun streamLog(log: Log) {
+    open fun streamLog(log: Log) {
         synchronized(logs, {
             logs.add(log)
+
+            if (shouldForwardToArchive && this != Archive) {
+                Archive.streamLog(log)
+            }
         })
     }
 

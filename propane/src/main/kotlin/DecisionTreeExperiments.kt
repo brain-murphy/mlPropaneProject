@@ -4,7 +4,7 @@ import algorithms.classifiers.DecisionTreeClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PropaneDataReader
-import analysis.statistical.SyncCrossValidation
+import analysis.statistical.crossvalidation.SyncCrossValidation
 import analysis.statistical.LearningCurve
 
 fun main(args: Array<String>) {

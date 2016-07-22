@@ -1,7 +1,7 @@
 @file:JvmName("NeuralNetExperiments")
 
 import algorithms.classifiers.NeuralNetClassifier
-import analysis.statistical.SyncCrossValidation
+import analysis.statistical.crossvalidation.SyncCrossValidation
 import analysis.statistical.LearningCurve
 import datasets.*
 import util.Csv

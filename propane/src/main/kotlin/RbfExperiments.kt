@@ -4,7 +4,7 @@ import algorithms.classifiers.RbfClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
-import analysis.statistical.SyncCrossValidation
+import analysis.statistical.crossvalidation.SyncCrossValidation
 import analysis.statistical.LearningCurve
 import analysis.statistical.Result
 import java.util.*

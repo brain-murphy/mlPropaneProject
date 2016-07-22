@@ -22,17 +22,20 @@ public class DecisionTreeClassifier implements Classifier {
 
     private SupervisedWekaParser parser;
     private AbstractClassifier tree;
-    private Map<String, Object> params;
+    private Map<String, Object> paramsMap;
+
+    private DecisionTreeParams params;
 
 
     @Override
+    @Deprecated
     public void setParams(Map<String, Object> params) {
-        this.params = params;
+        this.paramsMap = params;
     }
 
     @Override
     public void setParams(Params params) {
-
+        this.params = (DecisionTreeParams) params;
     }
 
     @Override
@@ -50,7 +53,12 @@ public class DecisionTreeClassifier implements Classifier {
     }
 
     private AbstractClassifier configureTree() {
-        Type treeType = (Type) params.get(KEY_TREE_TYPE);
+        Type treeType = null;
+        if (paramsMap != null) {
+            treeType = (Type) paramsMap.get(KEY_TREE_TYPE);
+        } else {
+            treeType = params.treeType;
+        }
 
         try {
             return (AbstractClassifier) treeType.wekaClassifier.newInstance();
@@ -82,5 +90,13 @@ public class DecisionTreeClassifier implements Classifier {
         Type(Class classifier) {
             wekaClassifier = classifier;
         }
+    }
+
+    public static class DecisionTreeParams extends Algorithm.Params {
+        public DecisionTreeParams(Type treeType) {
+            this.treeType = treeType;
+        }
+
+        public Type treeType;
     }
 }

@@ -5,7 +5,7 @@ import algorithms.classifiers.Classifier
 import datasets.DataSet
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
-import analysis.statistical.SyncCrossValidation
+import analysis.statistical.crossvalidation.SyncCrossValidation
 import java.util.concurrent.CountDownLatch
 import kotlin.concurrent.thread
 

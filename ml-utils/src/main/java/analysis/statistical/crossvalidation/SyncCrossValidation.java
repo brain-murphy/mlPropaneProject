@@ -1,6 +1,7 @@
-package analysis.statistical;
+package analysis.statistical.crossvalidation;
 
 import algorithms.classifiers.Classifier;
+import analysis.statistical.Result;
 import datasets.*;
 import org.apache.commons.math3.stat.descriptive.*;
 
