@@ -1,4 +1,4 @@
-package analysis
+package analysis.infrastructure
 
 import algorithms.classifiers.Classifier
 import algorithms.clusterers.Clusterer
@@ -6,19 +6,20 @@ import algorithms.filters.Filter
 import datasets.DataSet
 import datasets.Instance
 
-class Experiment(val dataSet: DataSet<Instance>,
-                 val classifier: Classifier? = null,
-                 val clusterer: Clusterer? = null) {
+open class Experiment(val classifier: Classifier? = null,
+                      val clusterer: Clusterer? = null,
+                      vararg val filters: Filter) {
 
-    val filters = mutableListOf<Filter>()
 
-    fun run() {
+    open fun run(dataSet: DataSet<Instance>): Result {
 
-        val currentDataSet = filterDataSet()
+        val currentDataSet = filterDataSet(dataSet)
 
         evaluateClassifier(currentDataSet)
 
         evaluateClusterer(currentDataSet)
+
+        return Result(currentDataSet, clusterer, classifier)
     }
 
     private fun evaluateClusterer(currentDataSet: DataSet<Instance>) {
@@ -29,13 +30,17 @@ class Experiment(val dataSet: DataSet<Instance>,
         classifier?.train(currentDataSet)
     }
 
-    private fun filterDataSet(): DataSet<Instance> {
+    private fun filterDataSet(dataSet: DataSet<Instance>): DataSet<Instance> {
         var currentDataSet = dataSet
 
         filters.forEach { currentDataSet = it.filterDataSet(currentDataSet) }
 
         return currentDataSet
     }
+
+    data class Result(val resultDataSet: DataSet<Instance>,
+                      val clusterer: Clusterer? = null,
+                      val classifier: Classifier? = null)
 
 }
 

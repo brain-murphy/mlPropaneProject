@@ -11,7 +11,19 @@ import kotlin.concurrent.thread
 
 class RandomizedProjectionsWrapper(private val dataSet: DataSet<Instance>,
                                    private val classifier: Classifier,
-                                   private val errorFunction: (Double) -> Double) {
+                                   private val errorFunction: (Double) -> Double) : Filter {
+
+    override fun filterDataSet(input: DataSet<Instance>?): DataSet<Instance> {
+        throw UnsupportedOperationException("not implemented")
+    }
+
+    override fun filterInstance(instance: Instance?): Instance {
+        throw UnsupportedOperationException("not implemented")
+    }
+
+    override fun setParams(params: MutableMap<String, Any>?) {
+        throw UnsupportedOperationException("not implemented")
+    }
 
     var crossValidationFolds = 10
 

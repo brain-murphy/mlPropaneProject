@@ -1,9 +1,10 @@
-package analytics
+package analytics.infrastructure
 
 import algorithms.classifiers.Classifier
 import algorithms.classifiers.DecisionTreeClassifier
 import algorithms.clusterers.KMeansClusterer
-import analysis.Experiment
+import algorithms.filters.IndependentComponentsFilter
+import analysis.infrastructure.Experiment
 import datasets.IrisDataReader
 import org.junit.Before
 import org.junit.Test
@@ -13,13 +14,15 @@ class TestExperiment {
     var experiment = generateExperiment()
 
     fun generateExperiment(): Experiment {
-        val dataSet = IrisDataReader().irisDataSet
-
         val classifier = setupClassifier()
 
         val clusterer = setupClusterer()
 
-        return  Experiment(dataSet, classifier,  clusterer)
+        val filter = IndependentComponentsFilter()
+
+        val experiment = Experiment(classifier,  clusterer, filter)
+
+        return experiment
     }
 
     private fun setupClusterer(): KMeansClusterer {
@@ -41,6 +44,8 @@ class TestExperiment {
 
     @Test
     fun testRunningExperiment() {
-        experiment.run()
+        val dataSet = IrisDataReader().irisDataSet
+
+        experiment.run(dataSet)
     }
 }

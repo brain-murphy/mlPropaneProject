@@ -2,11 +2,10 @@ package logging
 
 import datasets.DataSet
 import datasets.Instance
-import weka.experiment.Experiment
+import logging.logs.Log
+import util.GeneralUtils
 import java.io.Serializable
-import java.util.concurrent.SynchronousQueue
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 object Archive : Serializable {
     var timeout = 10000L
@@ -17,8 +16,12 @@ object Archive : Serializable {
 
     fun streamLog(log: Log) {
         synchronized(logs, {
-            logs.add(log);
+            logs.add(log)
         })
+    }
+
+    fun toFile(fileName: String) {
+        GeneralUtils.serializeObject(fileName, this)
     }
 }
 

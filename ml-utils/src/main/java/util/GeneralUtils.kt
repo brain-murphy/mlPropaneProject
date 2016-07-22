@@ -78,6 +78,38 @@ object GeneralUtils {
         function()
         return ElapsedTime.toc()
     }
+
+    fun <T> serializeObject(fileName: String, toSerialize: T) {
+        try {
+            val fileOut = FileOutputStream(fileName)
+            val out = ObjectOutputStream(fileOut)
+
+            out.writeObject(toSerialize)
+
+            out.close()
+            fileOut.close()
+        } catch (e: IOException) {
+            throw RuntimeException(e)
+        }
+    }
+
+    fun <T> deserializeObject(fileName: String): T {
+        var obj: T? = null
+
+        try {
+            val fileIn = FileInputStream("/tmp/employee.ser")
+            val objectInputStream = ObjectInputStream(fileIn)
+
+            obj = objectInputStream.readObject() as T
+
+            objectInputStream.close()
+            fileIn.close()
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+
+        return obj
+    }
 }
 
 
