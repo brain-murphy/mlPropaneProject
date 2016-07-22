@@ -1,5 +1,6 @@
 package algorithms.filters
 
+import algorithms.Algorithm
 import algorithms.classifiers.Classifier
 import datasets.DataSet
 import datasets.Instance
@@ -12,6 +13,10 @@ import kotlin.concurrent.thread
 class RandomizedProjectionsWrapper(private val dataSet: DataSet<Instance>,
                                    private val classifier: Classifier,
                                    private val errorFunction: (Double) -> Double) : Filter {
+
+    override fun setParams(params: Algorithm.Params) {
+        throw UnsupportedOperationException("not implemented")
+    }
 
     override fun filterDataSet(input: DataSet<Instance>?): DataSet<Instance> {
         throw UnsupportedOperationException("not implemented")

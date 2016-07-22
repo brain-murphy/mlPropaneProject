@@ -1,5 +1,6 @@
 package algorithms.filters
 
+import algorithms.Algorithm
 import algorithms.parsers.AbagailParser
 import datasets.DataSet
 import datasets.Instance
@@ -7,6 +8,10 @@ import datasets.Instance
 import shared.filt.IndependentComponentAnalysis
 
 class IndependentComponentsFilter() : Filter {
+
+    override fun setParams(params: Algorithm.Params?) {
+        throw UnsupportedOperationException("not implemented")
+    }
 
     override fun setParams(params: MutableMap<String, Any>?) {
 

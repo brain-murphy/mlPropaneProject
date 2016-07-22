@@ -1,5 +1,6 @@
 package algorithms.classifiers;
 
+import algorithms.Algorithm;
 import datasets.*;
 import algorithms.parsers.SupervisedWekaParser;
 import datasets.Instance;
@@ -41,6 +42,11 @@ public class BoostingClassifier implements Classifier {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void setParams(Params params) {
+
     }
 
     @Override
@@ -105,5 +111,10 @@ public class BoostingClassifier implements Classifier {
             e.printStackTrace();
         }
         throw new RuntimeException("Cannot classify");
+    }
+
+    public static class BoostingParams extends Algorithm.Params {
+        int iterationsToRun;
+        String baseLearnerClassName;
     }
 }

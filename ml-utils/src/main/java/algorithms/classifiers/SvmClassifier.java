@@ -1,5 +1,6 @@
 package algorithms.classifiers;
 
+import algorithms.Algorithm;
 import datasets.*;
 import org.encog.ml.data.*;
 import org.encog.ml.data.basic.*;
@@ -57,6 +58,11 @@ public class SvmClassifier implements Classifier {
         } else {
             kernelType = KernelType.RadialBasisFunction;
         }
+    }
+
+    @Override
+    public void setParams(Params params) {
+
     }
 
     @Override

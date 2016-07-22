@@ -1,5 +1,6 @@
 package algorithms.classifiers;
 
+import algorithms.Algorithm;
 import datasets.*;
 import algorithms.parsers.SupervisedWekaParser;
 import datasets.Instance;
@@ -24,6 +25,11 @@ public class KNearestNeighborsClassifier implements Classifier {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void setParams(Params params) {
+
     }
 
     @Override

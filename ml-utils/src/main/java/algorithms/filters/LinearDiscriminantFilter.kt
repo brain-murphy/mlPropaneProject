@@ -1,5 +1,6 @@
 package algorithms.filters
 
+import algorithms.Algorithm
 import datasets.DataSet
 import datasets.Instance
 import algorithms.parsers.AbagailParser
@@ -7,6 +8,9 @@ import algorithms.parsers.SupervisedAbagailParser
 import shared.filt.LinearDiscriminantAnalysis
 
 class LinearDiscriminantFilter : Filter {
+    override fun setParams(params: Algorithm.Params?) {
+        throw UnsupportedOperationException("not implemented")
+    }
 
     var lda: LinearDiscriminantAnalysis? = null
 

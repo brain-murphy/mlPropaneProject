@@ -1,5 +1,6 @@
 package algorithms.filters
 
+import algorithms.Algorithm
 import datasets.DataSet
 import datasets.Instance
 import algorithms.parsers.AbagailParser
@@ -13,6 +14,9 @@ fun main(args: String) {
 const val KEY_NUM_FEATURES_OUT = "num features out param"
 
 class RandomizedProjectionFilter(): Filter {
+    override fun setParams(params: Algorithm.Params?) {
+        throw UnsupportedOperationException("not implemented")
+    }
 
     var numFeaturesOut = 2
 

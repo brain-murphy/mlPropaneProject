@@ -1,5 +1,6 @@
 package algorithms.classifiers;
 
+import algorithms.Algorithm;
 import datasets.*;
 import org.encog.engine.network.activation.*;
 import org.encog.ml.data.basic.*;
@@ -50,6 +51,11 @@ public class NeuralNetClassifier implements Classifier {
         targetError = (float) params.get(KEY_TARGET_ERROR);
         maxIterations = (int) params.get(KEY_MAX_ITERATIONS);
         networkStructure = (int[]) params.get(KEY_STRUCTURE);
+    }
+
+    @Override
+    public void setParams(Params params) {
+
     }
 
     @Override

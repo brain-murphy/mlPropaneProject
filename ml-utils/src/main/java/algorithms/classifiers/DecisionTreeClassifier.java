@@ -1,5 +1,6 @@
 package algorithms.classifiers;
 
+import algorithms.Algorithm;
 import datasets.*;
 import algorithms.parsers.SupervisedWekaParser;
 import weka.classifiers.AbstractClassifier;
@@ -27,6 +28,11 @@ public class DecisionTreeClassifier implements Classifier {
     @Override
     public void setParams(Map<String, Object> params) {
         this.params = params;
+    }
+
+    @Override
+    public void setParams(Params params) {
+
     }
 
     @Override

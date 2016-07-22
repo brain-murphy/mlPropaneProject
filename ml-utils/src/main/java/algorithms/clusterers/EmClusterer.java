@@ -1,5 +1,6 @@
 package algorithms.clusterers;
 
+import algorithms.Algorithm;
 import algorithms.classifiers.Classifier;
 import datasets.DataSet;
 import datasets.Instance;
@@ -32,6 +33,11 @@ public class EmClusterer implements Clusterer, Classifier {
     @Override
     public void setParams(Map<String, Object> params) {
         this.params = params;
+    }
+
+    @Override
+    public void setParams(Params params) {
+
     }
 
     @Override
