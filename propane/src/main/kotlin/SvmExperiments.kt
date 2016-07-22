@@ -5,7 +5,7 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
-import analysis.statistical.CrossValidation
+import analysis.statistical.SyncCrossValidation
 import analysis.statistical.Result
 
 fun main(args: Array<String>) {
@@ -17,7 +17,7 @@ fun runSvm(dataSet: DataSet<Instance>, kernel: SvmClassifier.Kernel, c: Double, 
 
     svm.setParams(SvmClassifier.createParams(kernel, c, gamma))
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 20, dataSet, svm)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), 20, dataSet, svm)
 
     return crossValidation.run()
 }

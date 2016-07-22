@@ -1,4 +1,4 @@
-package analytics.infrastructure
+package analysis.infrastructure
 
 import algorithms.classifiers.Classifier
 import algorithms.classifiers.DecisionTreeClassifier

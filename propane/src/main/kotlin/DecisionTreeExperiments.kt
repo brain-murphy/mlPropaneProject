@@ -4,7 +4,7 @@ import algorithms.classifiers.DecisionTreeClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PropaneDataReader
-import analysis.statistical.CrossValidation
+import analysis.statistical.SyncCrossValidation
 import analysis.statistical.LearningCurve
 
 fun main(args: Array<String>) {
@@ -33,7 +33,7 @@ fun runDefaultREPTree(dataSet: DataSet<Instance>) {
 
     val foldCount = 20
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), foldCount, dataSet, decisionTree)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), foldCount, dataSet, decisionTree)
 
     val result = crossValidation.run()
 

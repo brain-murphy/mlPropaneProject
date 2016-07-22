@@ -7,7 +7,7 @@ import org.apache.commons.math3.stat.descriptive.*;
 import java.util.*;
 import java.util.function.*;
 
-public class CrossValidation {
+public class SyncCrossValidation {
 
     private static final int DEFAULT_NUM_FOLDS = 10;
 
@@ -81,14 +81,14 @@ public class CrossValidation {
         return total;
     }
 
-    public CrossValidation(Function<Double, Double> errorFunction, int numFolds, DataSet<Instance> dataSet, Classifier classifier) {
+    public SyncCrossValidation(Function<Double, Double> errorFunction, int numFolds, DataSet<Instance> dataSet, Classifier classifier) {
         this.errorFunction = errorFunction;
         this.numFolds = numFolds;
         this.dataSet = dataSet;
         this.classifier = classifier;
     }
 
-    public CrossValidation(DataSet<Instance> dataSet, Classifier classifier) {
+    public SyncCrossValidation(DataSet<Instance> dataSet, Classifier classifier) {
         this(new AbsoluteError(), DEFAULT_NUM_FOLDS, dataSet, classifier);
     }
 

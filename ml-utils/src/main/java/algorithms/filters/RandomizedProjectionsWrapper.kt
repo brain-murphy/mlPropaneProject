@@ -4,7 +4,7 @@ import algorithms.classifiers.Classifier
 import datasets.DataSet
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
-import analysis.statistical.CrossValidation
+import analysis.statistical.SyncCrossValidation
 import java.util.concurrent.CountDownLatch
 import kotlin.concurrent.thread
 
@@ -57,7 +57,7 @@ class RandomizedProjectionsWrapper(private val dataSet: DataSet<Instance>,
     }
 
     private fun getValidationError(testSet: DataSet<Instance>): Double {
-        val results = CrossValidation(errorFunction, crossValidationFolds, testSet, classifier).run()
+        val results = SyncCrossValidation(errorFunction, crossValidationFolds, testSet, classifier).run()
 
         return results.meanValidationError
     }

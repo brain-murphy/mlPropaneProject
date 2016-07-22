@@ -30,12 +30,12 @@ class LearningCurve(private val dataSet: DataSet<out Instance>,
             val dataToUse = splitDataSetProportionately(proportion, 1.0 - proportion)[0]
 
             if (leaveOneOutCrossValidation) {
-                val results = CrossValidation(errorFunction, dataToUse.getInstances().size, dataToUse, classifier).run()
+                val results = SyncCrossValidation(errorFunction, dataToUse.getInstances().size, dataToUse, classifier).run()
 
                 csvResults.addRow(proportion, results.meanTrainingError, results.meanValidationError)
 
             } else if (dataToUse.getInstances().size >= foldCount) {
-                val results = CrossValidation(errorFunction, foldCount, dataToUse, classifier).run()
+                val results = SyncCrossValidation(errorFunction, foldCount, dataToUse, classifier).run()
 
                 csvResults.addRow(proportion, results.meanTrainingError, results.meanValidationError)
             }

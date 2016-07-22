@@ -1,4 +1,4 @@
-package analytics.infrastructure
+package analysis.infrastructure
 
 import analysis.infrastructure.Experiment
 import analysis.infrastructure.Linker
@@ -60,7 +60,7 @@ class TestLinker {
         val mockExperiments = mutableListOf<Pair<Experiment, Experiment.Result>>()
 
         for (experimentIndex in 0..numMockExperiments) {
-            val mockInstances = Array<Instance>(numMockInstances, { MockInstance(experimentIndex.toDouble())})
+            val mockInstances = Array<Instance>(numMockInstances, { MockInstance(experimentIndex.toDouble()) })
             val mockDataSet = DataSet<Instance>(mockInstances, false)
 
             val mockResult = Experiment.Result(mockDataSet)

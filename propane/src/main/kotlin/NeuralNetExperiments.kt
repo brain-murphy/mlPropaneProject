@@ -1,7 +1,7 @@
 @file:JvmName("NeuralNetExperiments")
 
 import algorithms.classifiers.NeuralNetClassifier
-import analysis.statistical.CrossValidation
+import analysis.statistical.SyncCrossValidation
 import analysis.statistical.LearningCurve
 import datasets.*
 import util.Csv
@@ -38,7 +38,7 @@ fun findHiddenLayerLength(dataSet: DataSet<Instance>) {
 
         neuralNet.setParams(NeuralNetClassifier.createParams(intArrayOf(hiddenLayerLength), .01f, 1000))
 
-        val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
+        val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
 
         val result = crossValidation.run()
 
@@ -58,7 +58,7 @@ fun findTrainingErrorThreshold(dataSet: DataSet<Instance>) {
 
         neuralNet.setParams(NeuralNetClassifier.createParams(intArrayOf(9, 8), trainingErrorThreshold, 1000))
 
-        val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
+        val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
 
         val result = crossValidation.run()
 
@@ -74,7 +74,7 @@ fun moonshot() {
 
     val dataSet = PcaPropaneDataReader().propaneDataSet as DataSet<Instance>
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 60, dataSet, neuralNet)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), 60, dataSet, neuralNet)
 
     val result = crossValidation.run()
 
@@ -89,7 +89,7 @@ fun moonshot2() {
 
     val dataSet = PropaneDataReader().propaneDataSet
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
 
     val result = crossValidation.run()
 
@@ -108,7 +108,7 @@ fun gridSearchTwoLayerStructure(dataSet: DataSet<Instance>, maxFirstLayer: Int, 
 
             neuralNet.setParams(NeuralNetClassifier.createParams(intArrayOf(firstLayerLength, secondLayerLength), .006f, 10000))
 
-            val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
+            val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), 10, dataSet, neuralNet)
 
             val result = crossValidation.run()
 

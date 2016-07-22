@@ -4,7 +4,7 @@ import algorithms.classifiers.RbfClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
-import analysis.statistical.CrossValidation
+import analysis.statistical.SyncCrossValidation
 import analysis.statistical.LearningCurve
 import analysis.statistical.Result
 import java.util.*
@@ -34,7 +34,7 @@ fun runRbf(dataSet: DataSet<Instance>, cgd: Boolean, tolerance: Double, rbfCount
 
     val numFolds = 10
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, rbf)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, rbf)
 
     return crossValidation.run()
 }
@@ -52,7 +52,7 @@ fun testConjugateGradientDescent(dataSet: DataSet<Instance>) {
 
     val numFolds = 10
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, rbf)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, rbf)
 
     val resultsWithCgd = crossValidation.run()
 
@@ -69,7 +69,7 @@ fun findBestTolerance(dataSet: DataSet<Instance>) {
 
     val numFolds = 10
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, rbf)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, rbf)
 
     val params = newDefaultParams()
 
@@ -93,7 +93,7 @@ fun findBestRbfCount(dataSet: DataSet<Instance>, minValueToTest: Int, interval: 
 
     val numFolds = 10
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, rbf)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, rbf)
 
     val params = newDefaultParams()
 

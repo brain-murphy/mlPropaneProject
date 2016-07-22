@@ -5,7 +5,7 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
-import analysis.statistical.CrossValidation
+import analysis.statistical.SyncCrossValidation
 import analysis.statistical.LearningCurve
 
 fun main(args: Array<String>) {
@@ -21,7 +21,7 @@ fun testDecisionStumpBoosting(dataSet: DataSet<Instance>) {
 
     boostingAlgorithm.setParams(BoostingClassifier.createParams("weka.classifiers.trees.DecisionStump", 50))
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, boostingAlgorithm)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, boostingAlgorithm)
 
     println(crossValidation.run().meanValidationError)
 }
@@ -33,7 +33,7 @@ fun testREPBoosting(dataSet: DataSet<Instance>) {
 
     boostingAlgorithm.setParams(BoostingClassifier.createParams("weka.classifiers.trees.REPTree", 50))
 
-    val crossValidation = CrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, boostingAlgorithm)
+    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), numFolds, dataSet, boostingAlgorithm)
 
     println(crossValidation.run().meanValidationError)
     var magnitude = 1000000.0
