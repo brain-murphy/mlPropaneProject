@@ -189,6 +189,12 @@ public class PropaneDataReader {
         return dataSets;
     }
 
+    public DataSet<Instance>[] getAllDataSets() {
+        @SuppressWarnings("unchecked")
+        DataSet<Instance>[] dataSets = new DataSet[]{getPcaDataSet(), /*getIcaDataSet(),*/ getRpDataSet(), getCsfDataSet(), get2013PropaneDataSet(), get2016PropaneDataSet(), getPropaneDataSet()};
+        return dataSets;
+    }
+
     public DataSet<Instance> getClusteredDataSet() {
         throw new NotImplementedException();
     }

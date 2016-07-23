@@ -1,11 +1,9 @@
 package algorithms.classifiers;
 
-import algorithms.Algorithm;
 import datasets.*;
 import algorithms.parsers.SupervisedWekaParser;
 import datasets.Instance;
 import weka.classifiers.functions.*;
-import weka.core.*;
 
 import java.util.*;
 
@@ -20,17 +18,18 @@ public class RbfClassifier implements Classifier {
     public static final int DEFAULT_NUM_THREADS = 3;
 
     private RBFRegressor rbf;
-    private Map<String, Object> params;
+    private Map<String, Object> paramsMap;
+    private RbfParams params;
     private SupervisedWekaParser parser;
 
     @Override
     public void setParams(Map<String, Object> params) {
-        this.params = params;
+        this.paramsMap = params;
     }
 
     @Override
     public void setParams(Params params) {
-
+        this.params = (RbfParams) params;
     }
 
     @Override
@@ -60,22 +59,47 @@ public class RbfClassifier implements Classifier {
     private void setOptions() {
         rbf.setNumThreads(DEFAULT_NUM_THREADS);
 
-        if (params.containsKey(KEY_NUM_RBFS)) {
-            rbf.setNumFunctions((Integer) params.get(KEY_NUM_RBFS));
+        if (paramsMap != null) {
+            setOptionsFromMap();
+        } else if (params != null) {
+            setOptionsFromParams();
+        }
+    }
+
+    private void setOptionsFromParams() {
+        rbf.setNumFunctions(params.numRbfs);
+        rbf.setTolerance(params.tolerance);
+        rbf.setUseCGD(params.conjugateGradientDescent);
+    }
+
+    private void setOptionsFromMap() {
+        if (paramsMap.containsKey(KEY_NUM_RBFS)) {
+            rbf.setNumFunctions((Integer) paramsMap.get(KEY_NUM_RBFS));
         } else {
             rbf.setNumFunctions(DEFAULT_NUM_RBFS);
         }
 
-        if (params.containsKey(KEY_CONJUGATE_GRADIENT_DESCENT)) {
-            rbf.setUseCGD((Boolean) params.get(KEY_CONJUGATE_GRADIENT_DESCENT));
+        if (paramsMap.containsKey(KEY_CONJUGATE_GRADIENT_DESCENT)) {
+            rbf.setUseCGD((Boolean) paramsMap.get(KEY_CONJUGATE_GRADIENT_DESCENT));
         } else {
             rbf.setUseCGD(false);
         }
 
-        if (params.containsKey(KEY_TOLERANCE)) {
-            rbf.setTolerance((Double) params.get(KEY_TOLERANCE));
+        if (paramsMap.containsKey(KEY_TOLERANCE)) {
+            rbf.setTolerance((Double) paramsMap.get(KEY_TOLERANCE));
         } else {
             rbf.setTolerance(DEFAULT_TOLERANCE);
         }
+    }
+
+    public static class RbfParams extends Params {
+        public RbfParams(int numRbfs, double tolerance, boolean conjugateGradientDescent) {
+            this.numRbfs = numRbfs;
+            this.tolerance = tolerance;
+            this.conjugateGradientDescent = conjugateGradientDescent;
+        }
+        int numRbfs;
+        boolean conjugateGradientDescent;
+        double tolerance;
     }
 }

@@ -40,7 +40,7 @@ fun rpIrisStepTwo() {
 fun randomProjectionsWithBoosting(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, numFeaturesOut: Int) {
     val booster = BoostingClassifier()
 
-    val boostingParams = BoostingClassifier.BoostingParams()
+//    val boostingParams = BoostingClassifier.BoostingParams()
 
 //    val randomProjections = RandomProjectionsWrapper(dataSet, booster, )
 

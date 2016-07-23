@@ -1,5 +1,6 @@
 @file:JvmName("SvmExperiments")
 
+import algorithms.classifiers.Classifier
 import algorithms.classifiers.SvmClassifier
 import datasets.DataSet
 import datasets.Instance
@@ -7,9 +8,11 @@ import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
 import analysis.statistical.crossvalidation.SyncCrossValidation
 import analysis.statistical.Result
+import analysis.statistical.crossvalidation.AsyncCrossValidator
+import analysis.statistical.errorfunction.AvgAbsoluteError
 
 fun main(args: Array<String>) {
-    comparePropaneDataSets(SvmClassifier.Kernel.RadialBasisFunction,1.0,1.0)
+    println(svmError(PropaneDataReader().propaneDataSet))
 }
 
 fun runSvm(dataSet: DataSet<Instance>, kernel: SvmClassifier.Kernel, c: Double, gamma: Double) : Result {
@@ -18,6 +21,17 @@ fun runSvm(dataSet: DataSet<Instance>, kernel: SvmClassifier.Kernel, c: Double, 
     svm.setParams(SvmClassifier.createParams(kernel, c, gamma))
 
     val crossValidation = SyncCrossValidation(SyncCrossValidation.AbsoluteError(), 20, dataSet, svm)
+
+    return crossValidation.run()
+}
+
+
+fun svmError(dataSet: DataSet<Instance>): Double {
+    val svm = (SvmClassifier() as Classifier).javaClass
+
+    val params = SvmClassifier.SvmParams(SvmClassifier.Kernel.Polynomial, 1.0, 1.0)
+
+    val crossValidation = AsyncCrossValidator(dataSet, svm, params, AvgAbsoluteError().asErrorFunction())
 
     return crossValidation.run()
 }

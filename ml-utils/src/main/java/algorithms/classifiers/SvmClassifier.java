@@ -62,7 +62,11 @@ public class SvmClassifier implements Classifier {
 
     @Override
     public void setParams(Params params) {
+        SvmParams svmParams = (SvmParams) params;
 
+        kernelType = svmParams.kernelType.getKernelType();
+        c = svmParams.c;
+        gamma = svmParams.gamma;
     }
 
     @Override
@@ -129,6 +133,18 @@ public class SvmClassifier implements Classifier {
 
         public KernelType getKernelType() {
             return kernelType;
+        }
+    }
+
+    public static class SvmParams extends Params {
+        private Kernel kernelType;
+        private double c;
+        private double gamma;
+
+        public SvmParams(Kernel kernelType, double c, double gamma) {
+            this.kernelType = kernelType;
+            this.c = c;
+            this.gamma = gamma;
         }
     }
 }

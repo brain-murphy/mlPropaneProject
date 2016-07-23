@@ -1,5 +1,6 @@
 @file:JvmName("RbfExperiments")
 
+import algorithms.classifiers.Classifier
 import algorithms.classifiers.RbfClassifier
 import datasets.DataSet
 import datasets.Instance
@@ -7,6 +8,8 @@ import datasets.PcaPropaneDataReader
 import analysis.statistical.crossvalidation.SyncCrossValidation
 import analysis.statistical.LearningCurve
 import analysis.statistical.Result
+import analysis.statistical.crossvalidation.AsyncCrossValidator
+import analysis.statistical.errorfunction.AvgAbsoluteError
 import java.util.*
 
 fun main(args: Array<String>) {
@@ -35,6 +38,18 @@ fun runRbf(dataSet: DataSet<Instance>, cgd: Boolean, tolerance: Double, rbfCount
     val numFolds = 10
 
     val crossValidation = SyncCrossValidation(SyncCrossValidation.AbsoluteError(), numFolds, dataSet, rbf)
+
+    return crossValidation.run()
+}
+
+
+fun rbfError(dataSet: DataSet<Instance>): Double {
+
+    val rbf = (RbfClassifier() as Classifier).javaClass
+
+    val params = RbfClassifier.RbfParams(15, 0.1, false)
+
+    val crossValidation = AsyncCrossValidator(dataSet, rbf, params, AvgAbsoluteError().asErrorFunction())
 
     return crossValidation.run()
 }

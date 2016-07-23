@@ -11,6 +11,10 @@ open class ErrorFunction<in T : Number>(private val function: (T) -> Double) {
     fun getError(): Double {
         return runningAverage.average
     }
+
+    fun asErrorFunction(): ErrorFunction<Number> {
+        return this as ErrorFunction<Number>
+    }
 }
 
 class AvgAbsoluteError : ErrorFunction<Double>(Math::abs) {
