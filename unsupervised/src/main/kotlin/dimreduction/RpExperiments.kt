@@ -6,7 +6,7 @@ import datasets.DataSet
 import datasets.Instance
 import datasets.IrisDataReader
 import datasets.PropaneDataReader
-import algorithms.filters.RandomizedProjectionsWrapper
+import algorithms.filters.RandomProjectionsWrapper
 import learningCurveREPBoosting
 import neuralNetLearningCurve
 import util.MLUtils
@@ -40,15 +40,15 @@ fun rpIrisStepTwo() {
 fun randomProjectionsWithBoosting(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, numFeaturesOut: Int) {
     val booster = BoostingClassifier()
 
-    booster.setParams(BoostingClassifier.createParams("weka.classifiers.trees.REPTree", 50))
+    val boostingParams = BoostingClassifier.BoostingParams()
 
-    val randomProjections = RandomizedProjectionsWrapper(dataSet, booster, errorFunction)
+//    val randomProjections = RandomProjectionsWrapper(dataSet, booster, )
 
     val iterations = 100
 
     val numFeaturesOut = MLUtils.getNumInputs(dataSet) / 8
 
-    val bestProjectedDataSet = randomProjections.findBestRandomProjection(numFeaturesOut, iterations)
+//    val bestProjectedDataSet = randomProjections.findBestRandomProjection(numFeaturesOut, iterations)
 
 
     System.out.println("original Dataset")
@@ -57,8 +57,8 @@ fun randomProjectionsWithBoosting(dataSet: DataSet<Instance>, errorFunction: (Do
 
 
     System.out.println("random projection dataset")
-    val randomProjectionDataSetTime = timeThis { learningCurveREPBoosting(bestProjectedDataSet, ::absoluteError) }
-    System.out.println("elapsed time: $randomProjectionDataSetTime")
+//    val randomProjectionDataSetTime = timeThis { learningCurveREPBoosting(bestProjectedDataSet, ::absoluteError) }
+//    System.out.println("elapsed time: $randomProjectionDataSetTime")
 }
 
 fun randomProjectionsWithNNet(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, nnetParams: Map<String, Any>, numFeaturesOut: Int, iterations: Int) {
@@ -66,17 +66,17 @@ fun randomProjectionsWithNNet(dataSet: DataSet<Instance>, errorFunction: (Double
 
     nNet.setParams(nnetParams)
 
-    val randomProjections = RandomizedProjectionsWrapper(dataSet, nNet, errorFunction)
+//    val randomProjections = RandomProjectionsWrapper(dataSet, nNet, errorFunction)
 
-    val bestProjectedDataSet = randomProjections.findBestRandomProjection(numFeaturesOut, iterations)
+//    val bestProjectedDataSet = randomProjections.findBestRandomProjection(numFeaturesOut, iterations)
 
     System.out.println("original dataset")
     val originalDataSetTime = timeThis { neuralNetLearningCurve(dataSet, errorFunction, nnetParams) }
     System.out.println("elapsed time: $originalDataSetTime")
 
     System.out.println("random projection dataset")
-    val randomProjectionSetTime = timeThis { neuralNetLearningCurve(bestProjectedDataSet, errorFunction, nnetParams) }
-    System.out.println("elapsed time: $randomProjectionSetTime")
+//    val randomProjectionSetTime = timeThis { neuralNetLearningCurve(bestProjectedDataSet, errorFunction, nnetParams) }
+//    System.out.println("elapsed time: $randomProjectionSetTime")
 
-    System.out.println(bestProjectedDataSet)
+//    System.out.println(bestProjectedDataSet)
 }

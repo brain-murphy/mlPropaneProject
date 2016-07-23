@@ -6,6 +6,7 @@ import logging.logs.Log
 import util.GeneralUtils
 import java.io.Serializable
 import java.util.*
+import java.util.concurrent.locks.ReentrantLock
 
 object Archive : AsyncLogStream()
 
@@ -14,14 +15,24 @@ open class AsyncLogStream(val shouldForwardToArchive: Boolean = false) : Seriali
 
     val logs = LinkedList<Log>()
 
+    private val lock = ReentrantLock(true)
+
+    val lastLog: Log
+    get() {
+        lock.lock()
+        val lastLog = logs.last
+        lock.unlock()
+        return lastLog
+    }
+
     open fun streamLog(log: Log) {
-        synchronized(logs, {
+        lock.lock()
             logs.add(log)
 
             if (shouldForwardToArchive && this != Archive) {
                 Archive.streamLog(log)
             }
-        })
+        lock.unlock()
     }
 
     fun toFile(fileName: String) {

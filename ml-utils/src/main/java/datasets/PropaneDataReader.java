@@ -19,6 +19,7 @@ public class PropaneDataReader {
     private static final String PCA_DATA_FILE_PATH = "/datasets/allPropaneDataPca.csv";
     private static final String RP_DATA_FILE_PATH = "/datasets/RP_propaneData.csv";
     private static final String CSF_DATA_FILE_PATH = "/datasets/propane_csfSubset.csv";
+    private static final String RP_VISUALIZATION_FILE_PATH = "/datasets/Rp5dPropaneData.csv";
 
     private static final double[] CONTINUOUS_POSSIBLE_OUTPUT_RANGE = new double[] {10, 40};
     private static final double[] DISCRETE_POSSIBLE_OUTPUT_RANGE = new double[] {0, 1};
@@ -168,6 +169,10 @@ public class PropaneDataReader {
 
     public void setDiscreteMode(boolean discreteMode) {
         this.discreteMode = discreteMode;
+    }
+
+    public DataSet<Instance> getRpForVisualization() {
+        return new DataSet<>(parseCsv(RP_VISUALIZATION_FILE_PATH), discreteMode);
     }
 
     private double[] getOutputRange() {

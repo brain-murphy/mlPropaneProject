@@ -17,19 +17,17 @@ public class KNearestNeighborsClassifier implements Classifier {
     private IBk knn;
     private String[] options;
 
+    private KnnParams params;
+    private Map<String, Object> paramsMap;
+
     @Override
     public void setParams(Map<String, Object> params) {
-        int k = (int) params.get(KEY_K);
-        try {
-            options = Utils.splitOptions("-K " + k);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        paramsMap = params;
     }
 
     @Override
     public void setParams(Params params) {
-
+        this.params = (KnnParams) params;
     }
 
     @Override
@@ -38,11 +36,7 @@ public class KNearestNeighborsClassifier implements Classifier {
 
         knn = new IBk();
 
-        try {
-            knn.setOptions(options.clone());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        setOptions();
 
         try {
             Instances instances = parser.getDataSetAsInstances();
@@ -61,5 +55,21 @@ public class KNearestNeighborsClassifier implements Classifier {
             e.printStackTrace();
         }
         throw new RuntimeException("could not classify");
+    }
+
+    private void setOptions() {
+        if (paramsMap != null && paramsMap.containsKey(KEY_K)) {
+            knn.setKNN((Integer) paramsMap.get(KEY_K));
+        } else if (params != null) {
+            knn.setKNN(params.k);
+        }
+    }
+
+    public static class KnnParams extends Params {
+        public int k;
+
+        public KnnParams(int k) {
+            this.k = k;
+        }
     }
 }

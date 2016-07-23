@@ -1,6 +1,5 @@
 package algorithms.clusterers;
 
-import algorithms.Algorithm;
 import algorithms.classifiers.Classifier;
 import datasets.DataSet;
 import datasets.Instance;

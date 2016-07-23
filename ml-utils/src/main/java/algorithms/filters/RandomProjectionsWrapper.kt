@@ -2,24 +2,29 @@ package algorithms.filters
 
 import algorithms.Algorithm
 import algorithms.classifiers.Classifier
+import analysis.statistical.crossvalidation.AsyncCrossValidator
 import datasets.DataSet
 import datasets.Instance
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics
 import analysis.statistical.crossvalidation.SyncCrossValidation
+import analysis.statistical.errorfunction.ErrorFunction
 import java.util.concurrent.CountDownLatch
 import kotlin.concurrent.thread
 
 
-class RandomizedProjectionsWrapper(private val dataSet: DataSet<Instance>,
-                                   private val classifier: Classifier,
-                                   private val errorFunction: (Double) -> Double) : Filter {
+class RandomProjectionsWrapper(private val dataSet: DataSet<Instance>,
+                               private val classifier: Classifier,
+                               private val classifierParams: Algorithm.Params,
+                               private val errorFunction: ErrorFunction<Number>) : Filter {
+
+    var params: RandomProjectionsWrapperParams? = null
 
     override fun setParams(params: Algorithm.Params) {
-        throw UnsupportedOperationException("not implemented")
+        this.params = params as RandomProjectionsWrapperParams
     }
 
     override fun filterDataSet(input: DataSet<Instance>?): DataSet<Instance> {
-        throw UnsupportedOperationException("not implemented")
+        return findBestRandomProjection(params!!.numProjectedFeatures, params!!.numIterations)
     }
 
     override fun filterInstance(instance: Instance?): Instance {
@@ -30,17 +35,13 @@ class RandomizedProjectionsWrapper(private val dataSet: DataSet<Instance>,
         throw UnsupportedOperationException("not implemented")
     }
 
-    var crossValidationFolds = 10
-
-    fun findBestRandomProjection(numFeaturesOut: Int, numIterations: Int): DataSet<Instance> {
+    private fun findBestRandomProjection(numFeaturesOut: Int, numIterations: Int): DataSet<Instance> {
 
         var bestValidationError = Double.MAX_VALUE
         var bestDataSet: DataSet<Instance>? = null
 
-        val stats = SummaryStatistics()
-
         for (i in 1..numIterations) {
-            val randomizedProjection = RandomizedProjectionFilter()
+            val randomizedProjection = RandomProjectionFilter()
 
             randomizedProjection.numFeaturesOut = numFeaturesOut
 
@@ -52,18 +53,18 @@ class RandomizedProjectionsWrapper(private val dataSet: DataSet<Instance>,
                 bestDataSet = projectedData
                 bestValidationError = validationError
             }
-
-            stats.addValue(validationError)
         }
-
-        println("errror stdev:${stats.standardDeviation}")
 
         return bestDataSet!!
     }
 
     private fun getValidationError(testSet: DataSet<Instance>): Double {
-        val results = SyncCrossValidation(errorFunction, crossValidationFolds, testSet, classifier).run()
+        val results = AsyncCrossValidator(testSet, classifier.javaClass, classifierParams, errorFunction, maxThreads = 3).run()
 
-        return results.meanValidationError
+        return results
     }
+
+    class RandomProjectionsWrapperParams(val numProjectedFeatures: Int,
+                                         val numIterations: Int,
+                                         val crossValidationFolds: Int = 10) : Algorithm.Params()
 }

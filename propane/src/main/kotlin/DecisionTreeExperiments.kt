@@ -33,7 +33,7 @@ fun runDefaultREPTree(dataSet: DataSet<Instance>) {
 
     val foldCount = 20
 
-    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), foldCount, dataSet, decisionTree)
+    val crossValidation = SyncCrossValidation(SyncCrossValidation.AbsoluteError(), foldCount, dataSet, decisionTree)
 
     val result = crossValidation.run()
 

@@ -6,14 +6,9 @@ import datasets.Instance
 import algorithms.parsers.AbagailParser
 import shared.filt.RandomizedProjectionFilter
 
-
-fun main(args: String) {
-
-}
-
 const val KEY_NUM_FEATURES_OUT = "num features out param"
 
-class RandomizedProjectionFilter(): Filter {
+class RandomProjectionFilter(): Filter {
     override fun setParams(params: Algorithm.Params?) {
         throw UnsupportedOperationException("not implemented")
     }

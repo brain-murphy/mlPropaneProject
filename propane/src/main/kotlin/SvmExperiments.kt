@@ -17,7 +17,7 @@ fun runSvm(dataSet: DataSet<Instance>, kernel: SvmClassifier.Kernel, c: Double, 
 
     svm.setParams(SvmClassifier.createParams(kernel, c, gamma))
 
-    val crossValidation = SyncCrossValidation(CrossValidation.AbsoluteError(), 20, dataSet, svm)
+    val crossValidation = SyncCrossValidation(SyncCrossValidation.AbsoluteError(), 20, dataSet, svm)
 
     return crossValidation.run()
 }

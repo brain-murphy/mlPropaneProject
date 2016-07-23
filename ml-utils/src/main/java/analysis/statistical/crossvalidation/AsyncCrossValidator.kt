@@ -36,6 +36,8 @@ class AsyncCrossValidator(dataSet: DataSet<Instance>,
 
         countDownLatch.await()
 
+        consumers.forEach { it.stopConsuming() }
+
         return averageResults()
     }
 
