@@ -25,15 +25,14 @@ public class NeuralNetClassifier implements Classifier {
         return params;
     }
 
+    private static final long LOGGING_INTERVAL = 1000; // ms
+
     public static final String KEY_TARGET_ERROR = "target error param";
     public static final String KEY_MAX_ITERATIONS = "max iterations param";
     public static final String KEY_STRUCTURE = "networkStructure param";
 
-    private static final long LOGGING_INTERVAL = 1000; // ms
     private float targetError;
     private int maxIterations;
-
-
     private int[] networkStructure;
 
     private BasicNetwork currentNetwork;
@@ -55,7 +54,10 @@ public class NeuralNetClassifier implements Classifier {
 
     @Override
     public void setParams(Params params) {
-
+        NNetParams nNetParams = (NNetParams) params;
+        targetError = nNetParams.targetError;
+        maxIterations = nNetParams.maxIterations;
+        networkStructure = nNetParams.structure;
     }
 
     @Override
@@ -70,7 +72,7 @@ public class NeuralNetClassifier implements Classifier {
 
         ResilientPropagation trainer = new ResilientPropagation(currentNetwork, dataSet);
 
-        startTimedLogging();
+//        startTimedLogging();
 
         epoch = 1;
         do {
@@ -79,7 +81,7 @@ public class NeuralNetClassifier implements Classifier {
             epoch++;
         } while (error > targetError && epoch < maxIterations);
 
-        loggingTimer.cancel();
+//        loggingTimer.cancel();
     }
 
     private BasicNetwork parseNetworkStructure() {
@@ -139,5 +141,17 @@ public class NeuralNetClassifier implements Classifier {
     public Object evaluate(Object input) {
         double[] normalizedInput = inputNormalizer.process((double[]) input);
         return outputNormalizer.deNormalize(currentNetwork.compute(new BasicMLData(normalizedInput)).getData()[0]);
+    }
+
+    public static class NNetParams extends Algorithm.Params {
+        public NNetParams(int[] structure, float targetError, int maxIterations) {
+            this.structure = structure;
+            this.targetError = targetError;
+            this.maxIterations = maxIterations;
+        }
+
+        int maxIterations;
+        float targetError;
+        int[] structure;
     }
 }

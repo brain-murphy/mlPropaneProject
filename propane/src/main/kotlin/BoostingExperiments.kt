@@ -1,12 +1,16 @@
 @file:JvmName("BoostingExperiments")
 
 import algorithms.classifiers.BoostingClassifier
+import algorithms.classifiers.Classifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
 import analysis.statistical.crossvalidation.SyncCrossValidation
 import analysis.statistical.LearningCurve
+import analysis.statistical.crossvalidation.AsyncCrossValidator
+import analysis.statistical.errorfunction.AvgAbsoluteError
+import analysis.statistical.errorfunction.ErrorFunction
 
 fun main(args: Array<String>) {
     val absoluteError =  { difference: Double -> Math.abs(difference)}
@@ -53,4 +57,14 @@ fun learningCurveREPBoosting(dataSet: DataSet<out Instance>, errorFunction: (Dou
     val result = learningCurve.run()
 
     println(result.toString())
+}
+
+fun repBoostingError(dataSet: DataSet<Instance>): Double {
+    val booster = (BoostingClassifier() as Classifier).javaClass
+
+    val params = BoostingClassifier.BoostingParams("weka.classifiers.trees.REPTree", 50)
+
+    val cv = AsyncCrossValidator(dataSet, booster, params, AvgAbsoluteError().asErrorFunction())
+
+    return cv.run()
 }

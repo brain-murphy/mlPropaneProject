@@ -1,11 +1,14 @@
 @file:JvmName("DecisionTreeExperiments")
 
+import algorithms.classifiers.Classifier
 import algorithms.classifiers.DecisionTreeClassifier
 import datasets.DataSet
 import datasets.Instance
 import datasets.PropaneDataReader
 import analysis.statistical.crossvalidation.SyncCrossValidation
 import analysis.statistical.LearningCurve
+import analysis.statistical.crossvalidation.AsyncCrossValidator
+import analysis.statistical.errorfunction.AvgAbsoluteError
 
 fun main(args: Array<String>) {
     repTreeLearningCurve(PropaneDataReader().propaneDataSet as DataSet<Instance>)
@@ -25,19 +28,15 @@ fun repTreeLearningCurve(dataSet: DataSet<out Instance>) {
     println(csv.toString())
 }
 
-fun runDefaultREPTree(dataSet: DataSet<Instance>) {
+fun repTreeError(dataSet: DataSet<Instance>): Double {
 
-    val decisionTree = DecisionTreeClassifier()
+    val decisionTree = (DecisionTreeClassifier() as Classifier).javaClass
 
-    decisionTree.setParams(DecisionTreeClassifier.createParams(DecisionTreeClassifier.Type.RepTree))
+    val params = DecisionTreeClassifier.DecisionTreeParams(DecisionTreeClassifier.Type.RepTree)
 
-    val foldCount = 20
+    val crossValidation = AsyncCrossValidator(dataSet, decisionTree, params, AvgAbsoluteError().asErrorFunction())
 
-    val crossValidation = SyncCrossValidation(SyncCrossValidation.AbsoluteError(), foldCount, dataSet, decisionTree)
-
-    val result = crossValidation.run()
-
-    println("default REP Tree validation error:${result.meanValidationError}")
+    return crossValidation.run()
 }
 
 

@@ -14,6 +14,7 @@ public class BoostingClassifier implements Classifier {
 
     public static final String KEY_ALGORITHM_CLASS_NAME = "algorithm class param";
     public static final String KEY_ITERATIONS = "iterations param";
+    private BoostingParams params;
 
     public static Map<String, Object> createParams(String baseLearner, int maxIterations) {
         Map<String, Object> params = new HashMap<>();
@@ -30,6 +31,10 @@ public class BoostingClassifier implements Classifier {
 
     @Override
     public void setParams(Map<String, Object> params) {
+        parseMapParams(params);
+    }
+
+    protected void parseMapParams(Map<String, Object> params) {
         String algorithmClassName = (String) params.get(KEY_ALGORITHM_CLASS_NAME);
         int iterations;
         if (params.containsKey(KEY_ITERATIONS)) {
@@ -46,7 +51,12 @@ public class BoostingClassifier implements Classifier {
 
     @Override
     public void setParams(Params params) {
-
+        this.params = (BoostingParams) params;
+        try {
+            options = Utils.splitOptions("-W " + this.params.baseLearnerClassName + " -I " + this.params.iterationsToRun);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -114,6 +124,10 @@ public class BoostingClassifier implements Classifier {
     }
 
     public static class BoostingParams extends Algorithm.Params {
+        public BoostingParams(String baseLearnerClassName, int iterationsToRun) {
+            this.iterationsToRun = iterationsToRun;
+            this.baseLearnerClassName = baseLearnerClassName;
+        }
         int iterationsToRun;
         String baseLearnerClassName;
     }

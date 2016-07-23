@@ -1,8 +1,11 @@
 @file:JvmName("NeuralNetExperiments")
 
+import algorithms.classifiers.Classifier
 import algorithms.classifiers.NeuralNetClassifier
 import analysis.statistical.crossvalidation.SyncCrossValidation
 import analysis.statistical.LearningCurve
+import analysis.statistical.crossvalidation.AsyncCrossValidator
+import analysis.statistical.errorfunction.AvgAbsoluteError
 import datasets.*
 import util.Csv
 import util.CsvPrinter
@@ -15,6 +18,16 @@ fun main(args: Array<String>) {
 
     println("csf")
     neuralNetLearningCurve(propaneDataReader.propaneDataSet, ::absoluteError, nNetParams)
+}
+
+fun nNetError(dataSet: DataSet<Instance>): Double {
+    val nNet = (NeuralNetClassifier() as Classifier).javaClass
+
+    val params = NeuralNetClassifier.NNetParams(intArrayOf(9, 8), 0.006f, 500)
+
+    val cv  = AsyncCrossValidator(dataSet, nNet,params, AvgAbsoluteError().asErrorFunction())
+
+    return cv.run()
 }
 
 fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, params: Map<String, Any>) {
