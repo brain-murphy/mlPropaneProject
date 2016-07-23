@@ -17,7 +17,6 @@ fun main(args: Array<String>) {
     val csv = testAllDataSetsOnAllMethods()
     println(csv.toString())
     GeneralUtils.writeToFile("methodsVsDataSetComparison.csv", csv.toString())
-
 }
 
 val fullDataSet = PropaneDataReader().propaneDataSet
