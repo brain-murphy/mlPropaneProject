@@ -12,8 +12,7 @@ import java.util.concurrent.CountDownLatch
 import kotlin.concurrent.thread
 
 
-class RandomProjectionsWrapper(private val dataSet: DataSet<Instance>,
-                               private val classifier: Classifier,
+class RandomProjectionsWrapper(private val classifier: Classifier,
                                private val classifierParams: Algorithm.Params,
                                private val errorFunction: ErrorFunction<Number>) : Filter {
 
@@ -23,8 +22,8 @@ class RandomProjectionsWrapper(private val dataSet: DataSet<Instance>,
         this.params = params as RandomProjectionsWrapperParams
     }
 
-    override fun filterDataSet(input: DataSet<Instance>?): DataSet<Instance> {
-        return findBestRandomProjection(params!!.numProjectedFeatures, params!!.numIterations)
+    override fun filterDataSet(input: DataSet<Instance>): DataSet<Instance> {
+        return findBestRandomProjection(input, params!!.numProjectedFeatures, params!!.numIterations)
     }
 
     override fun filterInstance(instance: Instance?): Instance {
@@ -35,7 +34,7 @@ class RandomProjectionsWrapper(private val dataSet: DataSet<Instance>,
         throw UnsupportedOperationException("not implemented")
     }
 
-    private fun findBestRandomProjection(numFeaturesOut: Int, numIterations: Int): DataSet<Instance> {
+    private fun findBestRandomProjection(dataSet: DataSet<Instance>, numFeaturesOut: Int, numIterations: Int): DataSet<Instance> {
 
         var bestValidationError = Double.MAX_VALUE
         var bestDataSet: DataSet<Instance>? = null

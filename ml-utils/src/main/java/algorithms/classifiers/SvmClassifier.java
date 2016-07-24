@@ -1,6 +1,5 @@
 package algorithms.classifiers;
 
-import algorithms.Algorithm;
 import datasets.*;
 import org.encog.ml.data.*;
 import org.encog.ml.data.basic.*;

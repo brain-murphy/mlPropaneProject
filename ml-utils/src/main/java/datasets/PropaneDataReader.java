@@ -48,7 +48,7 @@ public class PropaneDataReader {
         return new DataSet<>(parseCsv(ALL_PROPANE_DATASETS_PACKAGE_PATH), discreteMode);
     }
 
-    public DataSet<PropaneInstance> get2013PropaneDataSet() {
+    public DataSet<Instance> get2013PropaneDataSet() {
         PropaneInstance[] instances = parse2013Instances();
 
         return new DataSet<>(instances, false);
@@ -59,7 +59,7 @@ public class PropaneDataReader {
         return parseCsv(PROPANE_DATA_2013_FILE_PATH);
     }
 
-    public DataSet<PropaneInstance> get2016PropaneDataSet() {
+    public DataSet<Instance> get2016PropaneDataSet() {
         PropaneInstance[] propaneInstances = parse2016Instances();
 
         return new DataSet<>(propaneInstances, false);
