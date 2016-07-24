@@ -12,7 +12,7 @@ import analysis.statistical.crossvalidation.AsyncCrossValidator
 import analysis.statistical.errorfunction.AvgAbsoluteError
 
 fun main(args: Array<String>) {
-    println(svmError(PropaneDataReader().propaneDataSet))
+    svmAllDataSets()
 }
 
 fun runSvm(dataSet: DataSet<Instance>, kernel: SvmClassifier.Kernel, c: Double, gamma: Double) : Result {
@@ -29,12 +29,21 @@ fun runSvm(dataSet: DataSet<Instance>, kernel: SvmClassifier.Kernel, c: Double, 
 fun svmError(dataSet: DataSet<Instance>): Double {
     val svm = (SvmClassifier() as Classifier).javaClass
 
-    val params = SvmClassifier.SvmParams(SvmClassifier.Kernel.Polynomial, 1.0, 1.0)
+    val params = SvmClassifier.SvmParams(SvmClassifier.Kernel.Linear, 1.0, 1.0)
 
     val crossValidation = AsyncCrossValidator(dataSet, svm, params, AvgAbsoluteError().asErrorFunction())
 
     return crossValidation.run()
 }
+
+fun svmAllDataSets() {
+    val dataSets = PropaneDataReader().allDataSets
+
+    dataSets.forEach { dataSet ->
+        println(svmError(dataSet))
+    }
+}
+
 
 fun comparePropaneDataSets(kernel: SvmClassifier.Kernel, c: Double, gamma: Double) {
     val pcaDataResults = runSvm(PcaPropaneDataReader().propaneDataSet as DataSet<Instance>, kernel, c, gamma)

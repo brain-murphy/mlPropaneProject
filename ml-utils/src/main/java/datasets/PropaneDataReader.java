@@ -191,7 +191,13 @@ public class PropaneDataReader {
 
     public DataSet<Instance>[] getAllDataSets() {
         @SuppressWarnings("unchecked")
-        DataSet<Instance>[] dataSets = new DataSet[]{getPcaDataSet(), /*getIcaDataSet(),*/ getRpDataSet(), getCsfDataSet(), get2013PropaneDataSet(), get2016PropaneDataSet(), getPropaneDataSet()};
+        DataSet<Instance>[] dataSets = new DataSet[]{getPcaDataSet(),
+                /*getIcaDataSet(),*/
+                getRpDataSet(),
+                getCsfDataSet(),
+                get2013PropaneDataSet(),
+                get2016PropaneDataSet(),
+                getPropaneDataSet()};
         return dataSets;
     }
 

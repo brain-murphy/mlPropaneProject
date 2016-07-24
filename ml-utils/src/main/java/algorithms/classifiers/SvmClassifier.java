@@ -15,6 +15,7 @@ public class SvmClassifier implements Classifier {
     public static final String KEY_KERNEL_TYPE = "kernel type param";
     public static final String KEY_C = "c param";
     public static final String KEY_GAMMA = "gamma param";
+    private NormalizeArray inputNormalizer;
 
     public static Map<String, Object> createParams(Kernel kernel, double c, double gamma) {
         Map<String, Object> params = new HashMap<>();
@@ -74,7 +75,10 @@ public class SvmClassifier implements Classifier {
         parseTrainingData(dataset);
 
         int numInputs = dataset.getInstances()[0].getInput().length;
-        svm = new SVM(numInputs, SVMType.SupportVectorClassification, kernelType);
+
+        SVMType type = dataset.hasDiscreteOutput() ? SVMType.SupportVectorClassification : SVMType.NewSupportVectorRegression;
+
+        svm = new SVM(numInputs, type, kernelType);
 
         MLDataSet trainingSet = new BasicMLDataSet(input, output);
 
@@ -94,8 +98,11 @@ public class SvmClassifier implements Classifier {
         input = new double[instances.length][];
         output = new double[instances.length][];
 
+        inputNormalizer = new NormalizeArray();
+        inputNormalizer.setNormalizedLow(kernelType == KernelType.Sigmoid ? 0 : -1);
+
         for (int i = 0; i < instances.length; i++) {
-            input[i] = instances[i].getInput();
+            input[i] = inputNormalizer.process(instances[i].getInput());
             output[i] = new double[] {outputNormalizer.normalize((instances[i].getOutput()))};
         }
     }
@@ -110,12 +117,15 @@ public class SvmClassifier implements Classifier {
             normalizedLow = -1;
         }
 
-        outputNormalizer = new NormalizedField(NormalizationAction.Normalize, "outputnormalizer", possibleOutputs[1], possibleOutputs[0], 1, normalizedLow);
+        outputNormalizer = new NormalizedField(NormalizationAction.Normalize, "outputnormalizer", possibleOutputs[possibleOutputs.length - 1], possibleOutputs[0], 1, normalizedLow);
     }
 
     @Override
     public Object evaluate(Object input) {
-        return outputNormalizer.deNormalize(svm.compute(new BasicMLData((double[]) input)).getData()[0]);
+        double[] normalizedInput = inputNormalizer.process((double[]) input);
+        double svmResult = svm.compute(new BasicMLData(normalizedInput)).getData()[0];
+        double output = outputNormalizer.deNormalize(svmResult);
+        return output;
     }
 
     public enum Kernel {
