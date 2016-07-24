@@ -17,7 +17,8 @@ const val MOCK_TRIAL_RUNTIME: Long = 100
 
 class TestTrialConsumer {
     private var taskQueue = ArrayBlockingQueue<Trial>(NUM_THREADS)
-    private var resultsQueue = ArrayBlockingQueue<Double>(NUM_TRIALS)
+    private var validationResultsQueue = ArrayBlockingQueue<Double>(NUM_TRIALS)
+    private var trainingResultsQueue = ArrayBlockingQueue<Double>(NUM_TRIALS)
     private var consumer = createConsumer()
 
 
@@ -27,7 +28,7 @@ class TestTrialConsumer {
     }
 
     private fun createConsumer(): TrialConsumer {
-        return TrialConsumer(taskQueue, resultsQueue, {})
+        return TrialConsumer(taskQueue, validationResultsQueue, trainingResultsQueue, {})
     }
 
     @Test
@@ -40,17 +41,17 @@ class TestTrialConsumer {
         val longEnoughToRunTrials = MOCK_TRIAL_RUNTIME * (NUM_TRIALS + 1L)
         Thread.sleep(longEnoughToRunTrials)
 
-        Assert.assertEquals("results should have $NUM_TRIALS entries", NUM_TRIALS, resultsQueue.size)
+        Assert.assertEquals("results should have $NUM_TRIALS entries", NUM_TRIALS, validationResultsQueue.size)
     }
 
 
     class MockTrial() : Trial(IrisDataReader().irisDataSet, listOf<Instance>(),
             DecisionTreeClassifier(), AvgAbsoluteError() as ErrorFunction<Number>) {
 
-        override fun run(): Double {
+        override fun run(): Pair<Double, Double> {
             Thread.sleep(MOCK_TRIAL_RUNTIME)
 
-            return Math.random()
+            return Pair(Math.random(), Math.random())
         }
     }
 }

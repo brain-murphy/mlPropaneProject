@@ -15,7 +15,8 @@ import java.util.concurrent.SynchronousQueue
 
 
 class TrialConsumer(private val trialQueue: ArrayBlockingQueue<Trial>,
-                    private val resultsQueue: ArrayBlockingQueue<Double>,
+                    private val validationErrors: ArrayBlockingQueue<Double>,
+                    private val trainingErrorResults: ArrayBlockingQueue<Double>,
                     private val finishedCallback: () -> Unit) : Thread(), Consumer {
 
     override fun startConsuming() {
@@ -29,7 +30,10 @@ class TrialConsumer(private val trialQueue: ArrayBlockingQueue<Trial>,
             while (shouldContinue) {
                 val trial = trialQueue.take()
 
-                resultsQueue.put(trial.run())
+                val (trainingError, validationError) = trial.run()
+
+                validationErrors.put(validationError)
+                trainingErrorResults.put(trainingError)
 
                 finishedCallback()
             }

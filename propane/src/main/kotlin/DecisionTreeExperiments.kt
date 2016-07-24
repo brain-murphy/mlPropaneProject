@@ -36,7 +36,7 @@ fun repTreeError(dataSet: DataSet<Instance>): Double {
 
     val crossValidation = AsyncCrossValidator(dataSet, decisionTree, params, AvgAbsoluteError().asErrorFunction())
 
-    return crossValidation.run()
+    return crossValidation.run().second
 }
 
 

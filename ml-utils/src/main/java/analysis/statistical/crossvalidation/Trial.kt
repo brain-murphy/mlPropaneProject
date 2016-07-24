@@ -9,16 +9,17 @@ import datasets.Instance
 open class Trial(val trainingSet: DataSet<Instance>,
                       val validationSet: List<Instance>,
                       val classifier: Classifier,
-                      val errorFunction: ErrorFunction<Number>) {
+                      var errorFunction: ErrorFunction<Number>) {
 
 
-    open fun run(): Double {
+    open fun run(): Pair<Double, Double> {
         classifier.train(trainingSet)
-        return evaluate()
+        return Pair(evaluate(trainingSet.getInstances().toList()), evaluate(validationSet))
     }
 
-    private fun evaluate(): Double {
-        for (instance in validationSet) {
+    private fun evaluate(data: List<Instance>): Double {
+        errorFunction = errorFunction.javaClass.newInstance()
+        for (instance in data) {
             val absoluteError = instance.getDifference(classifier.evaluate(instance.input) as Double)
             errorFunction.recordError(absoluteError)
         }

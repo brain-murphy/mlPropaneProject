@@ -22,12 +22,12 @@ fun main(args: Array<String>) {
 val fullDataSet = PropaneDataReader().propaneDataSet
 
 fun printAllMethods() {
-    println("best boosting error:\t\t ${getBestBoostingError()}")
-    println("best decision tree error:\t\t ${getBestDecisionTreeError()}")
-    println("best knn error:\t\t ${getBestKnnError()}")
-    println("best nNet error:\t\t ${getBestNNetError()}")
-    println("best rbf error:\t\t ${getBestRbfError()}")
-    println("best svm error:\t\t ${getBestSvmError()}")
+    println("best boosting error:\t\t ${getBestBoostingError(fullDataSet)}")
+    println("best decision tree error:\t\t ${getBestDecisionTreeError(fullDataSet)}")
+    println("best knn error:\t\t ${getBestKnnError(fullDataSet)}")
+    println("best nNet error:\t\t ${getBestNNetError(fullDataSet)}")
+    println("best rbf error:\t\t ${getBestRbfError(fullDataSet)}")
+    println("best svm error:\t\t ${getBestSvmError(fullDataSet)}")
 }
 
 fun testAllDataSetsOnAllMethods(): Csv {
@@ -42,34 +42,34 @@ fun testAllDataSetsOnAllMethods(): Csv {
 }
 
 fun testAllMethods(dataSet: DataSet<Instance>): Array<Double> {
-    return arrayOf(getBestBoostingError(),
-            getBestDecisionTreeError(),
-            getBestKnnError(),
-            getBestNNetError(),
-            getBestRbfError(),
-            getBestSvmError())
+    return arrayOf(getBestBoostingError(dataSet),
+            getBestDecisionTreeError(dataSet),
+            getBestKnnError(dataSet),
+            getBestNNetError(dataSet),
+            getBestRbfError(dataSet),
+            getBestSvmError(dataSet))
 }
 
-fun getBestBoostingError(): Double {
-    return repBoostingError(fullDataSet)
+fun getBestBoostingError(dataSet: DataSet<Instance>): Double {
+    return repBoostingError(dataSet)
 }
 
-fun getBestDecisionTreeError(): Double {
-    return repTreeError(fullDataSet)
+fun getBestDecisionTreeError(dataSet: DataSet<Instance>): Double {
+    return repTreeError(dataSet)
 }
 
-fun getBestKnnError(): Double {
-    return knnError(fullDataSet)
+fun getBestKnnError(dataSet: DataSet<Instance>): Double {
+    return knnError(dataSet)
 }
 
-fun getBestNNetError(): Double {
-    return nNetError(fullDataSet)
+fun getBestNNetError(dataSet: DataSet<Instance>): Double {
+    return nNetError(dataSet)
 }
 
-fun getBestRbfError(): Double {
-    return rbfError(fullDataSet)
+fun getBestRbfError(dataSet: DataSet<Instance>): Double {
+    return rbfError(dataSet)
 }
 
-fun getBestSvmError(): Double {
-    return svmError(fullDataSet)
+fun getBestSvmError(dataSet: DataSet<Instance>): Double {
+    return svmError(dataSet)
 }

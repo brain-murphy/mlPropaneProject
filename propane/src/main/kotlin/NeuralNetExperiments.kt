@@ -27,7 +27,7 @@ fun nNetError(dataSet: DataSet<Instance>): Double {
 
     val cv  = AsyncCrossValidator(dataSet, nNet,params, AvgAbsoluteError().asErrorFunction())
 
-    return cv.run()
+    return cv.run().second
 }
 
 fun neuralNetLearningCurve(dataSet: DataSet<Instance>, errorFunction: (Double) -> Double, params: Map<String, Any>) {

@@ -62,9 +62,9 @@ fun learningCurveREPBoosting(dataSet: DataSet<out Instance>, errorFunction: (Dou
 fun repBoostingError(dataSet: DataSet<Instance>): Double {
     val booster = (BoostingClassifier() as Classifier).javaClass
 
-    val params = BoostingClassifier.BoostingParams("weka.classifiers.trees.REPTree", 50)
+    val params = BoostingClassifier.BoostingParams("weka.classifiers.trees.DecisionStump", 50)
 
     val cv = AsyncCrossValidator(dataSet, booster, params, AvgAbsoluteError().asErrorFunction())
 
-    return cv.run()
+    return cv.run().second
 }

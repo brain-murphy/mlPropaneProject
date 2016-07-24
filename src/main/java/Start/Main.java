@@ -6,6 +6,6 @@ import main.RpPropaneScriptKt;
 
 public class Main {
     public static void main(String[] args) {
-        RpPropaneScriptKt.main(args);
+        BestForEachMethodScriptKt.main(args);
     }
 }

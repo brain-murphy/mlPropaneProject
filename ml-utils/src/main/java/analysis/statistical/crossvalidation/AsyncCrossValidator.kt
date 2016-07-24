@@ -18,7 +18,8 @@ class AsyncCrossValidator(dataSet: DataSet<Instance>,
                           maxThreads: Int = 3) {
 
     private val trialQueue = ArrayBlockingQueue<Trial>(maxThreads)
-    private val resultsQueue = ArrayBlockingQueue<Double>(numFolds)
+    private val validatationResults = ArrayBlockingQueue<Double>(numFolds)
+    private val trainingErrorResults = ArrayBlockingQueue<Double>(numFolds)
 
     private val producer = TrialProducer(dataSet, numFolds, classifier, params, modelErrorFunction, trialQueue)
 
@@ -27,10 +28,10 @@ class AsyncCrossValidator(dataSet: DataSet<Instance>,
         countDownLatch.countDown()
     }
 
-    private val consumers = Array(maxThreads) { TrialConsumer(trialQueue, resultsQueue, trialFinishedCallback)}
+    private val consumers = Array(maxThreads) { TrialConsumer(trialQueue, validatationResults, trainingErrorResults, trialFinishedCallback)}
 
 
-    fun run(): Double {
+    fun run(): Pair<Double, Double> {
         producer.start()
         consumers.forEach { it.start() }
 
@@ -41,11 +42,16 @@ class AsyncCrossValidator(dataSet: DataSet<Instance>,
         return averageResults()
     }
 
-    private fun averageResults(): Double {
-        val runningAverage = RunningAverage()
-        for (error in resultsQueue) {
-            runningAverage.record(error)
+    private fun averageResults(): Pair<Double, Double> {
+        val validationAverage = RunningAverage()
+        for (error in validatationResults) {
+            validationAverage.record(error)
         }
-        return runningAverage.average
+
+        val trainingAverage = RunningAverage()
+        for (error in trainingErrorResults) {
+            trainingAverage.record(error)
+        }
+        return Pair(trainingAverage.average, validationAverage.average)
     }
 }

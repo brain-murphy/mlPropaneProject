@@ -60,7 +60,7 @@ class RandomProjectionsWrapper(private val classifier: Classifier,
     private fun getValidationError(testSet: DataSet<Instance>): Double {
         val results = AsyncCrossValidator(testSet, classifier.javaClass, classifierParams, errorFunction, maxThreads = 3).run()
 
-        return results
+        return results.second
     }
 
     class RandomProjectionsWrapperParams(val numProjectedFeatures: Int,
