@@ -2,20 +2,16 @@
 
 import algorithms.classifiers.BoostingClassifier
 import algorithms.classifiers.Classifier
+import analysis.statistical.AsyncLearningCurve
 import datasets.DataSet
 import datasets.Instance
-import datasets.PcaPropaneDataReader
 import datasets.PropaneDataReader
 import analysis.statistical.crossvalidation.SyncCrossValidation
-import analysis.statistical.LearningCurve
 import analysis.statistical.crossvalidation.AsyncCrossValidator
 import analysis.statistical.errorfunction.AvgAbsoluteError
-import analysis.statistical.errorfunction.ErrorFunction
 
 fun main(args: Array<String>) {
-    val absoluteError =  { difference: Double -> Math.abs(difference)}
-
-    learningCurveREPBoosting(PropaneDataReader().propaneDataSet, absoluteError)
+    learningCurveREPBoosting(PropaneDataReader().propaneDataSet)
 }
 
 fun testDecisionStumpBoosting(dataSet: DataSet<Instance>) {
@@ -47,12 +43,12 @@ fun testREPBoosting(dataSet: DataSet<Instance>) {
     }
 }
 
-fun learningCurveREPBoosting(dataSet: DataSet<out Instance>, errorFunction: (Double) -> Double) {
-    val boostingAlgorithm = BoostingClassifier()
+fun learningCurveREPBoosting(dataSet: DataSet<out Instance>) {
+    val boostingAlgorithm = (BoostingClassifier() as Classifier).javaClass
 
-    boostingAlgorithm.setParams(BoostingClassifier.createParams("weka.classifiers.trees.REPTree", 50))
+    val params = BoostingClassifier.BoostingParams("weka.classifiers.trees.REPTree", 50)
 
-    val learningCurve = LearningCurve(PcaPropaneDataReader().propaneDataSet, boostingAlgorithm, errorFunction, 20)
+    val learningCurve = AsyncLearningCurve(dataSet, boostingAlgorithm, params, AvgAbsoluteError().asErrorFunction())
 
     val result = learningCurve.run()
 
@@ -60,6 +56,16 @@ fun learningCurveREPBoosting(dataSet: DataSet<out Instance>, errorFunction: (Dou
 }
 
 fun repBoostingError(dataSet: DataSet<Instance>): Double {
+    val booster = (BoostingClassifier() as Classifier).javaClass
+
+    val params = BoostingClassifier.BoostingParams("weka.classifiers.trees.REPTree", 50)
+
+    val cv = AsyncCrossValidator(dataSet, booster, params, AvgAbsoluteError().asErrorFunction())
+
+    return cv.run().second
+}
+
+fun decisionStumpBoostingError(dataSet: DataSet<Instance>): Double {
     val booster = (BoostingClassifier() as Classifier).javaClass
 
     val params = BoostingClassifier.BoostingParams("weka.classifiers.trees.DecisionStump", 50)

@@ -16,14 +16,14 @@ fun testIcaBoosting(dataSet: DataSet<Instance>) {
 
     val absoluteError = {difference: Double -> Math.abs(difference)}
 
-    learningCurveREPBoosting(dataSet, absoluteError)
+    learningCurveREPBoosting(dataSet)
 
     val icaDataSet = IndependentComponentsFilter().filterDataSet(dataSet)
 
     val numFeatures = icaDataSet.getInstances()[0].input.size
 
     System.out.println("ICA data REP Boosting with $numFeatures features")
-    learningCurveREPBoosting(icaDataSet, absoluteError)
+    learningCurveREPBoosting(icaDataSet)
 }
 
 fun printIcaForDataSet(dataSet: DataSet<Instance>) {

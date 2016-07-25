@@ -1,4 +1,4 @@
-@file:JvmName("RbfExperiments")
+package main
 
 import algorithms.classifiers.Classifier
 import algorithms.classifiers.RbfClassifier
@@ -10,10 +10,11 @@ import analysis.statistical.LearningCurve
 import analysis.statistical.Result
 import analysis.statistical.crossvalidation.AsyncCrossValidator
 import analysis.statistical.errorfunction.AvgAbsoluteError
+import datasets.PropaneDataReader
 import java.util.*
 
 fun main(args: Array<String>) {
-    rbfLearningCurve()
+    println(rbfError(PropaneDataReader().propaneDataSet))
 }
 
 fun rbfLearningCurve() {
@@ -47,7 +48,7 @@ fun rbfError(dataSet: DataSet<Instance>): Double {
 
     val rbf = (RbfClassifier() as Classifier).javaClass
 
-    val params = RbfClassifier.RbfParams(15, 0.1, false)
+    val params = RbfClassifier.RbfParams(25, 0.1, false)
 
     val crossValidation = AsyncCrossValidator(dataSet, rbf, params, AvgAbsoluteError().asErrorFunction())
 

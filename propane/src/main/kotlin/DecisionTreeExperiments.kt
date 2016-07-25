@@ -2,6 +2,7 @@
 
 import algorithms.classifiers.Classifier
 import algorithms.classifiers.DecisionTreeClassifier
+import analysis.statistical.AsyncLearningCurve
 import datasets.DataSet
 import datasets.Instance
 import datasets.PropaneDataReader
@@ -15,13 +16,11 @@ fun main(args: Array<String>) {
 }
 
 fun repTreeLearningCurve(dataSet: DataSet<out Instance>) {
-    val decisionTree = DecisionTreeClassifier()
+    val decisionTree = (DecisionTreeClassifier() as Classifier).javaClass
 
-    decisionTree.setParams(DecisionTreeClassifier.createParams(DecisionTreeClassifier.Type.RepTree))
+    val params = DecisionTreeClassifier.DecisionTreeParams(DecisionTreeClassifier.Type.RepTree)
 
-    val absoluteError = { error:Double -> Math.abs(error) }
-
-    val learningCurve = LearningCurve(dataSet, decisionTree, absoluteError)
+    val learningCurve = AsyncLearningCurve(dataSet, decisionTree, params, AvgAbsoluteError().asErrorFunction())
 
     val csv = learningCurve.run()
 

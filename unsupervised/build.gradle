@@ -28,5 +28,5 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 sourceSets {
-    main.java.srcDirs += 'src/main.main.main.main/kotlin'
+    main.java.srcDirs += 'src/main.main.main.main.main.main.main.main/kotlin'
 }
